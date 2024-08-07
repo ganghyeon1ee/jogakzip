@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>조각집_그룹 만들기</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="container">
+      <img src="img/logo.png" alt="Centered Image" class="center-image">
+      
+      <h1 class="center-text">그룹 만들기</h1>
+
+      <div class="input-wrapper">
+        <label for="group-name" class="group-name-label">그룹명</label>
+        <input type="text" id="group-name" class="group-name-input" placeholder="그룹명을 입력하세요.">
+        
+        <label for="representative-image" class="group-name-label">대표 이미지</label>
+        <div class="file-upload-wrapper">
+            <input type="text" id="representative-image" class="file-name-input" placeholder="파일을 선택해주세요." readonly>
+            <label for="file-upload" class="file-upload-button">파일 선택</label>
+            <input type="file" id="file-upload" class="file-input">
+        </div>
+
+        <label for="group-description" class="group-name-label">그룹 소개</label>
+        <textarea id="group-description" class="group-description-input" placeholder="그룹을 소개해 주세요."></textarea>
+      
+        <label for="group-visibility" class="group-name-label">그룹 공개 선택</label>
+        <div class="visibility-wrapper">
+            <span class="visibility-text">공개</span>
+            <img src="img/state=active.png" alt="Visibility Icon" class="visibility-icon">
+        </div>
+      
+        <label for="group-password" class="group-name-label">비밀번호 생성</label>
+        <input type="password" id="group-password" class="group-name-input" placeholder="그룹 비밀번호를 생성해주세요.">
+
+      </div>
+
+      <button class="submit-button">만들기</button>
+      
+    </div>
+
+    <script>
+      const inputs = document.querySelectorAll('.group-name-input, .group-description-input, .file-name-input');
+
+      inputs.forEach(input => {
+          input.addEventListener('click', () => {
+              input.classList.add('clicked');
+          });
+      });
+  </script>
+
+  </body>
+</html>
