@@ -41,7 +41,15 @@
         <button class="submit-button">만들기</button>
         
     </div>
+    <script>
+      const inputs = document.querySelectorAll('.group-name-input, .group-description-input, .file-name-input');
 
+      inputs.forEach(input => {
+          input.addEventListener('click', () => {
+              input.classList.add('clicked');
+          });
+      });
+    </script>
     <script>
       // JavaScript for toggling visibility
       const visibilityText = document.getElementById('visibility-text');
@@ -62,5 +70,6 @@
 
       visibilityIcon.addEventListener('click', toggleVisibility);
     </script>
+    
 </body>
 </html>
