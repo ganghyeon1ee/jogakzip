@@ -38,7 +38,7 @@
 
         </div>
 
-        <button class="submit-button">만들기</button>
+        <button class="submit-button" id="create-group-button">만들기</button>
         
     </div>
     <script>
@@ -70,6 +70,11 @@
 
       visibilityIcon.addEventListener('click', toggleVisibility);
     </script>
-    
+     <script>
+      // JavaScript for redirecting to a local page
+      document.getElementById('create-group-button').addEventListener('click', () => {
+          window.location.href = 'http://127.0.0.1:5500/public/main_imgx.html'; // 이동할 로컬 URL
+      });
+    </script>
 </body>
 </html>
