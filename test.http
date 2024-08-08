@@ -1,0 +1,35 @@
+### 그룹 등록
+POST http://localhost:3000/api/groups
+Content-Type: application/json
+
+{
+    "name": "Study Group",
+    "password": "securepassword123",
+    "imageUrl": "https://example.com/image.png",
+    "isPublic": true,
+    "introduction": "This is a study group."
+}
+
+###
+
+### 그룹 수정
+PUT http://localhost:3000/api/groups/4
+Content-Type: application/json
+
+{
+    "name": "Updated Study Group",
+    "password": "securepassword123",
+    "imageUrl": "https://example.com/updatedimage.png",
+    "isPublic": false,
+    "introduction": "This is an updated study group."
+}
+
+###
+
+### 그룹 삭제
+DELETE http://localhost:3000/api/groups/4
+Content-Type: application/json
+
+{
+    "password": "securepassword123"
+}
