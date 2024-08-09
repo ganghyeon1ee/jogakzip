@@ -125,7 +125,63 @@ const likeGroup = async (req, res) => {
     }
 };
 
+const verifyPassword = async (req, res) => {
+    try {
+        const { groupId } = req.params;
+        const { password } = req.body;
+
+        const group = await groupModel.findGroupById(groupId);
+        if (!group) {
+            return res.status(404).json({ message: '존재하지 않습니다' });
+        }
+
+        if (group.password !== password) {
+            return res.status(401).json({ message: '비밀번호가 틀렸습니다' });
+        }
+
+        res.status(200).json({ message: '비밀번호가 확인되었습니다' });
+    } catch (error) {
+        console.error('Error verifying password:', error);
+        res.status(500).json({ message: '서버 오류' });
+    }
+};
+
+const getGroupDetails = async (req, res) => {
+    try {
+        const { groupId } = req.params;
+
+        const group = await groupModel.findGroupById(groupId);
+        if (!group) {
+            return res.status(404).json({ message: '존재하지 않습니다' });
+        }
+
+        // 생성 후 지난 일수 (디데이) 계산
+        const createdAt = new Date(group.createdAt);
+        const today = new Date();
+        const diffTime = Math.abs(today - createdAt);
+        const dDay = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+        res.status(200).json({
+            id: group.id,
+            name: group.name,
+            imageUrl: group.imageUrl,
+            isPublic: group.isPublic,
+            likeCount: group.likeCount,
+            badges: [], // 배지 목록 (추후 추가 예정)
+            postCount: group.postCount,
+            createdAt: group.createdAt,
+            introduction: group.introduction,
+            dDay: dDay, // 디데이 추가
+        });
+    } catch (error) {
+        console.error('Error fetching group details:', error);
+        res.status(500).json({ message: '서버 오류' });
+    }
+};
+
 module.exports = {
+    verifyPassword,
+    getGroupDetails,
     likeGroup,
     createGroup,
     updateGroup,
