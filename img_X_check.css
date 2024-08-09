@@ -1,0 +1,148 @@
+body {
+    font-family: 'Spoqa Han Sans Neo', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #fff;
+    color: #282828;
+    font-size: 14px;
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+}
+
+.container .content {
+    margin-top: 500px;
+    margin-bottom: 150px;
+}
+
+.header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0;
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.center-image {
+    max-width: 100px;
+    height: auto;
+    border-bottom: none;
+    margin-bottom: 50px;
+}
+
+.center-text {
+    margin-top: 50px; /* 이미지와 텍스트 사이의 간격을 조정합니다. */
+    font-size: 24px; 
+}
+
+.input-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* 입력창과 레이블을 왼쪽 정렬합니다. */
+    margin-top: 0px; /* 기존 텍스트와 입력 그룹 사이의 간격을 조정합니다. */
+    width: 100%; /* 입력 그룹이 전체 너비를 차지하도록 설정 */
+    max-width: 300px; /* 전체 너비의 최대값을 설정하여 텍스트 박스와 버튼이 일관되도록 함 */
+}
+
+.group-name-label {
+    font-size: 20px; /* 그룹명 레이블의 글자 크기를 설정합니다. */
+    font-weight: 500; /* 그룹명 레이블을 두껍게 설정합니다. */
+    margin-bottom: 10px; /* 레이블과 입력창 사이의 간격을 조정합니다. */
+    font-size: 16px; 
+    margin-top: 40px;
+}
+
+.content p {
+    font-size: 14px;
+    color: #282828;
+}
+
+.group-name-label {
+    font-size: 16px; /* 그룹명 레이블의 글자 크기를 설정합니다. */
+    font-weight: 500; /* 그룹명 레이블을 두껍게 설정합니다. */
+    margin-bottom: 10px; /* 레이블과 입력창 사이의 간격을 조정합니다. */
+    margin-top: 40px;
+}
+
+.group-name-input {
+    padding: 10px; /* 입력창 안의 패딩을 설정합니다. */
+    font-size: 14px; /* 입력창의 글자 크기를 설정합니다. */
+    border: 1px solid #DDDDDD; /* 입력창의 테두리를 설정합니다. */
+    border-radius: 5px; /* 입력창의 모서리를 둥글게 설정합니다. */
+    width: 100%; /* 입력창의 너비를 전체로 설정합니다. */
+    max-width: 100%; /* 입력창의 최대 너비를 100%로 설정합니다. */
+    color: #B8B8B8;
+    background-color: #FFFFFF; /* 입력창 배경 색상 설정 */
+    margin-bottom: 0; /* 입력창 아래 여백 제거 */
+}
+
+.group-name-input::placeholder {
+    color: #B8B8B8; /* 플레이스홀더 텍스트 색상 설정 */
+}
+
+.group-name-input:focus {
+    border-color: #282828; /* 포커스 시 테두리 색상 변경 */
+    outline: none; /* 기본 포커스 아웃라인 제거 */
+}
+
+.group-name-input:focus::placeholder {
+    color: transparent; /* 포커스 시 플레이스홀더 숨기기 */
+}
+
+.group-name-input.clicked {
+    color: #282828; /* 텍스트 색상 변경 */
+    border: 1px solid #282828; /* 입력창의 테두리를 설정합니다. */
+    background-color: #B8B8B8; /* 클릭 후 유지되는 배경색 */
+}
+
+.load-more {
+    background-color: #282828;
+    color: white;
+    width: 216px;
+    padding: 10px 20px; /* 간결한 패딩 설정 */
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+.load-more:hover {
+    background-color: #8d8d8d;
+}
+
+.submit-button {
+    background-color: #282828;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 30px; /* 입력 그룹과 버튼 사이의 간격 설정 */
+    padding-left: 140px;
+    padding-right: 140px;
+    margin-left: 20px;
+    text-align: center; /* 버튼 내 텍스트 중앙 정렬 */
+    display: inline-block; /* 버튼의 크기를 콘텐츠에 맞추기 위해 */
+}
+
+.submit-button:hover {
+    background-color: #B8B8B8;
+    white-space: nowrap;
+    border: none;
+}
+
+/* 컨테이너 전체 높이를 확보하여 버튼이 페이지 하단에 위치하도록 함 */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 컨테이너 내부의 요소를 수평 중앙 정렬 */
+    width: 100%;
+    max-width: 600px; /* 컨테이너의 최대 너비를 설정 */
+    min-height: 100vh; /* 컨테이너의 최소 높이를 100% 뷰포트 높이로 설정 */
+    justify-content: flex-start; /* 버튼을 페이지 하단으로 밀어내기 */
+}
