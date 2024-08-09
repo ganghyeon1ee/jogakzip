@@ -21,4 +21,10 @@ router.get('/groups/:groupId/is-public', groupController.checkGroupIsPublic);
 // 그룹 공감하기
 router.post('/groups/:groupId/like', groupController.likeGroup);
 
+// 그룹 비밀번호 확인
+router.post('/groups/:groupId/verify-password', groupController.verifyPassword);
+
+// 그룹 상세 정보 조회
+router.get('/groups/:groupId', groupController.getGroupDetails);
+
 module.exports = router;
