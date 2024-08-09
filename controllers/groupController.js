@@ -57,8 +57,58 @@ const deleteGroup = async (req, res) => {
     }
 };
 
+const getGroups = async (req, res) => {
+    try {
+        const { page = 1, pageSize = 10, sortBy = 'latest', keyword = '', isPublic } = req.query;
+
+        const filters = {
+            page: parseInt(page, 10),
+            pageSize: parseInt(pageSize, 10),
+            sortBy,
+            keyword,
+            isPublic: isPublic !== undefined ? isPublic === 'true' : undefined,
+        };
+
+        const { groups, totalItemCount } = await groupModel.getGroups(filters);
+
+        const totalPages = Math.ceil(totalItemCount / filters.pageSize);
+
+        res.status(200).json({
+            currentPage: filters.page,
+            totalPages,
+            totalItemCount,
+            data: groups,
+        });
+    } catch (error) {
+        console.error('Error fetching groups:', error);
+        res.status(500).json({ message: '서버 오류' });
+    }
+};
+
+const checkGroupIsPublic = async (req, res) => {
+    try {
+        const { groupId } = req.params;
+
+        const group = await groupModel.findGroupById(groupId);
+
+        if (!group) {
+            return res.status(404).json({ message: '존재하지 않습니다' });
+        }
+
+        res.status(200).json({
+            id: group.id,
+            isPublic: group.isPublic,
+        });
+    } catch (error) {
+        console.error('Error checking group public status:', error);
+        res.status(500).json({ message: '서버 오류' });
+    }
+};
+
 module.exports = {
     createGroup,
     updateGroup,
-    deleteGroup
+    deleteGroup,
+    getGroups,
+    checkGroupIsPublic,
 };
