@@ -18,4 +18,7 @@ router.get('/groups', groupController.getGroups);
 // 그룹 공개 여부 확인
 router.get('/groups/:groupId/is-public', groupController.checkGroupIsPublic);
 
+// 그룹 공감하기
+router.post('/groups/:groupId/like', groupController.likeGroup);
+
 module.exports = router;
