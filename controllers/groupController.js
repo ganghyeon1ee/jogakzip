@@ -105,7 +105,28 @@ const checkGroupIsPublic = async (req, res) => {
     }
 };
 
+const likeGroup = async (req, res) => {
+    try {
+        const { groupId } = req.params;
+
+        // 그룹이 존재하는지 확인
+        const group = await groupModel.findGroupById(groupId);
+        if (!group) {
+            return res.status(404).json({ message: '존재하지 않습니다' });
+        }
+
+        // 그룹의 공감 수 증가
+        await groupModel.incrementLikeCount(groupId);
+
+        res.status(200).json({ message: '그룹 공감하기 성공' });
+    } catch (error) {
+        console.error('Error liking group:', error);
+        res.status(500).json({ message: '서버 오류' });
+    }
+};
+
 module.exports = {
+    likeGroup,
     createGroup,
     updateGroup,
     deleteGroup,

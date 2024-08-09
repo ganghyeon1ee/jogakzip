@@ -75,10 +75,12 @@ const getGroups = async (filters) => {
     }
 };
 
-
-
+const incrementLikeCount = async (groupId) => {
+    await db.execute('UPDATE `groups` SET likeCount = likeCount + 1 WHERE id = ?', [groupId]);
+};
 
 module.exports = {
+    incrementLikeCount,
     createGroup,
     findGroupById,
     updateGroup,
