@@ -1,0 +1,15 @@
+# 1. 게시글(추억) 등록
+POST http://localhost:3000/api/groups/2/posts
+Content-Type: application/json
+
+{
+	"nickname": "JohnDoe",
+	"title": "My First Memory",
+	"content": "This is the content of my first memory.",
+	"postPassword": "securepassword123",
+	"imageUrl": "https://example.com/image.jpg",
+	"tags": [ "vacation", "summer" ],
+	"location": "New York",
+	"moment": "2024-02-21",
+	"isPublic": true
+}
