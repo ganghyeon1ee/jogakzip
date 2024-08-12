@@ -17,7 +17,7 @@ Content-Type: application/json
 ###
 
 # 2. 게시글 수정
-PUT http://localhost:3000/api/posts/1
+PUT http://localhost:3000/api/posts/2
 Content-Type: application/json
 
 {
@@ -30,4 +30,12 @@ Content-Type: application/json
 	"location": "Updated Location",
 	"moment": "2024-02-22",
 	"isPublic": true
+}
+###
+# 3. 게시글 삭제
+DELETE http://localhost:3000/api/posts/2
+Content-Type: application/json
+
+{
+  "postPassword": "securepassword12"
 }

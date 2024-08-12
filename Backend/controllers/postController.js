@@ -67,7 +67,41 @@ const updatePost = async (req, res) => {
     }
 };
 
+// 게시글 삭제
+const deletePost = async (req, res) => {
+    try {
+        const { postId } = req.params;
+        const { postPassword } = req.body;
+
+        if (!postPassword) {
+            return res.status(400).json({ message: "잘못된 요청입니다" });
+        }
+
+        // 기존 게시글 조회
+        const existingPost = await postModel.findPostById(postId);
+
+        if (!existingPost) {
+            return res.status(404).json({ message: "존재하지 않습니다" });
+        }
+
+        // 비밀번호 확인
+        if (existingPost.postPassword !== postPassword) {
+            return res.status(403).json({ message: "비밀번호가 틀렸습니다" });
+        }
+
+        // 게시글 삭제
+        await postModel.deletePost(postId);
+
+        res.status(200).json({ message: "게시글 삭제 성공" });
+    } catch (error) {
+        console.error('Error deleting post:', error);
+        res.status(500).json({ message: "서버 오류" });
+    }
+};
+
+
 module.exports = {
     createPost,
     updatePost,
+    deletePost,
 };

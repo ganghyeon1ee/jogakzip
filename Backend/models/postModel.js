@@ -25,8 +25,15 @@ const updatePost = async (postId, postData) => {
     );
 };
 
+// 게시글 삭제
+const deletePost = async (postId) => {
+    await db.execute('DELETE FROM posts WHERE id = ?', [postId]);
+};
+
+
 module.exports = {
     createPost,
     findPostById,
-    updatePost
+    updatePost,
+    deletePost,
 };
