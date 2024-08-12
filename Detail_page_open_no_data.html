@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>그룹 상세 페이지 - 데이터 X</title>
+    <link rel="stylesheet" href="Detail_page_open_no_data.css">
+    <link href="https://spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+  <div class="container2">
+    <div class="header2">
+        <img src="img/logo.png" alt="Centered Image" class="center-image2">
+    </div>
+  </div>   
+  <div class="detail_card">
+    <img src="img/image=img2.jpg" alt="달봉이네">
+    <div class="card-content">
+        <div class="information">
+          <p><span class="date">D+265&nbsp; </span> &nbsp;| &nbsp;<span class="status">  &nbsp;공개</span>
+            <div class="info-buttons">
+              <a href="#">그룹 정보 수정하기</a>
+              <a class="delete" href="#">그룹 삭제하기</a>
+             </div>
+          </p>
+        </div>
+        <div class="info">
+          <h2>달봉이네 가족</h2>
+          <div class="info-item">
+              <span>추억&nbsp;&nbsp; 8</span>
+          </div>
+          <div class="info-item_2">
+            <span>|</span>
+          </div>
+          <div class="info-item">
+              <span>
+                  그룹 공감&nbsp;&nbsp; 1.5K
+              </span>
+          </div>
+      </div>
+      <a>서로 한 마음으로 응원하고 아끼는 달봉이네 가족입니다.</a>
+      <h5>획득 배지</h5>
+      <div class="badge">
+        <div class="image-container">
+            <img class="img1" src="img/Frame 1.png">
+            <img class="img2" src="img/Frame 2.png">
+            <img class="img3" src="img/Frame 3.png">
+            <img class="img4" src="img/Frame 1.png">
+            <img class="img5" src="img/Frame 2.png">
+            <img class="img6" src="img/Frame 3.png">
+        </div>
+        <button class="slide-button" id="nextBtn">&gt;</button>
+        <button class="like-button" id="likeBtn">
+            <img class="flower" src="img/flower.png" alt="꽃">공감 보내기
+        </button>
+    </div>
+    <div class="flower-container" id="flowerContainer"></div> <!-- 꽃 이미지가 나타날 컨테이너 -->
+    </div>
+  </div>
+  <script>
+    let currentIndex = 0;
+
+    document.getElementById("nextBtn").addEventListener("click", function() {
+        const images = document.querySelectorAll(".image-container img");
+        const totalImages = images.length;
+        const visibleImages = 3; // 화면에 보이는 이미지 수
+
+        currentIndex++;
+        if (currentIndex > totalImages - visibleImages) {
+            currentIndex = 0; // 마지막 이미지를 넘어가면 처음으로 돌아감
+        }
+
+        const offset = currentIndex * 200; // 각 이미지의 너비 + 간격(5px)
+        images.forEach(img => {
+            img.style.transform = `translateX(${-offset}px)`;
+        });
+    });
+  </script>
+  <script>
+    document.getElementById("likeBtn").addEventListener("click", function() {
+    const flowerContainer = document.getElementById("flowerContainer");
+    const containerWidth = 100; // 꽃이 분포할 최대 너비
+    const containerHeight = 50; // 꽃이 분포할 최대 높이
+
+    for (let i = 0; i < 8; i++) { // 꽃 이미지 20개 생성
+        const flower = document.createElement("img");
+        flower.src = "img/flower.png";
+        flower.className = "flower-image";
+        
+        // 꽃 이미지를 버튼 위쪽에 넓게 분포시킴
+        flower.style.left = `${Math.random() * containerWidth - containerWidth / 2}px`; 
+        flower.style.top = `${Math.random() * containerHeight - containerHeight / 2}px`; 
+        
+        // 불투명도 조정
+        if (i % 2 === 0) {
+            flower.style.opacity = 0.2; // 일부 꽃을 불투명하게 설정
+        }
+        
+        flowerContainer.appendChild(flower);
+
+        setTimeout(() => {
+            flower.remove(); // 애니메이션 후 이미지 제거
+        }, 600);
+    }
+    });
+  </script>
+  <hr style="border: 1px solid #DDDDDD; width: 70%;">
+  
+
+
+  <div class="container">
+    <div class="header">
+        <h1>추억 목록</h1>
+        <button onclick="location.href='http://127.0.0.1:5500/public/memory_update_page.html'">추억 올리기</button>
+    </div>
+    <div class="buttons-container">
+        <div class="buttons">
+            <button class="active">공개</button>
+            <button class="inactive" id="inactiveButton">비공개</button>
+        </div>
+        <div class="search-bar">
+            <div class="search-wrapper">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="태그 혹은 제목을 입력해 주세요.">
+            </div>
+            <select>
+                <option value="공감순">공감순</option>
+                <option value="최신순">최신순</option>
+                <option value="게시글 많은순">게시글 많은순</option>
+                <option value="획득 배지순">획득 배지순</option>
+            </select>
+        </div>
+    </div>
+    <div class="content">
+        <img src="img/icon_nogroup.png" alt="Empty Image">
+        <h1>게시된 추억이 없습니다.</h1>
+        <p>첫 번째 추억을 올려보세요!</p>
+    </div>
+    <button class="load-more" onclick="location.href='http://127.0.0.1:5500/public/memory_update_page.html'">추억 올리기</button>
+  </div>
+  <script>
+      const inputs = document.querySelectorAll('.group-name-input, .group-description-input, .file-name-input');
+
+      inputs.forEach(input => {
+          input.addEventListener('click', () => {
+              input.classList.add('clicked');
+          });
+      });
+  </script>
+  <script>
+      document.getElementById('inactiveButton').addEventListener('click', function() {
+      window.location.href = 'http://127.0.0.1:5500/public/No_open_memory_check.html';
+    });
+  </script>
+</body>
+</html>
