@@ -1,4 +1,4 @@
-# 1. 게시글(추억) 등록
+# 1. 게시글 등록
 POST http://localhost:3000/api/groups/2/posts
 Content-Type: application/json
 
@@ -11,5 +11,23 @@ Content-Type: application/json
 	"tags": [ "vacation", "summer" ],
 	"location": "New York",
 	"moment": "2024-02-21",
+	"isPublic": true
+}
+
+###
+
+# 2. 게시글 수정
+PUT http://localhost:3000/api/posts/1
+Content-Type: application/json
+
+{
+	"nickname": "newNickname",
+	"title": "Updated Title",
+	"content": "Updated content",
+	"postPassword": "securepassword123",
+	"imageUrl": "https://example.com/updated_image.jpg",
+	"tags": ["updatedTag1", "updatedTag2"],
+	"location": "Updated Location",
+	"moment": "2024-02-22",
 	"isPublic": true
 }

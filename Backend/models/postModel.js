@@ -1,5 +1,6 @@
 const db = require('../db/db');
 
+// 게시글 등록
 const createPost = async (groupId, postData) => {
     const { nickname, title, content, postPassword, imageUrl, tags, location, moment, isPublic } = postData;
     const [result] = await db.execute(
@@ -9,6 +10,23 @@ const createPost = async (groupId, postData) => {
     return result.insertId;
 };
 
+// 게시글 찾기
+const findPostById = async (postId) => {
+    const [rows] = await db.execute('SELECT * FROM posts WHERE id = ?', [postId]);
+    return rows[0];
+};
+
+// 게시글 수정
+const updatePost = async (postId, postData) => {
+    const { nickname, title, content, imageUrl, tags, location, moment, isPublic } = postData;
+    await db.execute(
+        'UPDATE posts SET nickname = ?, title = ?, content = ?, imageUrl = ?, tags = ?, location = ?, moment = ?, isPublic = ? WHERE id = ?',
+        [nickname, title, content, imageUrl, JSON.stringify(tags), location, moment, isPublic, postId]
+    );
+};
+
 module.exports = {
     createPost,
+    findPostById,
+    updatePost
 };
