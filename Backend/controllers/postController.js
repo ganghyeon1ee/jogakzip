@@ -185,7 +185,26 @@ const likePost = async (req, res) => {
     }
 };
 
+// 게시글 공개 여부 확인
+const checkPostIsPublic = async (req, res) => {
+    try {
+        const { postId } = req.params;
+
+        const post = await postModel.getPostById(postId);
+
+        if (!post) {
+            return res.status(404).json({ message: "존재하지 않습니다" });
+        }
+
+        res.status(200).json({ id: post.id, isPublic: post.isPublic });
+    } catch (error) {
+        console.error('Error checking post visibility:', error);
+        res.status(500).json({ message: "서버 오류" });
+    }
+};
+
 module.exports = {
+    checkPostIsPublic,
     likePost,
     verifyPostPassword,
     getPostDetails,

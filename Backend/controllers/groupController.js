@@ -1,4 +1,5 @@
 const groupModel = require('../models/groupModel');
+const postModel = require('../models/postModel');
 
 const createGroup = async (req, res) => {
     try {
@@ -161,6 +162,10 @@ const getGroupDetails = async (req, res) => {
         const diffTime = Math.abs(today - createdAt);
         const dDay = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
+        // postCount 계산
+        const postCount = await postModel.countPostsByGroupId(groupId);
+
+        // 요구된 응답 포맷대로 응답을 보냄
         res.status(200).json({
             id: group.id,
             name: group.name,
@@ -168,7 +173,7 @@ const getGroupDetails = async (req, res) => {
             isPublic: group.isPublic,
             likeCount: group.likeCount,
             badges: [], // 배지 목록 (추후 추가 예정)
-            postCount: group.postCount,
+            postCount: postCount,
             createdAt: group.createdAt,
             introduction: group.introduction,
             dDay: dDay, // 디데이 추가

@@ -45,7 +45,13 @@ Content-Type: application/json
 ### 
 
 # 4. 게시글 전체 목록 조회
-GET http://localhost:3000/api/groups/2/posts?page=1?sortBy=mostLiked
+GET http://localhost:3000/api/groups/2/posts?page=1&isPublic=1
+Content-Type: application/json
+
+###
+
+# 게시글 목록 조회 - 공감순 정렬
+GET http://localhost:3000/api/groups/2/posts?page=1&pageSize=10&sortBy=latest&isPublic=1
 Content-Type: application/json
 
 ###
@@ -68,3 +74,9 @@ Content-Type: application/json
 
 # 7. 게시글 공감하기
 POST http://localhost:3000/api/posts/3/like
+
+###
+
+# 8. 게시글 공개 여부 확인
+GET http://localhost:3000/api/posts/3/is-public
+Accept: application/json

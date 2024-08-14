@@ -24,4 +24,7 @@ router.post('/posts/:postId/verify-password', postController.verifyPostPassword)
 // 게시글 공감하기
 router.post('/posts/:postId/like', postController.likePost);
 
+// 게시글 공개 여부 확인
+router.get('/posts/:postId/is-public', postController.checkPostIsPublic);
+
 module.exports = router;

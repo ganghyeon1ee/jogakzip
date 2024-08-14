@@ -104,7 +104,23 @@ const incrementLikeCount = async (postId) => {
     await db.query('UPDATE posts SET likeCount = likeCount + 1 WHERE id = ?', [postId]);
 };
 
+const getPostsByGroupId = async (groupId) => {
+    const [rows] = await db.execute(
+        'SELECT id, nickname, title, content, imageUrl, tags, location, moment, isPublic, likeCount, commentCount, createdAt FROM posts WHERE groupId = ?',
+        [groupId]
+    );
+    return rows;
+};
+
+// 그룹 id로 post 찾기
+const countPostsByGroupId = async (groupId) => {
+    const [rows] = await db.execute('SELECT COUNT(*) as count FROM `posts` WHERE groupId = ?', [groupId]);
+    return rows[0].count;
+};
+
 module.exports = {
+    countPostsByGroupId,
+    getPostsByGroupId,
     incrementLikeCount,
     getPostById,
     createPost,
