@@ -165,7 +165,28 @@ const verifyPostPassword = async (req, res) => {
     }
 };
 
+// 게시글 공감하기
+const likePost = async (req, res) => {
+    try {
+        const { postId } = req.params;
+
+        const post = await postModel.getPostById(postId);
+
+        if (!post) {
+            return res.status(404).json({ message: "존재하지 않습니다" });
+        }
+
+        await postModel.incrementLikeCount(postId);
+
+        res.status(200).json({ message: "게시글 공감하기 성공" });
+    } catch (error) {
+        console.error('Error liking post:', error);
+        res.status(500).json({ message: "서버 오류" });
+    }
+};
+
 module.exports = {
+    likePost,
     verifyPostPassword,
     getPostDetails,
     createPost,

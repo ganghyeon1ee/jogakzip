@@ -99,8 +99,13 @@ const getPostById = async (postId) => {
     return rows[0];
 };
 
+// 게시글 공감하기
+const incrementLikeCount = async (postId) => {
+    await db.query('UPDATE posts SET likeCount = likeCount + 1 WHERE id = ?', [postId]);
+};
 
 module.exports = {
+    incrementLikeCount,
     getPostById,
     createPost,
     findPostById,

@@ -21,4 +21,7 @@ router.get('/posts/:postId', postController.getPostDetails);
 // 게시글 조회 권한 확인
 router.post('/posts/:postId/verify-password', postController.verifyPostPassword);
 
+// 게시글 공감하기
+router.post('/posts/:postId/like', postController.likePost);
+
 module.exports = router;
