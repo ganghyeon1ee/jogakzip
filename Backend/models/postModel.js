@@ -30,10 +30,71 @@ const deletePost = async (postId) => {
     await db.execute('DELETE FROM posts WHERE id = ?', [postId]);
 };
 
+const getPosts = async (groupId, { page, pageSize, sortBy, keyword, isPublic }) => {
+    const limit = pageSize;
+    const offset = (page - 1) * limit;
+
+    let query = `
+        SELECT id, nickname, title, imageUrl, tags, location, moment, isPublic, likeCount, commentCount, createdAt
+        FROM posts
+        WHERE groupId = ?`;
+    
+    const queryParams = [groupId];
+
+    if (isPublic !== undefined) {
+        query += ` AND isPublic = ?`;
+        queryParams.push(isPublic);
+    }
+
+    if (keyword) {
+        const searchPattern = `%${keyword}%`;
+        query += ` AND (title LIKE ? OR JSON_CONTAINS(tags, ?, "$"))`;
+        queryParams.push(searchPattern, `"${keyword}"`);
+    }
+
+    switch (sortBy) {
+        case 'mostCommented':
+            query += ' ORDER BY commentCount DESC';
+            break;
+        case 'mostLiked':
+            query += ' ORDER BY likeCount DESC';
+            break;
+        case 'latest':
+        default:
+            query += ' ORDER BY createdAt DESC';
+            break;
+    }
+
+    query += ` LIMIT ? OFFSET ?`;
+    queryParams.push(limit, offset);
+
+    const [posts] = await db.query(query, queryParams);
+
+    const [totalCountResult] = await db.query(`
+        SELECT COUNT(*) as count
+        FROM posts
+        WHERE groupId = ?
+        ${isPublic !== undefined ? ' AND isPublic = ?' : ''}
+        ${keyword ? ' AND (title LIKE ? OR JSON_CONTAINS(tags, ?, "$"))' : ''}`,
+        isPublic !== undefined ? [groupId, isPublic, ...queryParams.slice(2, queryParams.length - 2)] : [groupId, ...queryParams.slice(1, queryParams.length - 2)]
+    );
+    
+    const totalItemCount = totalCountResult[0].count;
+    const totalPages = Math.ceil(totalItemCount / limit);
+
+    return {
+        currentPage: page,
+        totalPages: totalPages,
+        totalItemCount: totalItemCount,
+        data: posts, // posts 데이터 추가
+    };
+};
+
 
 module.exports = {
     createPost,
     findPostById,
     updatePost,
     deletePost,
+    getPosts,
 };

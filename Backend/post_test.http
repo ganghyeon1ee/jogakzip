@@ -1,5 +1,5 @@
 # 1. 게시글 등록
-POST http://localhost:3000/api/groups/2/posts
+POST http://localhost:3000/api/groups/3/posts
 Content-Type: application/json
 
 {
@@ -37,5 +37,10 @@ DELETE http://localhost:3000/api/posts/2
 Content-Type: application/json
 
 {
-  "postPassword": "securepassword12"
+  "postPassword": "securepassword123"
 }
+
+### 
+# 게시글 전체 목록 조회
+GET http://localhost:3000/api/groups/3/posts?page=1
+Content-Type: application/json

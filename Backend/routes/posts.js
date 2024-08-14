@@ -12,4 +12,7 @@ router.put('/posts/:postId', postController.updatePost);
 // 게시글 삭제
 router.delete('/posts/:postId', postController.deletePost);
 
+// 게시글 목록 조회
+router.get('/groups/:groupId/posts', postController.getPosts);
+
 module.exports = router;

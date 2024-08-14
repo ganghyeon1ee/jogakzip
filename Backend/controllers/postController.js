@@ -99,9 +99,33 @@ const deletePost = async (req, res) => {
     }
 };
 
+// 게시글 목록 조회
+const getPosts = async (req, res) => {
+    try {
+        const { groupId } = req.params;
+        const { page = 1, pageSize = 10, sortBy = 'latest', keyword = '', isPublic = 1 } = req.query;
+
+        // 실제 데이터 가져오기
+        const postsData = await postModel.getPosts(groupId, {
+            page: parseInt(page, 10),
+            pageSize: parseInt(pageSize, 10),
+            sortBy,
+            keyword,
+            isPublic: isPublic == 1 // boolean 변환
+        });
+
+        // 응답 생성
+        res.status(200).json(postsData);
+    } catch (error) {
+        console.error('Error fetching posts:', error);
+        res.status(500).json({ message: "서버 오류" });
+    }
+};
+
 
 module.exports = {
     createPost,
     updatePost,
     deletePost,
+    getPosts,
 };
