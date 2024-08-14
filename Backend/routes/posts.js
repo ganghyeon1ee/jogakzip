@@ -15,4 +15,7 @@ router.delete('/posts/:postId', postController.deletePost);
 // 게시글 목록 조회
 router.get('/groups/:groupId/posts', postController.getPosts);
 
+// 게시글 상세 정보 조회
+router.get('/posts/:postId', postController.getPostDetails);
+
 module.exports = router;

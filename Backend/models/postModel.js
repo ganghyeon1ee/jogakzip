@@ -90,8 +90,18 @@ const getPosts = async (groupId, { page, pageSize, sortBy, keyword, isPublic }) 
     };
 };
 
+// 게시글 상세 정보 조회
+const getPostById = async (postId) => {
+    const [rows] = await db.query(
+        'SELECT id, groupId, nickname, title, content, imageUrl, tags, location, moment, isPublic, likeCount, commentCount, createdAt FROM posts WHERE id = ?',
+        [postId]
+    );
+    return rows[0];
+};
+
 
 module.exports = {
+    getPostById,
     createPost,
     findPostById,
     updatePost,

@@ -122,8 +122,27 @@ const getPosts = async (req, res) => {
     }
 };
 
+// 게시글 상세 정보 조회
+const getPostDetails = async (req, res) => {
+    try {
+        const { postId } = req.params;
+        const post = await postModel.getPostById(postId);
+
+        if (!post) {
+            return res.status(404).json({ message: "존재하지 않습니다" });
+        }
+
+        res.status(200).json(post);
+    } catch (error) {
+        console.error('Error fetching post details:', error);
+        res.status(500).json({ message: "서버 오류" });
+    }
+};
+
+
 
 module.exports = {
+    getPostDetails,
     createPost,
     updatePost,
     deletePost,
