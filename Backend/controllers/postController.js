@@ -139,9 +139,34 @@ const getPostDetails = async (req, res) => {
     }
 };
 
+// 게시글 조회 권한 확인
+const verifyPostPassword = async (req, res) => {
+    try {
+        const { postId } = req.params;
+        const { password } = req.body;
 
+        const post = await postModel.findPostById(postId);
+
+        if (!post) {
+            return res.status(404).json({ message: '존재하지 않습니다' });
+        }
+
+        console.log('입력된 비밀번호:', password);
+        console.log('저장된 비밀번호:', post.postPassword);
+
+        if (post.postPassword === password) {
+            return res.status(200).json({ message: '비밀번호가 확인되었습니다' });
+        } else {
+            return res.status(401).json({ message: '비밀번호가 틀렸습니다' });
+        }
+    } catch (error) {
+        console.error('Error verifying post password:', error);
+        return res.status(500).json({ message: '서버 오류' });
+    }
+};
 
 module.exports = {
+    verifyPostPassword,
     getPostDetails,
     createPost,
     updatePost,

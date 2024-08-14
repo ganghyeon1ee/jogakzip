@@ -18,4 +18,7 @@ router.get('/groups/:groupId/posts', postController.getPosts);
 // 게시글 상세 정보 조회
 router.get('/posts/:postId', postController.getPostDetails);
 
+// 게시글 조회 권한 확인
+router.post('/posts/:postId/verify-password', postController.verifyPostPassword);
+
 module.exports = router;
