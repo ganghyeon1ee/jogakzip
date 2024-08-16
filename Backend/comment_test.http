@@ -1,0 +1,32 @@
+### 댓글 등록
+POST http://localhost:3000/api/posts/1/comments
+Content-Type: application/json
+
+{
+	"nickname": "JohnDoe",
+	"content": "This is my first comment!",
+	"password": "securepassword123"
+}
+
+### 댓글 수정
+PUT http://localhost:3000/api/comments/16
+Content-Type: application/json
+
+{
+	"nickname": "JohnDoe",
+	"content": "This is my updated comment!",
+	"password": "securepassword123"
+}
+
+### 댓글 삭제
+DELETE http://localhost:3000/api/comments/16
+Content-Type: application/json
+
+{
+	"password": "securepassword123"
+}
+
+### 댓글 목록 조회
+GET http://localhost:3000/api/posts/1/comments?page=2&pageSize=10
+
+
