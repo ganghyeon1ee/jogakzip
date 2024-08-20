@@ -35,7 +35,7 @@ POST http://localhost:3000/api/groups/3/like
 Content-Type: application/json
 
 ### 6. 그룹 삭제
-DELETE http://localhost:3000/api/groups/1
+DELETE http://localhost:3000/api/groups/12
 Content-Type: application/json
 
 {
