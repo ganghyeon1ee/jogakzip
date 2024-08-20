@@ -1,7 +1,12 @@
 const commentModel = require('../models/commentModel');
+<<<<<<< HEAD
 const db = require('../db/db'); 
 
 // 댓글 등록
+=======
+
+// 댓글 생성
+>>>>>>> 01e288fe870bf45d6036d404a8fe3bc828f671f1
 const createComment = async (req, res) => {
     try {
         const { postId } = req.params;
@@ -14,12 +19,19 @@ const createComment = async (req, res) => {
         const commentId = await commentModel.createComment(postId, req.body);
         const comment = await commentModel.findCommentById(commentId);
 
+<<<<<<< HEAD
         res.status(200).json({
             id: comment.id,
             nickname: comment.nickname,
             content: comment.content,
             createdAt: comment.createdAt
         });
+=======
+        res.status(200).json({commentid: comment.id,
+            nickname: comment.nickname,
+            content: comment.content,
+            createdAt: comment.createdAt});
+>>>>>>> 01e288fe870bf45d6036d404a8fe3bc828f671f1
     } catch (error) {
         console.error('Error creating comment:', error);
         res.status(500).json({ message: "서버 오류" });
@@ -30,7 +42,15 @@ const createComment = async (req, res) => {
 const updateComment = async (req, res) => {
     try {
         const { commentId } = req.params;
+<<<<<<< HEAD
         const { nickname, content, password } = req.body;
+=======
+        const { password } = req.body;
+
+        if (!password) {
+            return res.status(400).json({ message: "잘못된 요청입니다" });
+        }
+>>>>>>> 01e288fe870bf45d6036d404a8fe3bc828f671f1
 
         const comment = await commentModel.findCommentById(commentId);
         if (!comment) {
@@ -44,12 +64,19 @@ const updateComment = async (req, res) => {
         await commentModel.updateComment(commentId, req.body);
         const updatedComment = await commentModel.findCommentById(commentId);
 
+<<<<<<< HEAD
         res.status(200).json({
             id: updatedComment.id,
             nickname: updatedComment.nickname,
             content: updatedComment.content,
             createdAt: updatedComment.createdAt
         });
+=======
+        res.status(200).json({id: updatedComment.id,
+            nickname: updatedComment.nickname,
+            content: updatedComment.content,
+            createdAt: updatedComment.createdAt});
+>>>>>>> 01e288fe870bf45d6036d404a8fe3bc828f671f1
     } catch (error) {
         console.error('Error updating comment:', error);
         res.status(500).json({ message: "서버 오류" });
@@ -62,6 +89,13 @@ const deleteComment = async (req, res) => {
         const { commentId } = req.params;
         const { password } = req.body;
 
+<<<<<<< HEAD
+=======
+        if (!password) {
+            return res.status(400).json({ message: "잘못된 요청입니다" });
+        }
+
+>>>>>>> 01e288fe870bf45d6036d404a8fe3bc828f671f1
         const comment = await commentModel.findCommentById(commentId);
         if (!comment) {
             return res.status(404).json({ message: "존재하지 않습니다" });
@@ -79,6 +113,7 @@ const deleteComment = async (req, res) => {
     }
 };
 
+<<<<<<< HEAD
 // 특정 게시글의 댓글 목록 조회
 const getCommentsByPostId = async (req, res) => {
     try {
@@ -114,6 +149,17 @@ const getCommentsByPostId = async (req, res) => {
             totalItemCount: commentsData.totalItemCount,
             data: commentsData.data
         });
+=======
+// 게시글 id로 댓글 불러오기
+const getCommentsByPostId = async (req, res) => {
+    try {
+        const { postId } = req.params;
+        const { page = 1, pageSize = 10 } = req.query;
+
+        const comments = await commentModel.getCommentsByPostId(postId, parseInt(page, 10), parseInt(pageSize, 10));
+
+        res.status(200).json(comments);
+>>>>>>> 01e288fe870bf45d6036d404a8fe3bc828f671f1
     } catch (error) {
         console.error('Error fetching comments:', error);
         res.status(500).json({ message: "서버 오류" });

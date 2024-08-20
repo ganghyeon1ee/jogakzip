@@ -1,0 +1,308 @@
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    text-align: center;
+    font-family: 'Spoqa Han Sans Neo', sans-serif;
+    color: #282828;
+}
+
+.header2 {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0;
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.center-image2 {
+    max-width: 100px;
+    height: auto;
+    border-bottom: none;
+}
+
+.center-text {
+    margin-top: 50px;
+    font-size: 24px;
+}
+
+.input-wrapper-container {
+    display: flex; /* Flexbox를 사용하여 자식 요소를 가로로 배치 */
+    flex-direction: row; /* 가로 방향으로 배치 */
+    justify-content: space-between; /* 자식 요소 사이에 공간 배분 */
+    align-items: flex-start; /* 자식 요소를 상단에 정렬 */
+    width: 100%;
+    max-width: 900px; /* 전체 컨테이너의 최대 너비 */
+    margin-top: 50px;
+}
+
+.input-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 300px; /* 각 컬럼의 최대 너비 */
+}
+
+.divider {
+    width: 1px; /* 실선의 너비 */
+    background-color: #DDDDDD; /* 실선 색상 */
+    margin: 0 20px; /* 실선과 양쪽 컬럼 사이 간격 */
+    height: 500px; /* 실선의 높이를 고정값으로 설정 */
+}
+
+
+.group-name-label {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 10px;
+    margin-top: 20px;
+}
+
+.group-name-input, .group-description-input, .file-name-input {
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #DDDDDD;
+    border-radius: 5px;
+    width: 100%;
+    max-width: 100%;
+    color: #B8B8B8;
+    background-color: #FFFFFF;
+}
+
+.group-name-input::placeholder, .group-description-input::placeholder, .file-name-input::placeholder {
+    color: #B8B8B8;
+}
+
+.group-name-input:focus, .group-description-input:focus, .file-name-input:focus {
+    border-color: #282828;
+    outline: none;
+}
+
+.group-name-input:focus::placeholder, .group-description-input:focus::placeholder, .file-name-input:focus::placeholder {
+    color: transparent;
+}
+
+.group-name-input.clicked, .group-description-input.clicked, .file-name-input.clicked {
+    color: #282828; /* 텍스트 색상 변경 */
+    border: 1px solid #282828; /* 입력창의 테두리를 설정합니다. */
+}
+
+.file-upload-wrapper {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.file-name-input {
+    flex: 1;
+    margin-right: 20px;
+}
+
+.file-upload-button {
+    background-color: white;
+    border: 1px solid #282828;
+    font-size: 14px;
+    color: #282828;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.file-upload-button:hover {
+    background-color: #B8B8B8;
+    border: none;
+    color: white;
+}
+
+.file-input {
+    display: none;
+}
+.date-picker-input {
+    font-size: 12px;
+    color: #B8B8B8;
+    border: 1px solid #ccc;
+    padding: 8px;
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box; /* 패딩과 테두리를 포함하여 요소의 전체 너비와 높이를 설정 */
+}
+.date-picker-input.clicked{
+    color: #282828; /* 텍스트 색상 변경 */
+    border: 1px solid #282828; /* 입력창의 테두리를 설정합니다. */
+}
+
+.date-picker-input::-webkit-calendar-picker-indicator {
+    color: #B8B8B8; /* 달력 아이콘 색상 (브라우저에 따라 다를 수 있음) */
+}
+
+.visibility-wrapper {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.visibility-text {
+    font-size: 14px;
+    margin-right: 20px;
+}
+
+.visibility-icon {
+    width: 40px;
+    height: auto;
+}
+
+.submit-button2 {
+    background-color: #282828;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 30px;
+    padding-left: 140px;
+    padding-right: 140px;
+    margin-left: 20px;
+    text-align: center;
+    display: inline-block;
+    margin-top: 50px;
+    margin-left: 10px;
+}
+
+.submit-button2:hover {
+    background-color: #B8B8B8;
+    white-space: nowrap;
+    border: none;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 800px;
+    min-height: 100vh;
+    justify-content: flex
+}
+
+.hash-tag {
+    display: flex;
+    flex-wrap: wrap; /* 자식 요소가 넘칠 때 자동으로 줄 바꿈 */
+    text-align: left; /* 텍스트 왼쪽 정렬 */
+    gap: 5px; /* 요소 간의 간격 조정 (필요에 따라 조정) */
+}
+
+.hash-tag span {
+    margin: 0; /* 기본 margin 제거 */
+    font-size: 12px;
+    color: #B8B8B8;
+}
+
+.hash-tag p{
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+/* 팝업 배경 덮개 스타일 */
+.popup-background {
+    display: none; /* 기본적으로 숨김 */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* 불투명한 검은색 배경 */
+    z-index: 1000; /* 모달보다 앞에 표시되도록 설정 */
+    justify-content: center;
+    align-items: center;
+}
+
+/* 팝업 내용 스타일 */
+.popup-content2 {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    text-align: center;
+}
+
+.top-content{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+.popup-content2 .top-content .center-text{
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-left: 140px;
+}
+.input-wrapper2 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 300px; /* 각 컬럼의 최대 너비 */
+    margin-left: 40px;
+}
+
+.close-icon {
+    cursor: pointer;
+    float: right;
+    width: 20px;
+    height: 20px;
+    margin-bottom: 0px;
+    margin-left: 100px;
+}
+
+.popup-close {
+    background: #282828;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 40px;
+    width: 320px;
+    margin-bottom: 10px;
+}
+
+.group-name-label {
+    display: block;
+    margin-bottom: 8px;
+}
+
+.group-name-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.submit-button {
+    font-size: 16px;
+    color: #fff;
+    background-color: #4CAF50;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+}
