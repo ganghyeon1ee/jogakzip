@@ -30,6 +30,7 @@ const deletePost = async (postId) => {
     await db.execute('DELETE FROM posts WHERE id = ?', [postId]);
 };
 
+// 게시글 목록 조회
 const getPosts = async (groupId, { page, pageSize, sortBy, keyword, isPublic }) => {
     const limit = pageSize;
     const offset = (page - 1) * limit;
