@@ -1,4 +1,5 @@
 const db = require('../db/db');
+const groupModel = require('./groupModel');
 
 // 그룹 생성하기
 const createGroup = async (groupData) => {
@@ -99,7 +100,54 @@ const countPostsByGroupId = async (groupId) => {
     return rows[0].count;
 };
 
+const getGroupBadges = async (groupId) => {
+    const [rows] = await db.query(
+        `SELECT b.id, b.name, b.description FROM badges b
+        INNER JOIN group_badges gb ON b.id = gb.badgeId
+        WHERE gb.groupId = ?`,
+        [groupId]
+    );
+    return rows;
+};
+
+const incrementPostCount = async (groupId) => {
+    await db.execute('UPDATE `groups` SET postCount = postCount + 1 WHERE id = ?', [groupId]);
+};
+
+// 특정 그룹이 7일 연속 게시글을 등록했는지 확인
+const has7DayStreak = async (groupId) => {
+    const query = `
+        SELECT COUNT(DISTINCT DATE(createdAt)) as streak
+        FROM posts
+        WHERE groupId = ? AND createdAt >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+    `;
+    const [rows] = await db.execute(query, [groupId]);
+    return rows[0].streak === 7;
+};
+
+// 특정 그룹의 게시글 중 10,000개 이상의 공감을 받은 게시글이 있는지 확인
+const hasMemoryWith10kLikes = async (groupId) => {
+    const query = `
+        SELECT COUNT(*) as count
+        FROM posts
+        WHERE groupId = ? AND likeCount >= 10000
+    `;
+    const [rows] = await db.execute(query, [groupId]);
+    return rows[0].count > 0;
+};
+
+// 그룹 목록 전체 조회
+const getAllGroups = async () => {
+    const [rows] = await db.query('SELECT id FROM `groups`');
+    return rows;
+};
+
 module.exports = {
+    getAllGroups,
+    has7DayStreak,
+    hasMemoryWith10kLikes,
+    incrementPostCount,
+    getGroupBadges,
     countPostsByGroupId,
     getPostsByGroupId,
     incrementLikeCount,

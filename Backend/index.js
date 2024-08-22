@@ -2,6 +2,8 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 const path = require('path');
+const cron = require('node-cron');
+const { checkBadgesForAllGroups } = require('./services/badgeService');
 
 const commentRoutes = require('./routes/comments');
 const groupRoutes = require('./routes/groups');
@@ -17,6 +19,17 @@ app.use('/api', groupRoutes);
 app.use('/api', postRoutes);
 app.use('/api', commentRoutes);
 app.use('/api', imageRoutes);
+
+// 매일 자정에 모든 그룹에 대해 배지 체크 작업 실행
+cron.schedule('0 0 * * *', async () => {
+    console.log('배지 확인 및 부여 작업 시작');
+    try {
+        await checkBadgesForAllGroups();
+        console.log('배지 확인 및 부여 작업 완료');
+    } catch (error) {
+        console.error('배지 작업 중 에러 발생:', error);
+    }
+});
 
 const PORT = process.env.PORT || 3001;
 

@@ -1,4 +1,5 @@
 const db = require('../db/db');
+const groupModel = require('./groupModel');
 
 // 게시글 등록
 const createPost = async (groupId, postData) => {
@@ -7,6 +8,9 @@ const createPost = async (groupId, postData) => {
         'INSERT INTO posts (groupId, nickname, title, content, postPassword, imageUrl, tags, location, moment, isPublic) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
         [groupId, nickname, title, content, postPassword, imageUrl, JSON.stringify(tags), location, moment, isPublic]
     );
+    
+    // 그룹의 postCount 증가
+    await groupModel.incrementPostCount(groupId);
     return result.insertId;
 };
 
@@ -27,9 +31,13 @@ const updatePost = async (postId, postData) => {
 
 // 게시글 삭제
 const deletePost = async (postId) => {
-    await db.execute('DELETE FROM posts WHERE id = ?', [postId]);
-};
+    const post = await findPostById(postId);
+    if (!post) return;
 
+    await db.execute('DELETE FROM posts WHERE id = ?', [postId]);
+    // 그룹의 postCount 감소
+    await groupModel.decrementPostCount(post.groupId);
+};
 // 게시글 목록 조회
 const getPosts = async (groupId, { page, pageSize, sortBy, keyword, isPublic }) => {
     const limit = pageSize;

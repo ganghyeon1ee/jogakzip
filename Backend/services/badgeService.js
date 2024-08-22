@@ -36,10 +36,31 @@ const checkAndAwardBadges = async (groupId) => {
         badgesToAward.push('추억 공감 1만 개 이상 받기');
     }
 
+    // 현재 그룹이 이미 가지고 있는 배지를 조회합니다.
+    const existingBadges = await groupModel.getGroupBadges(groupId);
+    const existingBadgeNames = existingBadges.map(badge => badge.name);
+
     for (const badgeName of badgesToAward) {
-        const badge = await badgeModel.findBadgeByName(badgeName);
-        await badgeModel.awardBadgeToGroup(groupId, badge.id);
+        // 이미 그룹이 보유하고 있는 배지는 건너뜁니다.
+        if (!existingBadgeNames.includes(badgeName)) {
+            const badge = await badgeModel.findBadgeByName(badgeName);
+            await badgeModel.awardBadgeToGroup(groupId, badge.id);
+        }
     }
 };
 
-module.exports = { checkAndAwardBadges };
+const checkBadgesForAllGroups = async () => {
+    try {
+        const groups = await groupModel.getAllGroups();
+        
+        for (const group of groups) {
+            await checkAndAwardBadges(group.id);
+        }
+
+        console.log('모든 그룹에 대해 배지 확인 및 부여 작업을 완료했습니다.');
+    } catch (error) {
+        console.error('배지 확인 작업 중 오류 발생:', error);
+    }
+};
+
+module.exports = { checkAndAwardBadges, checkBadgesForAllGroups };

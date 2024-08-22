@@ -156,6 +156,9 @@ const getGroupDetails = async (req, res) => {
             return res.status(404).json({ message: '존재하지 않습니다' });
         }
 
+        // 그룹의 배지 목록 가져오기
+        const badges = await groupModel.getGroupBadges(groupId);
+
         // 생성 후 지난 일수 (디데이) 계산
         const createdAt = new Date(group.createdAt);
         const today = new Date();
@@ -165,18 +168,17 @@ const getGroupDetails = async (req, res) => {
         // postCount 계산
         const postCount = await postModel.countPostsByGroupId(groupId);
 
-        // 요구된 응답 포맷대로 응답을 보냄
         res.status(200).json({
             id: group.id,
             name: group.name,
             imageUrl: group.imageUrl,
             isPublic: group.isPublic,
             likeCount: group.likeCount,
-            badges: [], // 배지 목록 (추후 추가 예정)
+            badges: badges, // 배지 목록 포함
             postCount: postCount,
             createdAt: group.createdAt,
             introduction: group.introduction,
-            dDay: dDay, // 디데이 추가
+            dDay: dDay,
         });
     } catch (error) {
         console.error('Error fetching group details:', error);
