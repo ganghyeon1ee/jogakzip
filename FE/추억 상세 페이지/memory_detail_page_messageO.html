@@ -322,6 +322,24 @@
         displayComments(currentPage);
     </script>
 
+    <!-- 팝업을 열고 닫는 스크립트 -->
+    <script>
+        function showPopup() {
+            document.getElementById('popup-background').style.display = 'flex';
+        }
+
+        function hidePopup() {
+            document.getElementById('popup-background').style.display = 'none';
+        }
+        function showDeletePopup() {
+            document.getElementById('delete-popup-background').style.display = 'flex';
+        }
+
+        function hideDeletePopup() {
+            document.getElementById('delete-popup-background').style.display = 'none';
+        }
+    </script>
+    
     <script>
         // JavaScript for toggling visibility
         const visibilityText = document.getElementById('visibility-text-2'); // 올바른 ID 사용
