@@ -35,7 +35,7 @@ Content-Type: application/json
 ###
 
 # 3. 게시글 삭제
-DELETE http://localhost:3000/api/posts/33
+DELETE http://localhost:3000/api/posts/47
 Content-Type: application/json
 
 {
