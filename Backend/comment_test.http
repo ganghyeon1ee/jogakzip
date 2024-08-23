@@ -1,5 +1,5 @@
 ### 댓글 등록
-POST http://localhost:3000/api/posts/1/comments
+POST http://localhost:3000/api/posts/25/comments
 Content-Type: application/json
 
 {
@@ -19,7 +19,7 @@ Content-Type: application/json
 }
 
 ### 댓글 삭제
-DELETE http://localhost:3000/api/comments/16
+DELETE http://localhost:3000/api/comments/8
 Content-Type: application/json
 
 {

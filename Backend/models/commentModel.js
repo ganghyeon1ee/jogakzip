@@ -1,4 +1,5 @@
 const db = require('../db/db');
+const postModel = require('../models/postModel');
 
 // 댓글 생성
 const createComment = async (postId, commentData) => {

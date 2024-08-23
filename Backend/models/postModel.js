@@ -3,15 +3,19 @@ const groupModel = require('./groupModel');
 
 // 게시글 등록
 const createPost = async (groupId, postData) => {
-    const { nickname, title, content, postPassword, imageUrl, tags, location, moment, isPublic } = postData;
-    const [result] = await db.execute(
-        'INSERT INTO posts (groupId, nickname, title, content, postPassword, imageUrl, tags, location, moment, isPublic) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-        [groupId, nickname, title, content, postPassword, imageUrl, JSON.stringify(tags), location, moment, isPublic]
-    );
-    
-    // 그룹의 postCount 증가
-    await groupModel.incrementPostCount(groupId);
-    return result.insertId;
+    try {
+        const { nickname, title, content, postPassword, imageUrl, tags, location, moment, isPublic } = postData;
+        const [result] = await db.execute(
+            'INSERT INTO posts (groupId, nickname, title, content, postPassword, imageUrl, tags, location, moment, isPublic) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+            [groupId, nickname, title, content, postPassword, imageUrl, JSON.stringify(tags), location, moment, isPublic]
+        );
+
+        await groupModel.incrementPostCount(groupId);
+        return result.insertId;
+    } catch (error) {
+        console.error('Error creating post:', error);
+        throw new Error('게시글 생성 중 오류가 발생했습니다.');
+    }
 };
 
 // 게시글 찾기
@@ -31,13 +35,23 @@ const updatePost = async (postId, postData) => {
 
 // 게시글 삭제
 const deletePost = async (postId) => {
-    const post = await findPostById(postId);
-    if (!post) return;
+    try {
+        const post = await findPostById(postId);
+        if (!post) {
+            throw new Error('게시글이 존재하지 않습니다.');
+        }
 
-    await db.execute('DELETE FROM posts WHERE id = ?', [postId]);
-    // 그룹의 postCount 감소
-    await groupModel.decrementPostCount(post.groupId);
+        // 게시글 삭제
+        await db.execute('DELETE FROM posts WHERE id = ?', [postId]);
+
+        // 그룹의 postCount 감소
+        await groupModel.decrementPostCount(post.groupId);
+    } catch (error) {
+        console.error('Error deleting post:', error);
+        throw new Error('게시글 삭제 중 오류가 발생했습니다.');
+    }
 };
+
 // 게시글 목록 조회
 const getPosts = async (groupId, { page, pageSize, sortBy, keyword, isPublic }) => {
     const limit = pageSize;
@@ -127,7 +141,19 @@ const countPostsByGroupId = async (groupId) => {
     return rows[0].count;
 };
 
+// 게시글 댓글 수 증가
+const incrementCommentCount = async (postId) => {
+    await db.query('UPDATE posts SET commentCount = commentCount + 1 WHERE id = ?', [postId]);
+};
+
+// 게시글 댓글 수 감소
+const decrementCommentCount = async (postId) => {
+    await db.query('UPDATE posts SET commentCount = commentCount - 1 WHERE id = ?', [postId]);
+};
+
 module.exports = {
+    incrementCommentCount,
+    decrementCommentCount,
     countPostsByGroupId,
     getPostsByGroupId,
     incrementLikeCount,

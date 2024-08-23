@@ -115,6 +115,10 @@ const incrementPostCount = async (groupId) => {
     await db.execute('UPDATE `groups` SET postCount = postCount + 1 WHERE id = ?', [groupId]);
 };
 
+const decrementPostCount = async (groupId) => {
+    await db.execute('UPDATE `groups` SET postCount = postCount - 1 WHERE id = ?', [groupId]);
+};
+
 // 특정 그룹이 7일 연속 게시글을 등록했는지 확인
 const has7DayStreak = async (groupId) => {
     const query = `
@@ -147,6 +151,7 @@ module.exports = {
     getAllGroups,
     has7DayStreak,
     hasMemoryWith10kLikes,
+    decrementPostCount,
     incrementPostCount,
     getGroupBadges,
     countPostsByGroupId,
