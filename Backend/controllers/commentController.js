@@ -1,6 +1,5 @@
 const commentModel = require('../models/commentModel');
 const postModel = require('../models/postModel');
-const db = require('../db/db');
 
 // 댓글 등록
 const createComment = async (req, res) => {
@@ -14,7 +13,6 @@ const createComment = async (req, res) => {
 
         const commentId = await commentModel.createComment(postId, req.body);
 
-        // 댓글 등록 성공 시 commentCount 증가
         await postModel.incrementCommentCount(postId);
 
         const comment = await commentModel.findCommentById(commentId);
@@ -35,9 +33,9 @@ const createComment = async (req, res) => {
 const updateComment = async (req, res) => {
     try {
         const { commentId } = req.params;
-        const { password } = req.body;
+        const { password, nickname, content } = req.body;
 
-        if (!password) {
+        if (!password || !nickname || !content) {
             return res.status(400).json({ message: "잘못된 요청입니다" });
         }
 
@@ -84,10 +82,7 @@ const deleteComment = async (req, res) => {
             return res.status(403).json({ message: "비밀번호가 틀렸습니다" });
         }
 
-        // 댓글 삭제
         await commentModel.deleteComment(commentId);
-
-        // 댓글 삭제 성공 시 commentCount 감소
         await postModel.decrementCommentCount(comment.postId);
 
         res.status(200).json({ message: "댓글 삭제 성공" });
@@ -121,12 +116,16 @@ const getCommentsByPostId = async (req, res) => {
             });
         }
 
-        // 응답 생성
         res.status(200).json({
             currentPage: commentsData.currentPage,
             totalPages: commentsData.totalPages,
             totalItemCount: commentsData.totalItemCount,
-            data: commentsData.data
+            data: commentsData.data.map(comment => ({
+                id: comment.id,
+                nickname: comment.nickname,
+                content: comment.content,
+                createdAt: comment.createdAt
+            }))
         });
     } catch (error) {
         console.error('Error fetching comments:', error);

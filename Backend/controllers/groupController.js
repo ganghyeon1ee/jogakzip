@@ -31,6 +31,10 @@ const updateGroup = async (req, res) => {
         const { groupId } = req.params;
         const { name, password, imageUrl, isPublic, introduction } = req.body;
 
+        if (!name || !password) {
+            return res.status(400).json({ message: "잘못된 요청입니다" });
+        }
+
         const group = await groupModel.findGroupById(groupId);
         if (!group) {
             return res.status(404).json({ message: "존재하지 않습니다" });
@@ -64,6 +68,10 @@ const deleteGroup = async (req, res) => {
     try {
         const { groupId } = req.params;
         const { password } = req.body;
+
+        if (!password) {
+            return res.status(400).json({ message: "잘못된 요청입니다" });
+        }
 
         const group = await groupModel.findGroupById(groupId);
         if (!group) {
@@ -161,6 +169,10 @@ const verifyPassword = async (req, res) => {
     try {
         const { groupId } = req.params;
         const { password } = req.body;
+
+        if (!password) {
+            return res.status(400).json({ message: "잘못된 요청입니다" });
+        }
 
         const group = await groupModel.findGroupById(groupId);
         if (!group) {

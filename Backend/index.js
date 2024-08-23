@@ -20,7 +20,6 @@ app.use('/api', postRoutes);
 app.use('/api', commentRoutes);
 app.use('/api', imageRoutes);
 
-// 매일 자정에 모든 그룹에 대해 배지 체크 작업 실행
 cron.schedule('0 0 * * *', async () => {
     console.log('배지 확인 및 부여 작업 시작');
     try {

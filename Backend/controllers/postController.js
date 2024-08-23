@@ -101,12 +101,25 @@ const getPosts = async (req, res) => {
         const { groupId } = req.params;
         const { page = 1, pageSize = 10, sortBy = 'latest', keyword = '', isPublic = 1 } = req.query;
 
+        if (isNaN(page) || isNaN(pageSize) || page <= 0 || pageSize <= 0) {
+            return res.status(400).json({ message: "잘못된 요청입니다" });
+        }
+
+        const validSortByOptions = ['latest', 'mostLiked', 'mostCommented'];
+        if (!validSortByOptions.includes(sortBy)) {
+            return res.status(400).json({ message: "잘못된 요청입니다" });
+        }
+
+        if (![0, 1].includes(parseInt(isPublic, 10))) {
+            return res.status(400).json({ message: "잘못된 요청입니다" });
+        }
+
         const postsData = await postModel.getPosts(groupId, {
             page: parseInt(page, 10),
             pageSize: parseInt(pageSize, 10),
             sortBy,
             keyword,
-            isPublic: isPublic == 1 // boolean 변환
+            isPublic: isPublic == 1 
         });
 
         res.status(200).json(postsData);
@@ -116,10 +129,16 @@ const getPosts = async (req, res) => {
     }
 };
 
+
 // 게시글 상세 정보 조회
 const getPostDetails = async (req, res) => {
     try {
         const { postId } = req.params;
+
+        if (isNaN(postId) || parseInt(postId, 10) <= 0) {
+            return res.status(400).json({ message: "잘못된 요청입니다" });
+        }
+
         const post = await postModel.getPostById(postId);
 
         if (!post) {
@@ -132,6 +151,7 @@ const getPostDetails = async (req, res) => {
         res.status(500).json({ message: "서버 오류" });
     }
 };
+
 
 // 게시글 조회 권한 확인
 const verifyPostPassword = async (req, res) => {

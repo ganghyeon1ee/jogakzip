@@ -15,7 +15,7 @@ GET http://localhost:3000/api/groups?page=1&pageSize=10&sortBy=latest
 Content-Type: application/json
 
 ### 3. 특정 그룹 조회 (존재 확인용)
-GET http://localhost:3000/api/groups/3/is-public 
+GET http://localhost:3000/api/groups/1/is-public 
 Content-Type: application/json
 
 ### 4. 그룹 수정
@@ -35,7 +35,7 @@ POST http://localhost:3000/api/groups/3/like
 Content-Type: application/json
 
 ### 6. 그룹 삭제
-DELETE http://localhost:3000/api/groups/12
+DELETE http://localhost:3000/api/groups/1
 Content-Type: application/json
 
 {
@@ -53,5 +53,5 @@ Content-Type: application/json
 ###
 
 ### 8. 그룹 상세 정보 조회
-GET http://localhost:3000/api/groups/1
+GET http://localhost:3000/api/groups/4
 Content-Type: application/json

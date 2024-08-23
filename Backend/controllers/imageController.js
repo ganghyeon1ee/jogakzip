@@ -8,7 +8,7 @@ const storage = multer.diskStorage({
         cb(null, 'uploads/');
     },
     filename: (req, file, cb) => {
-        cb(null, uuidv4() + path.extname(file.originalname)); // 고유한 파일 이름 생성
+        cb(null, uuidv4() + path.extname(file.originalname));
     }
 });
 
