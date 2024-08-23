@@ -19,12 +19,12 @@ GET http://localhost:3000/api/groups/3/is-public
 Content-Type: application/json
 
 ### 4. 그룹 수정
-PUT http://localhost:3000/api/groups/3
+PUT http://localhost:3000/api/groups/1
 Content-Type: application/json
 
 {
   "name": "Updated group",
-  "password": "password123",
+  "password": "securepassword123",
   "imageUrl": "https://example.com/new-image.png",
   "isPublic": false,
   "introduction": "This is an updated group."
@@ -53,5 +53,5 @@ Content-Type: application/json
 ###
 
 ### 8. 그룹 상세 정보 조회
-GET http://localhost:3000/api/groups/2
+GET http://localhost:3000/api/groups/1
 Content-Type: application/json

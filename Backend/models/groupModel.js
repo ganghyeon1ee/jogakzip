@@ -35,37 +35,38 @@ const deleteGroup = async (groupId) => {
 const getGroups = async (filters) => {
     const { page = 1, pageSize = 10, sortBy = 'latest', keyword = '', isPublic } = filters;
 
-    let query = 'SELECT id, name, imageUrl, isPublic, likeCount, postCount, createdAt, introduction FROM `groups` WHERE 1=1';
+    let query = `
+        SELECT g.id, g.name, g.imageUrl, g.isPublic, g.likeCount, g.postCount, g.createdAt, g.introduction, 
+               (SELECT COUNT(*) FROM group_badges gb WHERE gb.groupId = g.id) AS badgeCount
+        FROM \`groups\` g 
+        WHERE 1=1
+    `;
     const params = [];
 
     if (keyword) {
-        query += ' AND name LIKE ?';
+        query += ' AND g.name LIKE ?';
         params.push(`%${keyword}%`);
     }
 
     if (isPublic !== undefined) {
-        query += ' AND isPublic = ?';
+        query += ' AND g.isPublic = ?';
         params.push(isPublic ? 1 : 0);
     }
 
     switch (sortBy) {
         case 'mostPosted':
-            query += ' ORDER BY postCount DESC';
+            query += ' ORDER BY g.postCount DESC';
             break;
         case 'mostLiked':
-            query += ' ORDER BY likeCount DESC';
+            query += ' ORDER BY g.likeCount DESC';
             break;
         case 'latest':
         default:
-            query += ' ORDER BY createdAt DESC';
+            query += ' ORDER BY g.createdAt DESC';
             break;
     }
 
     query += ` LIMIT ${parseInt(pageSize, 10)} OFFSET ${parseInt((page - 1) * pageSize, 10)}`;
-
-    // 디버깅을 위한 로그
-    console.log('Executing SQL:', query);
-    console.log('With params:', params);
 
     try {
         const [rows] = await db.execute(query, params);

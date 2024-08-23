@@ -9,7 +9,18 @@ const createGroup = async (req, res) => {
         }
         const groupId = await groupModel.createGroup(req.body);
         const group = await groupModel.findGroupById(groupId);
-        res.status(201).json(group);
+
+        res.status(201).json({
+            id: group.id,
+            name: group.name,
+            imageUrl: group.imageUrl,
+            isPublic: group.isPublic,
+            likeCount: group.likeCount,
+            badges: [],
+            postCount: group.postCount,
+            createdAt: group.createdAt,
+            introduction: group.introduction
+        });
     } catch (error) {
         res.status(500).json({ message: "서버 오류" });
     }
@@ -31,7 +42,19 @@ const updateGroup = async (req, res) => {
 
         await groupModel.updateGroup(groupId, req.body);
         const updatedGroup = await groupModel.findGroupById(groupId);
-        res.status(200).json(updatedGroup);
+        const badges = await groupModel.getGroupBadges(groupId); 
+
+        res.status(200).json({
+            id: updatedGroup.id,
+            name: updatedGroup.name,
+            imageUrl: updatedGroup.imageUrl,
+            isPublic: updatedGroup.isPublic,
+            likeCount: updatedGroup.likeCount,
+            badges: badges.map(badge => badge.name), 
+            postCount: updatedGroup.postCount,
+            createdAt: updatedGroup.createdAt,
+            introduction: updatedGroup.introduction
+        });
     } catch (error) {
         res.status(500).json({ message: "서버 오류" });
     }
@@ -78,7 +101,17 @@ const getGroups = async (req, res) => {
             currentPage: filters.page,
             totalPages,
             totalItemCount,
-            data: groups,
+            data: groups.map(group => ({
+                id: group.id,
+                name: group.name,
+                imageUrl: group.imageUrl,
+                isPublic: group.isPublic,
+                likeCount: group.likeCount,
+                badgeCount: group.badgeCount, 
+                postCount: group.postCount,
+                createdAt: group.createdAt,
+                introduction: group.introduction
+            })),
         });
     } catch (error) {
         console.error('Error fetching groups:', error);
@@ -110,13 +143,11 @@ const likeGroup = async (req, res) => {
     try {
         const { groupId } = req.params;
 
-        // 그룹이 존재하는지 확인
         const group = await groupModel.findGroupById(groupId);
         if (!group) {
             return res.status(404).json({ message: '존재하지 않습니다' });
         }
 
-        // 그룹의 공감 수 증가
         await groupModel.incrementLikeCount(groupId);
 
         res.status(200).json({ message: '그룹 공감하기 성공' });
@@ -156,17 +187,7 @@ const getGroupDetails = async (req, res) => {
             return res.status(404).json({ message: '존재하지 않습니다' });
         }
 
-        // 그룹의 배지 목록 가져오기
         const badges = await groupModel.getGroupBadges(groupId);
-
-        // 생성 후 지난 일수 (디데이) 계산
-        const createdAt = new Date(group.createdAt);
-        const today = new Date();
-        const diffTime = Math.abs(today - createdAt);
-        const dDay = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-        // postCount 계산
-        const postCount = await postModel.countPostsByGroupId(groupId);
 
         res.status(200).json({
             id: group.id,
@@ -174,11 +195,10 @@ const getGroupDetails = async (req, res) => {
             imageUrl: group.imageUrl,
             isPublic: group.isPublic,
             likeCount: group.likeCount,
-            badges: badges, // 배지 목록 포함
-            postCount: postCount,
+            badges: badges.map(badge => badge.name), 
+            postCount: group.postCount,
             createdAt: group.createdAt,
-            introduction: group.introduction,
-            dDay: dDay,
+            introduction: group.introduction
         });
     } catch (error) {
         console.error('Error fetching group details:', error);
