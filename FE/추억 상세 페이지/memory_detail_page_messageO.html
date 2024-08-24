@@ -182,9 +182,48 @@
             <br>
             인천 앞바다에서 월척을 낚았습니다!<br>
         </p>
-        <button class="load-more">댓글 등록하기</button>
+        <button class="load-more" onclick="messageRegisteringPopup()">댓글 등록하기</button>
     </div>
 
+    <!-- 댓글 수정하기 팝업 -->
+    <div id="editCommentPopup" class="popup-overlay">
+        <div class="popup-inner-content">
+            <div class="top-content">
+                <h2>댓글 수정</h2>
+                <img src="img/X.png" class="close-icon" onclick="hideEditCommentPopup()"> <!-- 이미지 클릭 시 팝업 닫기 -->
+            </div>
+            <div class="center-content">
+                <div class="input-wrapper4">
+                    <label for="group-name" class="group-name-label">닉네임</label>
+                    <input type="text" id="group-name" class="group-name-input" placeholder="닉네임을 입력해 주세요.">
+        
+                    <label for="group-description" class="group-name-label">댓글</label>
+                    <textarea id="group-description" class="group-description-input" placeholder="댓글을 입력해 주세요."></textarea>
+        
+                    <label for="group-password-2" class="group-name-label">수정 권한 인증</label>
+                    <input type="password" id="group-password-2" class="group-name-input" placeholder="댓글 비밀번호를 입력해 주세요.">
+                </div>
+                <button class="submit-button2" id="create-group-button">등록하기</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 댓글 삭제하기 팝업 -->
+    <div id="deleteCommentPopup" class="popup-overlay">
+        <div class="popup-content2">
+            <div class="container4">
+                <div class="top-content">
+                    <h1 class="center-text">댓글 삭제</h1>
+                    <img src="img/X.png" class="close-icon" onclick="hideDeleteCommentPopup()"> <!-- 수정된 함수명 사용 -->
+                </div>
+                <div class="input-wrapper">
+                    <label for="delete-password" class="group-name-label">삭제 권한 인증</label>
+                    <input type="password" id="delete-password" class="group-name-input" placeholder="댓글 비밀번호를 입력해 주세요.">
+                </div>
+            </div>
+            <button class="popup-close" onclick="hideDeleteCommentPopup()">삭제하기</button> <!-- 수정된 함수명 사용 -->
+        </div>
+    </div>
 
     <div class="message-box">
         <p>댓글&nbsp;8</p>
@@ -204,8 +243,8 @@
                 <h4>핑구&nbsp;<span class="date-time">&nbsp;&nbsp;24.01.18&nbsp; 21:50</span></h4>
                 <div>
                     <p>우와 60cm이라니..!! 저도 가족들과 가봐야겠어요~
-                        <img class="edit" src="img/icon=edit.png">
-                        <img class="delete" src="img/icon=delete.png">
+                        <img class="edit" src="img/icon=edit.png" onclick="showEditCommentPopup()" alt="Edit">
+                        <img class="delete" src="img/icon=delete.png" onclick="showDeleteCommentPopup()" alt="Delete">
                     </p>
                 </div>
             </div>
@@ -214,8 +253,8 @@
                 <h4>달팽스&nbsp;<span class="date-time">&nbsp;&nbsp;24.01.18&nbsp; 21:50</span></h4>
                 <div>
                     <p>우와 60cm이라니..!! 저도 가족들과 가봐야겠어요~
-                        <img class="edit" src="img/icon=edit.png">
-                        <img class="delete" src="img/icon=delete.png">
+                        <img class="edit" src="img/icon=edit.png" onclick="showEditCommentPopup()" alt="Edit">
+                        <img class="delete" src="img/icon=delete.png" onclick="showDeleteCommentPopup()" alt="Delete">
                     </p>
                 </div>
             </div>
@@ -231,7 +270,37 @@
         <a href="#" class="page">5</a>
         <a href="#" class="next">&gt;</a> <!-- 다음 페이지 버튼 -->
     </div>
-    
+
+    <script>
+        // 댓글 수정 팝업을 여는 함수
+        function showEditCommentPopup() {
+            document.getElementById('editCommentPopup').style.display = 'flex';
+        }
+
+        // 댓글 수정 팝업을 닫는 함수
+        function hideEditCommentPopup() {
+            document.getElementById('editCommentPopup').style.display = 'none';
+        }
+
+        // 댓글 삭제 팝업을 여는 함수
+        function showDeleteCommentPopup() {
+            document.getElementById('deleteCommentPopup').style.display = 'flex';
+        }
+
+        // 댓글 삭제 팝업을 닫는 함수
+        function hideDeleteCommentPopup() {
+            document.getElementById('deleteCommentPopup').style.display = 'none';
+        }
+
+        // 팝업 외부를 클릭하면 닫기
+        window.onclick = function(event) {
+            if (event.target.classList.contains('popup-overlay')) {
+                document.querySelectorAll('.popup-overlay').forEach(function(overlay) {
+                    overlay.style.display = 'none';
+                });
+            }
+        };
+    </script>
     <script>
         // 댓글 데이터 예시
         const comments = [
@@ -339,7 +408,6 @@
             document.getElementById('delete-popup-background').style.display = 'none';
         }
     </script>
-    
     <script>
         // JavaScript for toggling visibility
         const visibilityText = document.getElementById('visibility-text-2'); // 올바른 ID 사용

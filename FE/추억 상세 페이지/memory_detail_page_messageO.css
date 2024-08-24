@@ -620,6 +620,59 @@ body {
     align-items: center;
 }
 
+/* 팝업 내용 스타일 */
+.popup-content2 {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    text-align: center;
+}
+
+.top-content{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+.popup-content2 .top-content .center-text{
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+.input-wrapper2 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 300px; /* 각 컬럼의 최대 너비 */
+    margin-left: 40px;
+}
+
+.close-icon {
+    cursor: pointer;
+    float: right;
+    width: 30px;
+    height: 30px;
+    margin-bottom: 0px;
+    margin-left: 100px;
+}
+
+.popup-close {
+    background: #282828;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 40px;
+    width: 320px;
+    margin-bottom: 20px;
+    width: 330px;
+    margin-left: 15px;
+    margin-top: 20px;
+}
 
 .group-name-label {
     display: block;
@@ -742,4 +795,284 @@ body {
 .pagination a.prev, .pagination a.next {
     background-color: #fff;
     color: #777;
+}
+
+/* 팝업 오버레이 */
+.popup-overlay {
+    display: none; /* 기본적으로 숨김 */
+    position: fixed; /* 화면에 고정 */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* 반투명 검정 배경 */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* 다른 콘텐츠 위에 표시 */
+}
+
+/* 팝업 내용 */
+.popup-inner-content {
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    width: 80%;
+    max-width: 400px;
+    position: relative;
+}
+
+/* 닫기 버튼 이미지 */
+.close-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    width: 24px; /* 이미지 크기 조정 */
+    height: 24px; /* 이미지 크기 조정 */
+}
+
+.popup-inner-content .center-content{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.input-wrapper4 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 75%;
+}
+
+
+
+
+
+@media (max-width: 1200px) {
+    .container2 {
+        width: 90%;
+        padding: 10px;
+    }
+
+    .detail_card {
+        flex-direction: column; /* 이미지와 내용을 세로로 배치 */
+        align-items: center; /* 이미지와 내용 중앙 정렬 */
+        text-align: center;
+        margin-left: 0px;
+    }
+
+    .detail_card img {
+        margin: 0 auto 20px; /* 이미지를 중앙으로 배치하고 아래 여백 추가 */
+        width: 180px; /* 이미지 크기 조정 */
+    }
+
+    .card-content {
+        padding: 10px;
+    }
+
+    .info-buttons {
+        justify-content: center; /* 버튼을 중앙 정렬 */
+        margin-left: 0; /* 버튼의 왼쪽 마진 제거 */
+        gap: 10px;
+    }
+    .card-content p{
+        font-size: 14px;
+    }
+
+    .information .info-buttons a{
+        font-size: 14px;
+    }
+
+    .info h2{
+        font-size: 22px;
+    }
+    .info .info-item{
+        font-size: 14px;
+        font-weight:bold;
+    }
+    .card-content a{
+        font-size: 14px;
+    }
+    .card-content .info{
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        font-size: 16px;
+        color: #282828;
+        padding: 5px 0;
+        align-items: center;
+    }
+    .information{
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    .badge {
+        justify-content: center; /* 배지와 버튼을 중앙 정렬 */
+        flex-direction: column;
+        gap: 5px; /* 배지와 버튼 사이의 간격 추가 */
+        display: flex;
+        align-items: center;
+    }
+
+    .badge button {
+        margin-left: 0;
+        margin-top: 10px;
+        padding-top: 7px;
+        padding-bottom: 7px;
+        margin-left: 0px;
+        font-size: 12px;
+    }
+    .detail_card .badge .flower{
+        margin-bottom: 2px;
+    }
+    .card-content a, h5{
+        display: flex;
+        justify-content: center;
+    }
+    .card-content h5{
+        margin-bottom: 18px;
+    }
+    .detail_card .badge .img1{
+        transform: scale(0.8); /* 크기를 80%로 줄이기 */
+    }
+    .detail_card .badge .img2{
+        transform: scale(0.8); /* 크기를 80%로 줄이기 */
+        
+    }
+    .detail_card .badge .img3{
+        transform: scale(0.8); /* 크기를 80%로 줄이기 */
+        
+    }
+    .badge .like-button {
+        margin-left: 0px;
+    }
+    .detail_card .badge .image-container {
+        margin-bottom: 0px;
+    }
+    .flower-container {
+        top: 70%; /* 공감 보내기 버튼 위로 위치 설정 */
+        left: 42%;
+    }
+    .info-item3{
+        font-size: 12px;
+    }
+    .info2 .num1{
+        margin-left: 0px;
+    }
+    .info2 .num1 img{
+        margin-left: 10px;
+        width: 16px;
+        margin-bottom: 0px;
+    }
+    .info2 .num2 img{
+        margin-left: 10px;
+        width: 16px;
+        margin-bottom: 0px;
+    }
+    .badge .like-button{
+        margin-left: 10px;
+        height: 41.333334px;
+        font-size: 14px;
+    }
+    .card-content a{
+        margin-bottom: 10px;
+    }
+    .header2{
+        margin-bottom: 0px;
+    }
+    .main-content img{
+        width: 40%;
+    }
+    .message-box p{
+        margin-left: 150px;
+    }
+}
+
+/* 화면 너비가 1200px 이하일 때 */
+@media (max-width: 1200px) {
+    .message-box p,
+    .message .message-content h4 {
+        margin-left: 150px;
+    }
+    
+    .message .message-content .edit {
+        margin-left: 730px;
+    }
+}
+
+/* 화면 너비가 1024px 이하일 때 */
+@media (max-width: 1024px) {
+    .message-box p,
+    .message .message-content h4 {
+        margin-left: 100px;
+    }
+    
+    .message .message-content .edit {
+        margin-left: 570px;
+    }
+
+    .message .message-content .delete {
+        margin-left: 10px;
+    }
+}
+
+/* 화면 너비가 768px 이하일 때 */
+@media (max-width: 768px) {
+    .message-box p,
+    .message .message-content h4 {
+        margin-left: 100px;
+    }
+    
+    .message .message-content .edit {
+        margin-left: 470px;
+    }
+    
+    .message .message-content .delete {
+        margin-left: 10px;
+    }
+}
+
+/* 화면 너비가 600px 이하일 때 */
+@media (max-width: 600px) {
+    .message-box p,
+    .message .message-content h4 {
+        margin-left: 70px;
+        font-size: 14px;
+    }
+
+    .message .message-content .edit {
+        margin-left: 350px;
+        width: 16px;
+    }
+    
+    .message .message-content .delete {
+        margin-left: 5px;
+        width: 16px;
+    }
+}
+
+/* 화면 너비가 480px 이하일 때 (모바일) */
+@media (max-width: 480px) {
+    .message-box p,
+    .message .message-content h4,
+    .message .message-content .date-time {
+        margin-left: 0;
+        text-align: center;
+        font-size: 14px;
+    }
+
+    .message .message-content .edit,
+    .message .message-content .delete {
+        margin-left: 0;
+        display: inline-block;
+        width: 16px;
+    }
+
+    .message .message-content {
+        text-align: center;
+    }
 }
