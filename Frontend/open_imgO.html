@@ -12,7 +12,7 @@
     <div class="container">
         <div class="header">
             <img src="img/logo.png" alt="Centered Image" class="center-image">
-            <button onclick="location.href='http://127.0.0.1:3000/group_check.html'">그룹 만들기</button>
+            <button onclick="location.href='http://127.0.0.1:5500/public/group_check.html'">그룹 만들기</button>
         </div>
         <div class="buttons-container">
             <div class="buttons">
@@ -33,6 +33,7 @@
             </div>
         </div>
         <div class="grid">
+            <!-- 공개 그룹 목록이 동적으로 로드될 영역 -->
         </div>
         <button class="load-more" id="loadMoreButton">더보기</button>
     </div>
@@ -40,32 +41,32 @@
         let currentPage = 1;
         let currentSortBy = 'mostLiked';
         let currentKeyword = '';
-    
+
         document.getElementById('publicButton').addEventListener('click', function() {
             setActiveButton('public');
             fetchGroups(true, true); // 공개 그룹 불러오기
         });
-    
+
         document.getElementById('privateButton').addEventListener('click', function() {
             setActiveButton('private');
             fetchGroups(false, true); // 비공개 그룹 불러오기
         });
-    
+
         document.getElementById('sortBy').addEventListener('change', function(event) {
             currentSortBy = event.target.value;
             fetchGroups(true, true); // 정렬 옵션이 변경될 때마다 새로운 정렬 기준으로 그룹을 불러옵니다.
         });
-    
+
         document.getElementById('searchInput').addEventListener('input', function(event) {
             currentKeyword = event.target.value;
             fetchGroups(true, true); // 검색어가 입력될 때마다 그룹을 필터링하여 불러옵니다.
         });
-    
+
         document.getElementById('loadMoreButton').addEventListener('click', function() {
             currentPage++;
             fetchGroups(true, false); // '더보기' 클릭 시 다음 페이지의 그룹을 로드합니다.
         });
-    
+
         function setActiveButton(type) {
             if (type === 'public') {
                 document.getElementById('publicButton').classList.add('active');
@@ -79,13 +80,13 @@
                 document.getElementById('privateButton').classList.remove('inactive');
             }
         }
-    
+
         function fetchGroups(isPublic, reset = false) {
             if (reset) {
                 currentPage = 1; // 검색어 변경이나 정렬 변경 시 페이지를 초기화
                 document.querySelector('.grid').innerHTML = ''; // 기존 그룹 목록 초기화
             }
-    
+
             fetch(`/api/groups?isPublic=${isPublic}&sortBy=${currentSortBy}&keyword=${currentKeyword}&page=${currentPage}`)
                 .then(response => response.json())
                 .then(data => {
@@ -96,7 +97,7 @@
                         card.innerHTML = `
                             <img src="${group.imageUrl}" alt="그룹 이미지">
                             <div class="card-content">
-                                <p><span class="date">${group.createdAt}</span> | <span class="status">${group.isPublic ? '공개' : '비공개'}</span></p>
+                                <p><span class="date">${convertToKoreanTime(group.createdAt)}</span> | <span class="status">${group.isPublic ? '공개' : '비공개'}</span></p>
                                 <h2>${group.name}</h2>
                                 <a>${group.introduction}</a>
                                 <div class="info">
@@ -120,9 +121,15 @@
                 })
                 .catch(error => console.error('Error fetching groups:', error));
         }
-    
+
+        function convertToKoreanTime(utcTime) {
+            const date = new Date(utcTime);
+            date.setHours(date.getHours()); 
+            return date.toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
+        }
+
         // 페이지 로드 시 기본적으로 공개 그룹을 불러옴
         fetchGroups(true);
-    </script>    
+    </script>
 </body>
 </html>
