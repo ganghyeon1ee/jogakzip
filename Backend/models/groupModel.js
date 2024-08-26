@@ -42,11 +42,12 @@ const getGroups = async (filters) => {
     const { page = 1, pageSize = 10, sortBy = 'latest', keyword = '', isPublic } = filters;
 
     let query = `
-        SELECT g.id, g.name, g.imageUrl, g.isPublic, g.likeCount, g.postCount, g.createdAt, g.introduction, 
-               (SELECT COUNT(*) FROM group_badges gb WHERE gb.groupId = g.id) AS badgeCount
-        FROM \`groups\` g 
-        WHERE 1=1
-    `;
+        SELECT g.id, g.name, g.imageUrl, g.isPublic, g.likeCount, g.postCount, g.createdAt, g.introduction,
+               COUNT(b.id) AS badgeCount
+        FROM \`groups\` g
+        LEFT JOIN group_badges gb ON g.id = gb.groupId
+        LEFT JOIN badges b ON gb.badgeId = b.id
+        WHERE 1=1`;
     const params = [];
 
     if (keyword) {
@@ -59,16 +60,21 @@ const getGroups = async (filters) => {
         params.push(isPublic ? 1 : 0);
     }
 
+    query += ' GROUP BY g.id ';
+
     switch (sortBy) {
         case 'mostPosted':
-            query += ' ORDER BY g.postCount DESC';
+            query += 'ORDER BY g.postCount DESC';
             break;
         case 'mostLiked':
-            query += ' ORDER BY g.likeCount DESC';
+            query += 'ORDER BY g.likeCount DESC';
+            break;
+        case 'mostBadges':
+            query += 'ORDER BY badgeCount DESC';
             break;
         case 'latest':
         default:
-            query += ' ORDER BY g.createdAt DESC';
+            query += 'ORDER BY g.createdAt DESC';
             break;
     }
 
@@ -87,6 +93,7 @@ const getGroups = async (filters) => {
         throw error;
     }
 };
+
 
 // 그룹 공감하기
 const incrementLikeCount = async (groupId) => {
