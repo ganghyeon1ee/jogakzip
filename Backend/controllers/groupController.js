@@ -1,13 +1,21 @@
 const groupModel = require('../models/groupModel');
 const postModel = require('../models/postModel');
 
+// 이미지 생성
 const createGroup = async (req, res) => {
     try {
-        const { name, password, imageUrl, isPublic, introduction } = req.body;
+        console.log('요청 바디:', req.body);  // 요청 바디 로그 추가
+        console.log('업로드된 파일:', req.file);  // 업로드된 파일 로그 추가
+
+        const { name, password, isPublic, introduction } = req.body;
+        const imageUrl = req.file ? `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}` : null;
+
         if (!name || !password) {
             return res.status(400).json({ message: "잘못된 요청입니다" });
         }
-        const groupId = await groupModel.createGroup(req.body);
+
+        // 그룹 생성 및 데이터베이스 저장
+        const groupId = await groupModel.createGroup({ name, password, imageUrl, isPublic, introduction });
         const group = await groupModel.findGroupById(groupId);
 
         res.status(201).json({
@@ -22,9 +30,13 @@ const createGroup = async (req, res) => {
             introduction: group.introduction
         });
     } catch (error) {
-        res.status(500).json({ message: "서버 오류" });
+        console.error('Error creating group:', error);  // 오류 로그 추가
+        res.status(500).json({ message: "서버 오류", error: error.message });  // JSON 형식의 오류 응답
     }
 };
+
+
+
 
 const updateGroup = async (req, res) => {
     try {

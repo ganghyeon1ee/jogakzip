@@ -3,13 +3,19 @@ const groupModel = require('./groupModel');
 
 // 그룹 생성하기
 const createGroup = async (groupData) => {
-    const { name, password, imageUrl, isPublic, introduction } = groupData;
-    const [result] = await db.execute(
-        'INSERT INTO `groups` (name, password, imageUrl, isPublic, introduction) VALUES (?, ?, ?, ?, ?)',
-        [name, password, imageUrl, isPublic, introduction]
-    );
-    return result.insertId;
+    try {
+        const { name, password, imageUrl, isPublic, introduction } = groupData;
+        const [result] = await db.execute(
+            'INSERT INTO `groups` (name, password, imageUrl, isPublic, introduction) VALUES (?, ?, ?, ?, ?)',
+            [name, password, imageUrl, isPublic, introduction]
+        );
+        return result.insertId;
+    } catch (error) {
+        console.error('Database error on createGroup:', error);  // 데이터베이스 오류 로그 추가
+        throw error;
+    }
 };
+
 
 // 그룹 id를 활용해 그룹 정보 가져오기
 const findGroupById = async (groupId) => {

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>조각집_그룹 만들기</title>
+    <link rel="stylesheet" href="group_check.css">
+    <link href="https://spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <img src="img/logo.png" alt="Centered Image" class="center-image">
+        
+        <h1 class="center-text">그룹 만들기</h1>
+
+        <div class="input-wrapper">
+            <label for="group-name" class="group-name-label">그룹명</label>
+            <input type="text" id="group-name" class="group-name-input" placeholder="그룹명을 입력하세요.">
+            
+            <label for="representative-image" class="group-name-label">대표 이미지</label>
+            <div class="file-upload-wrapper">
+                <input type="text" id="representative-image" class="file-name-input" placeholder="파일을 선택해주세요." readonly>
+                <label for="file-upload" class="file-upload-button">파일 선택</label>
+                <input type="file" id="file-upload" class="file-input">
+            </div>
+
+            <label for="group-description" class="group-name-label">그룹 소개</label>
+            <textarea id="group-description" class="group-description-input" placeholder="그룹을 소개해 주세요."></textarea>
+        
+            <label for="group-visibility" class="group-name-label">그룹 공개 선택</label>
+            <div class="visibility-wrapper">
+                <span id="visibility-text" class="visibility-text">공개</span>
+                <img id="visibility-icon" src="img/state=active.png" alt="Visibility Icon" class="visibility-icon">
+            </div>
+        
+            <label for="group-password" class="group-name-label">비밀번호 생성</label>
+            <input type="password" id="group-password" class="group-name-input" placeholder="그룹 비밀번호를 생성해주세요.">
+
+        </div>
+
+        <button class="submit-button" id="create-group-button">만들기</button>
+        
+    </div>
+    <script>
+        const inputs = document.querySelectorAll('.group-name-input, .group-description-input, .file-name-input');
+
+        inputs.forEach(input => {
+            input.addEventListener('click', () => {
+                input.classList.add('clicked');
+            });
+        });
+
+        // JavaScript for toggling visibility
+        const visibilityText = document.getElementById('visibility-text');
+        const visibilityIcon = document.getElementById('visibility-icon');
+        
+        let isPublic = true; // Initial state is public
+        
+        function toggleVisibility() {
+            if (isPublic) {
+                visibilityText.textContent = '비공개';
+                visibilityIcon.src = 'img/state=default.png'; // 변경할 비공개 이미지 경로
+            } else {
+                visibilityText.textContent = '공개';
+                visibilityIcon.src = 'img/state=active.png'; // 원래 공개 이미지 경로
+            }
+            isPublic = !isPublic; // Toggle state
+        }
+
+        visibilityIcon.addEventListener('click', toggleVisibility);
+
+        // JavaScript for handling form submission
+        document.getElementById('create-group-button').addEventListener('click', async (event) => {
+            event.preventDefault(); // 기본 동작 방지
+
+            const groupName = document.getElementById('group-name').value;
+            const groupPassword = document.getElementById('group-password').value;
+            const groupDescription = document.getElementById('group-description').value;
+            const fileInput = document.getElementById('file-upload');
+
+            const formData = new FormData();
+            formData.append('name', groupName);
+            formData.append('password', groupPassword);
+            formData.append('introduction', groupDescription);
+            formData.append('isPublic', isPublic ? 1 : 0);
+
+            if (fileInput.files.length > 0) {
+                formData.append('image', fileInput.files[0]); // 파일 추가
+                console.log('파일 추가됨:', fileInput.files[0].name);
+            } else {
+                console.log('파일이 선택되지 않음');
+            }
+
+            try {
+                const response = await fetch('http://localhost:3000/api/groups', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    console.log('서버 응답:', data);
+                    alert('그룹이 성공적으로 생성되었습니다.');
+                    window.location.href = 'http://127.0.0.1:5500/public/open_no_data.html'; // 이동할 로컬 URL
+                } else {
+                    console.log('서버 응답:', data);
+                    alert('그룹 생성에 실패했습니다: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error creating group:', error);
+                alert('서버와 통신하는 중 오류가 발생했습니다.');
+            }
+        });
+    </script>
+</body>
+</html>

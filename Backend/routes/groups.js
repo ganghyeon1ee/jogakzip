@@ -1,10 +1,13 @@
+// routes/groups.js
 const express = require('express');
 const groupController = require('../controllers/groupController');
+const imageController = require('../controllers/imageController'); // 이미지 업로드용 컨트롤러
 
 const router = express.Router();
 
-// 그룹 생성
-router.post('/groups', groupController.createGroup);
+// 그룹 생성 (multer 미들웨어 추가)
+router.post('/groups', imageController.upload.single('image'), groupController.createGroup);
+
 
 // 그룹 수정
 router.put('/groups/:groupId', groupController.updateGroup);

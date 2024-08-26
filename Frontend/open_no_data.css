@@ -1,0 +1,296 @@
+body {
+    font-family: 'Spoqa Han Sans Neo', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #fff;
+    color: #282828;
+    font-size: 14px;
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+}
+
+.container .content{
+    margin-top: 120px;
+    margin-bottom: 150px;
+}
+
+.header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0;
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.center-image {
+    max-width: 100px;
+    height: auto;
+    border-bottom: none;
+}
+
+.header button {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-radius: 3px;
+    background-color: #282828;
+    color: white;
+    font-size: 14px;
+    padding: 10px 20px;
+    font-weight: 600;
+    z-index: 1;
+}
+
+.header button:hover{
+    background-color: #b8b8b8;
+    border: none;
+}
+
+.buttons-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+    gap: 30px;
+    justify-content: center;
+    align-items: baseline;
+}
+
+.buttons {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+}
+
+.buttons button {
+    margin: 5px;
+    padding: 8px 15px;
+}
+
+.buttons .active {
+    background-color: #282828;
+    border: none;
+    color: white;
+    font-weight: 600;
+    border-radius: 20px;
+}
+
+.buttons .inactive {
+    background-color: white;
+    border: none;
+    font-weight: 600;
+    color: #282828;
+    border-radius: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* 부드러운 애니메이션 추가 */
+}
+
+.buttons .inactive:hover{
+    background-color: #282828;
+    color: white;
+    transform: translateY(-1px) scale(1.01); /* 마우스가 다가가면 들썩이고 커지는 효과 */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* 그림자 증가 효과 */
+}
+
+.search-bar {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 30px;
+    justify-content: center;
+    margin-bottom: 10px;
+    align-items: center;
+}
+
+.search-wrapper {
+    position: relative;
+    flex: 1;
+    max-width: 100%;
+}
+
+.search-wrapper i {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #282828;
+    font-size: 14px; 
+}
+
+/* 텍스트 박스 스타일 */
+.search-bar input[type="text"] {
+    flex: 1; /* 텍스트 박스가 남은 공간을 차지하도록 설정 */
+    max-width: 100%; /* 최대 너비를 100%로 설정 */
+    padding: 5px 5px 5px 30px;
+    border: 1px solid #f4f4f4;
+    border-radius: 4px;
+    font-size: 14px; /* 폰트 크기 조정 */
+    background-color: #f4f4f4;
+    color: #b8b8b8;
+    height: 36px; /* 높이 조정 */
+    width: 600px;
+}
+
+/* 텍스트 박스 포커스 스타일 */
+.search-bar input[type="text"]:focus {
+    color: #282828;
+    background-color: white;
+}
+
+/* 선택창 스타일 */
+.search-bar select {
+    padding: 5px;
+    flex: 0 1 auto; /* 너비 조정 */
+    min-width: 120px;
+    max-width: 180px; /* 가로 길이 제한 */
+    height: 36px; /* 높이 조정 */
+    border: 1px solid #b8b8b8; /* 기본 테두리 */
+    border-radius: 4px; /* 테두리 둥글기 */
+    outline: none; /* 포커스 시 아웃라인 제거 */
+}
+
+/* 포커스 시 기본 테두리 두께 변화 방지 */
+.search-bar select:focus {
+    border: 1px solid #b8b8b8; /* 포커스 시 테두리 색상 유지 */
+    box-shadow: none; /* 포커스 시 그림자 제거 */
+}
+
+
+.content img{
+    max-width: 100px;
+}
+
+.content h1{
+    font-size: 18px;
+    color: #8d8d8d;
+}
+
+.content p{
+    font-size: 14px;
+    color: #8d8d8d;
+}
+
+.load-more{
+    background-color: #282828;
+    color: white;
+    width: 216px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 20px;
+    padding-left: 20px;
+    border-radius: 5px;
+}
+
+.load-more:hover{
+    background-color: #8d8d8d;
+    border: none;
+}
+
+/* 미디어 쿼리 */
+@media (max-width: 1200px){
+    .search-bar input[type="text"], .search-bar select {
+        width: 300px;
+    }
+    .search-bar select {
+        max-width: 70px;
+    }
+}
+@media (max-width: 1000px){
+    .search-bar input[type="text"], .search-bar select {
+        width: 210px;
+        font-size: 12px;
+    }
+    .search-bar select {
+        max-width: 50px;
+    }
+}
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+        padding: 10px;
+    }
+
+    .header {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .header button {
+        position: static;
+        margin-top: 10px;
+        right: auto;
+        top: auto;
+        transform: none;
+    }
+
+    .buttons-container {
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .buttons {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .search-bar {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .search-wrapper {
+        max-width: 100%;
+    }
+
+    .search-bar input[type="text"], .search-bar select {
+        width: 210px;
+        font-size: 12px;
+    }
+
+    .search-bar select {
+        max-width: 50px;
+    }
+
+    .content img {
+        max-width: 80px;
+    }
+}
+
+@media (max-width: 480px) {
+    .center-image {
+        max-width: 80px;
+    }
+
+    .header button {
+        font-size: 12px;
+        padding: 8px 15px;
+    }
+
+    .buttons .active, .buttons .inactive {
+        padding: 6px 10px;
+    }
+
+    .search-bar input[type="text"], .search-bar select {
+        width: 100%;
+        font-size: 14px;
+    }
+
+    .search-bar select {
+        max-width: 120px;
+    }
+
+    .content img {
+        max-width: 60px;
+    }
+}
+
+
+
+
