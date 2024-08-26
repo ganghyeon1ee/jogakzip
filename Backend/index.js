@@ -14,7 +14,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.use(express.static(path.join(__dirname, '../Frontend')));  
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 app.use('/api', groupRoutes);
 app.use('/api', postRoutes);
 app.use('/api', commentRoutes);
@@ -30,7 +32,7 @@ cron.schedule('0 0 * * *', async () => {
     }
 });
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
