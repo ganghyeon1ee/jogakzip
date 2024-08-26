@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
+<html lang="ko">
+<head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>조각집</title>
+    <title>공개 그룹 목록</title>
     <link rel="stylesheet" href="open_imgO.css">
     <link href="https://spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
-  <body>
+<body>
     <div class="container">
         <div class="header">
             <img src="img/logo.png" alt="Centered Image" class="center-image">
@@ -16,427 +16,110 @@
         </div>
         <div class="buttons-container">
             <div class="buttons">
-                <button class="active">공개</button>
-                <button class="inactive" id="inactiveButton">비공개</button>
+                <button class="active" id="publicButton">공개</button>
+                <button class="inactive" id="privateButton">비공개</button>
             </div>
             <div class="search-bar">
                 <div class="search-wrapper">
                     <i class="fas fa-search"></i>
-                    <input type="text" placeholder="그룹명을 검색해 주세요">
+                    <input type="text" id="searchInput" placeholder="그룹명을 검색해 주세요">
                 </div>
-                <select>
-                    <option value="공감순">공감순</option>
-                    <option value="최신순">최신순</option>
-                    <option value="게시글 많은순">게시글 많은순</option>
-                    <option value="획득 배지순">획득 배지순</option>
+                <select id="sortBy">
+                    <option value="mostLiked">공감순</option>
+                    <option value="latest">최신순</option>
+                    <option value="mostPosted">게시글 많은순</option>
+                    <option value="mostBadges">획득 배지순</option>
                 </select>
             </div>
         </div>
-
         <div class="grid">
-            <div class="card" onclick="location.href='http://127.0.0.1:5500/public/Detail_page_no_data.html'">
-                <img src="img/image=img1.jpg" alt="꽃">
-                <div class="card-content">
-                    <p><span class="date">D+265</span> | <span class="status">공개</span></p>
-                    <h2>에델바이스</h2>
-                    <a>서로 한 마음으로 응원하고 아끼는 달봉이네 가족입니다.</a>
-                    <div class="info">
-                        <div class="info-item">
-                            <span>획득 배지</span>
-                            <div class="num">2</div>
-                        </div>
-                        <div class="info-item">
-                            <span>추억</span>
-                            <div class="num">8</div>
-                        </div>
-                        <div class="info-item">
-                            <span>
-                                그룹 공감
-                            </span>
-                            <div class="num"><img src="img/flower.png" alt="꽃">1.5K</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card" onclick="location.href='http://127.0.0.1:5500/public/Detail_page_no_data.html'">
-                <img src="img/image=img2.jpg" alt="나들이">
-                <div class="card-content">
-                    <p><span class="date">D+265</span> | <span class="status">공개</span></p>
-                    <h2>달봉이네 가족</h2>
-                    <a>서로 한 마음으로 응원하고 아끼는 달봉이네 가족입니다.</a>
-                    <div class="info">
-                        <div class="info-item">
-                            <span>획득 배지</span>
-                            <div class="num">2</div>
-                        </div>
-                        <div class="info-item">
-                            <span>추억</span>
-                            <div class="num">8</div>
-                        </div>
-                        <div class="info-item">
-                            <span>
-                                그룹 공감
-                            </span>
-                            <div class="num"><img src="img/flower.png" alt="꽃">1.5K</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <img src="img/image=img3.jpg" alt="가족">
-                <div class="card-content">
-                    <p><span class="date">D+265</span> | <span class="status">공개</span></p>
-                    <h2>에델바이스</h2>
-                    <a>서로 한 마음으로 응원하고 아끼는 달봉이네 가족입니다.</a>
-                    <div class="info">
-                        <div class="info-item">
-                            <span>획득 배지</span>
-                            <div class="num">2</div>
-                        </div>
-                        <div class="info-item">
-                            <span>추억</span>
-                            <div class="num">8</div>
-                        </div>
-                        <div class="info-item">
-                            <span>
-                                그룹 공감
-                            </span>
-                            <div class="num"><img src="img/flower.png" alt="꽃">1.5K</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <img src="img/image=img4.jpg" alt="낚시">
-                <div class="card-content">
-                    <p><span class="date">D+265</span> | <span class="status">공개</span></p>
-                    <h2>에델바이스</h2>
-                    <a>서로 한 마음으로 응원하고 아끼는 달봉이네 가족입니다.</a>
-                    <div class="info">
-                        <div class="info-item">
-                            <span>획득 배지</span>
-                            <div class="num">2</div>
-                        </div>
-                        <div class="info-item">
-                            <span>추억</span>
-                            <div class="num">8</div>
-                        </div>
-                        <div class="info-item">
-                            <span>
-                                그룹 공감
-                            </span>
-                            <div class="num"><img src="img/flower.png" alt="꽃">1.5K</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>    
-
-
-        <div class="grid">
-            <div class="card">
-                <img src="img/image=img5.jpg" alt="피크닉">
-                <div class="card-content">
-                    <p><span class="date">D+265</span> | <span class="status">공개</span></p>
-                    <h2>에델바이스</h2>
-                    <a>서로 한 마음으로 응원하고 아끼는 달봉이네 가족입니다.</a>
-                    <div class="info">
-                        <div class="info-item">
-                            <span>획득 배지</span>
-                            <div class="num">2</div>
-                        </div>
-                        <div class="info-item">
-                            <span>추억</span>
-                            <div class="num">8</div>
-                        </div>
-                        <div class="info-item">
-                            <span>
-                                그룹 공감
-                            </span>
-                            <div class="num"><img src="img/flower.png" alt="꽃">1.5K</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <img src="img/image=img6.jpg" alt="사진없음">
-                <div class="card-content">
-                    <p><span class="date">D+265</span> | <span class="status">공개</span></p>
-                    <h2>에델바이스</h2>
-                    <a>서로 한 마음으로 응원하고 아끼는 달봉이네 가족입니다.</a>
-                    <div class="info">
-                        <div class="info-item">
-                            <span>획득 배지</span>
-                            <div class="num">2</div>
-                        </div>
-                        <div class="info-item">
-                            <span>추억</span>
-                            <div class="num">8</div>
-                        </div>
-                        <div class="info-item">
-                            <span>
-                                그룹 공감
-                            </span>
-                            <div class="num"><img src="img/flower.png" alt="꽃">1.5K</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <img src="img/image=img1.jpg" alt="꽃">
-                <div class="card-content">
-                    <p><span class="date">D+265</span> | <span class="status">공개</span></p>
-                    <h2>에델바이스</h2>
-                    <a>서로 한 마음으로 응원하고 아끼는 달봉이네 가족입니다.</a>
-                    <div class="info">
-                        <div class="info-item">
-                            <span>획득 배지</span>
-                            <div class="num">2</div>
-                        </div>
-                        <div class="info-item">
-                            <span>추억</span>
-                            <div class="num">8</div>
-                        </div>
-                        <div class="info-item">
-                            <span>
-                                그룹 공감
-                            </span>
-                            <div class="num"><img src="img/flower.png" alt="꽃">1.5K</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <img src="img/image=img6.jpg" alt="">
-                <div class="card-content">
-                    <p><span class="date">D+265</span> | <span class="status">공개</span></p>
-                    <h2>에델바이스</h2>
-                    <a>서로 한 마음으로 응원하고 아끼는 달봉이네 가족입니다.</a>
-                    <div class="info">
-                        <div class="info-item">
-                            <span>획득 배지</span>
-                            <div class="num">2</div>
-                        </div>
-                        <div class="info-item">
-                            <span>추억</span>
-                            <div class="num">8</div>
-                        </div>
-                        <div class="info-item">
-                            <span>
-                                그룹 공감
-                            </span>
-                            <div class="num"><img src="img/flower.png" alt="꽃">1.5K</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>  
-
-        <div class="grid">
-            <div class="card" >
-                <img src="img/image=img1.jpg" alt="꽃">
-                <div class="card-content">
-                    <p><span class="date">D+265</span> | <span class="status">공개</span></p>
-                    <h2>에델바이스</h2>
-                    <a>서로 한 마음으로 응원하고 아끼는 달봉이네 가족입니다.</a>
-                    <div class="info">
-                        <div class="info-item">
-                            <span>획득 배지</span>
-                            <div class="num">2</div>
-                        </div>
-                        <div class="info-item">
-                            <span>추억</span>
-                            <div class="num">8</div>
-                        </div>
-                        <div class="info-item">
-                            <span>
-                                그룹 공감
-                            </span>
-                            <div class="num"><img src="img/flower.png" alt="꽃">1.5K</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <img src="img/image=img2.jpg" alt="나들이">
-                <div class="card-content">
-                    <p><span class="date">D+265</span> | <span class="status">공개</span></p>
-                    <h2>에델바이스</h2>
-                    <a>서로 한 마음으로 응원하고 아끼는 달봉이네 가족입니다.</a>
-                    <div class="info">
-                        <div class="info-item">
-                            <span>획득 배지</span>
-                            <div class="num">2</div>
-                        </div>
-                        <div class="info-item">
-                            <span>추억</span>
-                            <div class="num">8</div>
-                        </div>
-                        <div class="info-item">
-                            <span>
-                                그룹 공감
-                            </span>
-                            <div class="num"><img src="img/flower.png" alt="꽃">1.5K</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <img src="img/image=img3.jpg" alt="가족">
-                <div class="card-content">
-                    <p><span class="date">D+265</span> | <span class="status">공개</span></p>
-                    <h2>에델바이스</h2>
-                    <a>서로 한 마음으로 응원하고 아끼는 달봉이네 가족입니다.</a>
-                    <div class="info">
-                        <div class="info-item">
-                            <span>획득 배지</span>
-                            <div class="num">2</div>
-                        </div>
-                        <div class="info-item">
-                            <span>추억</span>
-                            <div class="num">8</div>
-                        </div>
-                        <div class="info-item">
-                            <span>
-                                그룹 공감
-                            </span>
-                            <div class="num"><img src="img/flower.png" alt="꽃">1.5K</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <img src="img/image=img4.jpg" alt="낚시">
-                <div class="card-content">
-                    <p><span class="date">D+265</span> | <span class="status">공개</span></p>
-                    <h2>에델바이스</h2>
-                    <a>서로 한 마음으로 응원하고 아끼는 달봉이네 가족입니다.</a>
-                    <div class="info">
-                        <div class="info-item">
-                            <span>획득 배지</span>
-                            <div class="num">2</div>
-                        </div>
-                        <div class="info-item">
-                            <span>추억</span>
-                            <div class="num">8</div>
-                        </div>
-                        <div class="info-item">
-                            <span>
-                                그룹 공감
-                            </span>
-                            <div class="num"><img src="img/flower.png" alt="꽃">1.5K</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>    
-
-
-        <div class="grid">
-            <div class="card">
-                <img src="img/image=img5.jpg" alt="피크닉">
-                <div class="card-content">
-                    <p><span class="date">D+265</span> | <span class="status">공개</span></p>
-                    <h2>에델바이스</h2>
-                    <a>서로 한 마음으로 응원하고 아끼는 달봉이네 가족입니다.</a>
-                    <div class="info">
-                        <div class="info-item">
-                            <span>획득 배지</span>
-                            <div class="num">2</div>
-                        </div>
-                        <div class="info-item">
-                            <span>추억</span>
-                            <div class="num">8</div>
-                        </div>
-                        <div class="info-item">
-                            <span>
-                                그룹 공감
-                            </span>
-                            <div class="num"><img src="img/flower.png" alt="꽃">1.5K</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <img src="img/image=img6.jpg" alt="사진없음">
-                <div class="card-content">
-                    <p><span class="date">D+265</span> | <span class="status">공개</span></p>
-                    <h2>에델바이스</h2>
-                    <a>서로 한 마음으로 응원하고 아끼는 달봉이네 가족입니다.</a>
-                    <div class="info">
-                        <div class="info-item">
-                            <span>획득 배지</span>
-                            <div class="num">2</div>
-                        </div>
-                        <div class="info-item">
-                            <span>추억</span>
-                            <div class="num">8</div>
-                        </div>
-                        <div class="info-item">
-                            <span>
-                                그룹 공감
-                            </span>
-                            <div class="num"><img src="img/flower.png" alt="꽃">1.5K</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <img src="img/image=img1.jpg" alt="꽃">
-                <div class="card-content">
-                    <p><span class="date">D+265</span> | <span class="status">공개</span></p>
-                    <h2>에델바이스</h2>
-                    <a>서로 한 마음으로 응원하고 아끼는 달봉이네 가족입니다.</a>
-                    <div class="info">
-                        <div class="info-item">
-                            <span>획득 배지</span>
-                            <div class="num">2</div>
-                        </div>
-                        <div class="info-item">
-                            <span>추억</span>
-                            <div class="num">8</div>
-                        </div>
-                        <div class="info-item">
-                            <span>
-                                그룹 공감
-                            </span>
-                            <div class="num"><img src="img/flower.png" alt="꽃">1.5K</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <img src="img/image=img6.jpg" alt="">
-                <div class="card-content">
-                    <p><span class="date">D+265</span> | <span class="status">공개</span></p>
-                    <h2>에델바이스</h2>
-                    <a>서로 한 마음으로 응원하고 아끼는 달봉이네 가족입니다.</a>
-                    <div class="info">
-                        <div class="info-item">
-                            <span>획득 배지</span>
-                            <div class="num">2</div>
-                        </div>
-                        <div class="info-item">
-                            <span>추억</span>
-                            <div class="num">8</div>
-                        </div>
-                        <div class="info-item">
-                            <span>
-                                그룹 공감
-                            </span>
-                            <div class="num"><img src="img/flower.png" alt="꽃">1.5K</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
-
-        <button class="load-more">더보기</button>
+        <button class="load-more" id="loadMoreButton">더보기</button>
     </div>
     <script>
-        document.getElementById('inactiveButton').addEventListener('click', function() {
-            window.location.href = 'http://127.0.0.1:5500/public/img_X_check.html';
+        let currentPage = 1;
+        let currentSortBy = 'mostLiked';
+        let currentKeyword = '';
+
+        document.getElementById('publicButton').addEventListener('click', function() {
+            setActiveButton('public');
+            fetchGroups(true); 
         });
+
+        document.getElementById('privateButton').addEventListener('click', function() {
+            setActiveButton('private');
+            fetchGroups(false); 
+        });
+
+        document.getElementById('sortBy').addEventListener('change', function(event) {
+            currentSortBy = event.target.value;
+            fetchGroups(true, true); 
+        });
+
+        document.getElementById('searchInput').addEventListener('input', function(event) {
+            currentKeyword = event.target.value;
+            fetchGroups(true, true); 
+        });
+
+        document.getElementById('loadMoreButton').addEventListener('click', function() {
+            currentPage++;
+            fetchGroups(true, false); 
+        });
+
+        function setActiveButton(type) {
+            if (type === 'public') {
+                document.getElementById('publicButton').classList.add('active');
+                document.getElementById('publicButton').classList.remove('inactive');
+                document.getElementById('privateButton').classList.remove('active');
+                document.getElementById('privateButton').classList.add('inactive');
+            } else {
+                document.getElementById('publicButton').classList.remove('active');
+                document.getElementById('publicButton').classList.add('inactive');
+                document.getElementById('privateButton').classList.add('active');
+                document.getElementById('privateButton').classList.remove('inactive');
+            }
+        }
+
+        function fetchGroups(isPublic, reset = false) {
+            if (reset) {
+                currentPage = 1; 
+                document.querySelector('.grid').innerHTML = ''; 
+            }
+
+            fetch(`/api/groups?isPublic=${isPublic}&sortBy=${currentSortBy}&keyword=${currentKeyword}&page=${currentPage}`)
+                .then(response => response.json())
+                .then(data => {
+                    const grid = document.querySelector('.grid');
+                    data.data.forEach(group => {
+                        const card = document.createElement('div');
+                        card.className = 'card';
+                        card.innerHTML = `
+                            <img src="${group.imageUrl}" alt="그룹 이미지">
+                            <div class="card-content">
+                                <p><span class="date">${group.createdAt}</span> | <span class="status">${group.isPublic ? '공개' : '비공개'}</span></p>
+                                <h2>${group.name}</h2>
+                                <a>${group.introduction}</a>
+                                <div class="info">
+                                    <div class="info-item">
+                                        <span>획득 배지</span>
+                                        <div class="num">${group.badgeCount}</div>
+                                    </div>
+                                    <div class="info-item">
+                                        <span>추억</span>
+                                        <div class="num">${group.postCount}</div>
+                                    </div>
+                                    <div class="info-item">
+                                        <span>그룹 공감</span>
+                                        <div class="num">${group.likeCount}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        grid.appendChild(card);
+                    });
+                });
+        }
+        fetchGroups(true);
     </script>
-  </body>
+</body>
 </html>
