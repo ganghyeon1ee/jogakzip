@@ -127,21 +127,21 @@
     </div>
 </div>
 
-    <div class="popup-background" id="delete-popup-background">
-        <div class="popup-content2">
-            <div class="container4">
-                <div class="top-content">
-                    <h1 class="center-text">추억 삭제</h1>
-                    <img src="img/X.png" class="close-icon" onclick="hideDeletePopup()">
-                </div>
-                <div class="input-wrapper">
-                    <label for="delete-password" class="group-name-label">삭제 권한 인증</label>
-                    <input type="password" id="delete-password" class="group-name-input" placeholder="추억 비밀번호를 입력해 주세요.">
-                </div>
+<div class="popup-background" id="delete-popup-background">
+    <div class="popup-content2">
+        <div class="container4">
+            <div class="top-content">
+                <h1 class="center-text">추억 삭제</h1>
+                <img src="img/X.png" class="close-icon" onclick="hideDeletePopup()">
             </div>
-            <button class="popup-close" onclick="hideDeletePopup()">삭제하기</button>
+            <div class="input-wrapper">
+                <label for="delete-password" class="group-name-label">삭제 권한 인증</label>
+                <input type="password" id="delete-password" class="group-name-input" placeholder="추억 비밀번호를 입력해 주세요.">
+            </div>
         </div>
+        <button class="popup-close" onclick="onDeleteButtonClick('YOUR_POST_ID_HERE')">삭제하기</button>
     </div>
+</div>
 
     <!-- 댓글 등록하기 팝업 -->
     <div id="RegisteringPopup" class="popup-overlay">
@@ -304,17 +304,32 @@
     </script>
     
     <script>
+        function hidePopup() {
+            document.getElementById('popup-background').style.display = 'none';
+        }
+
         async function updatePost(postId) {
+            // HTML 입력 필드의 값을 읽어옵니다.
+            const nickname = document.getElementById('nickname').value;
+            const title = document.getElementById('title').value;
+            const content = document.getElementById('content').value;
+            const postPassword = document.getElementById('post-password').value;
+            const imageUrl = document.getElementById('image-url').value; // 파일 선택 후 URL 업데이트 필요
+            const tags = document.getElementById('tags').value.split(',').map(tag => tag.trim());
+            const location = document.getElementById('location').value;
+            const moment = document.getElementById('moment').value;
+            const isPublic = document.getElementById('visibility-text').textContent === '공개';
+
             const updatedPost = {
-                nickname: '새 닉네임',
-                title: '새 제목',
-                content: '새 내용',
-                postPassword: '새 비밀번호',
-                imageUrl: '새 이미지 URL',
-                tags: ['새 태그1', '새 태그2'],
-                location: '새 위치',
-                moment: '새 모멘트',
-                isPublic: false
+                nickname: nickname,
+                title: title,
+                content: content,
+                postPassword: postPassword,
+                imageUrl: imageUrl,
+                tags: tags,
+                location: location,
+                moment: moment,
+                isPublic: isPublic
             };
 
             try {
@@ -332,31 +347,63 @@
 
                 const result = await response.json();
                 console.log('게시글 수정 성공:', result);
+                // 수정 완료 후 팝업을 닫을 수 있습니다.
+                hidePopup();
             } catch (error) {
                 console.error('오류:', error);
             }
         }
+
+        document.getElementById('update-button').addEventListener('click', () => {
+            // 여기에 수정할 게시글의 ID를 설정하세요.
+            const postId = '/api/posts/{postId}'; // 실제 postId를 지정해야 합니다.
+            updatePost(postId);
+        });
     </script>
     
     <script>
-        async function deletePost(postId) {
-            try {
-                const response = await fetch(`/api/posts/${postId}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json'
+        async function handleDeletePost(postId) {
+            const passwordInput = document.getElementById('delete-password').value;
+            const isPasswordValid = await validatePassword(passwordInput);
+
+            if (isPasswordValid) {
+                try {
+                    const response = await fetch(`/api/posts/${postId}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('게시글 삭제에 실패했습니다.');
                     }
-                });
 
-                if (!response.ok) {
-                    throw new Error('게시글 삭제에 실패했습니다.');
+                    const result = await response.json();
+                    console.log('게시글 삭제 성공:', result);
+                    hideDeletePopup();
+                } catch (error) {
+                    console.error('오류:', error);
                 }
-
-                const result = await response.json();
-                console.log('게시글 삭제 성공:', result);
-            } catch (error) {
-                console.error('오류:', error);
+            } else {
+                alert('비밀번호가 잘못되었습니다.');
             }
+        }
+
+        async function validatePassword(password) {
+            return password === '1234'; // Replace with actual validation logic
+        }
+
+        function showDeletePopup() {
+            document.getElementById('delete-popup-background').style.display = 'block';
+        }
+
+        function hideDeletePopup() {
+            document.getElementById('delete-popup-background').style.display = 'none';
+        }
+
+        function onDeleteButtonClick(postId) {
+            handleDeletePost(postId);
         }
     </script>
 
