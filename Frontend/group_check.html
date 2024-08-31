@@ -43,65 +43,63 @@
     </div>
     <script>
         const inputs = document.querySelectorAll('.group-name-input, .group-description-input, .file-name-input');
-
+    
         inputs.forEach(input => {
             input.addEventListener('click', () => {
                 input.classList.add('clicked');
             });
         });
-
-        // JavaScript for toggling visibility
+    
         const visibilityText = document.getElementById('visibility-text');
         const visibilityIcon = document.getElementById('visibility-icon');
         
-        let isPublic = true; // Initial state is public
+        let isPublic = true; 
         
         function toggleVisibility() {
             if (isPublic) {
                 visibilityText.textContent = '비공개';
-                visibilityIcon.src = 'img/state=default.png'; // 변경할 비공개 이미지 경로
+                visibilityIcon.src = 'img/state=default.png'; 
             } else {
                 visibilityText.textContent = '공개';
-                visibilityIcon.src = 'img/state=active.png'; // 원래 공개 이미지 경로
+                visibilityIcon.src = 'img/state=active.png';
             }
-            isPublic = !isPublic; // Toggle state
+            isPublic = !isPublic; 
         }
-
+    
         visibilityIcon.addEventListener('click', toggleVisibility);
-
-        // JavaScript for handling form submission
+    
         document.getElementById('create-group-button').addEventListener('click', async (event) => {
-            event.preventDefault(); // 기본 동작 방지
-
+            event.preventDefault();
+    
             const groupName = document.getElementById('group-name').value;
             const groupPassword = document.getElementById('group-password').value;
             const groupDescription = document.getElementById('group-description').value;
             const fileInput = document.getElementById('file-upload');
-
+    
             const formData = new FormData();
             formData.append('name', groupName);
             formData.append('password', groupPassword);
             formData.append('introduction', groupDescription);
             formData.append('isPublic', isPublic ? 1 : 0);
-
+    
             if (fileInput.files.length > 0) {
-                formData.append('image', fileInput.files[0]); // 파일 추가
+                formData.append('image', fileInput.files[0]);
                 console.log('파일 추가됨:', fileInput.files[0].name);
             } else {
                 console.log('파일이 선택되지 않음');
             }
-
+    
             try {
                 const response = await fetch('http://localhost:3000/api/groups', {
                     method: 'POST',
                     body: formData
                 });
-
+    
                 const data = await response.json();
                 if (response.ok) {
                     console.log('서버 응답:', data);
                     alert('그룹이 성공적으로 생성되었습니다.');
-                    window.location.href = 'http://localhost:3000/open_imgO.html'; // 그룹이 성공적으로 생성되었을 경우 이동할 페이지
+                    window.location.href = 'http://localhost:3000/open_imgO.html';
                 } else {
                     console.log('서버 응답:', data);
                     alert('그룹 생성에 실패했습니다: ' + data.message);
@@ -111,6 +109,17 @@
                 alert('서버와 통신하는 중 오류가 발생했습니다.');
             }
         });
-    </script>
+    
+        document.getElementById('file-upload').addEventListener('change', function () {
+            const fileNameInput = document.getElementById('representative-image');
+            if (this.files.length > 0) {
+                fileNameInput.value = this.files[0].name;
+            } else {
+                fileNameInput.value = '파일을 선택해 주세요.'; 
+            }
+        });
+    
+        document.getElementById('representative-image').value = '파일을 선택해 주세요.';
+    </script>    
 </body>
 </html>

@@ -11,7 +11,7 @@ Content-Type: application/json
 }
 
 ### 2. 그룹 목록 조회
-GET http://localhost:3000/api/groups?page=1&pageSize=10&sortBy=latest 
+GET http://localhost:3000/api/groups?page=4&pageSize=10&sortBy=latest 
 Content-Type: application/json
 
 ### 3. 특정 그룹 조회 (존재 확인용)
@@ -31,7 +31,7 @@ Content-Type: application/json
 }
 
 ### 5. 그룹 공감하기
-POST http://localhost:3000/api/groups/3/like
+POST http://localhost:3000/api/groups/1/like
 Content-Type: application/json
 
 ### 6. 그룹 삭제

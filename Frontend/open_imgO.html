@@ -33,7 +33,6 @@
             </div>
         </div>
         <div class="grid">
-            <!-- 공개 그룹 목록이 동적으로 로드될 영역 -->
         </div>
         <button class="load-more" id="loadMoreButton">더보기</button>
     </div>
@@ -44,27 +43,27 @@
 
         document.getElementById('publicButton').addEventListener('click', function() {
             setActiveButton('public');
-            fetchGroups(true, true); // 공개 그룹 불러오기
+            fetchGroups(true, true); 
         });
 
         document.getElementById('privateButton').addEventListener('click', function() {
             setActiveButton('private');
-            fetchGroups(false, true); // 비공개 그룹 불러오기
+            fetchGroups(false, true); 
         });
 
         document.getElementById('sortBy').addEventListener('change', function(event) {
             currentSortBy = event.target.value;
-            fetchGroups(true, true); // 정렬 옵션이 변경될 때마다 새로운 정렬 기준으로 그룹을 불러옵니다.
+            fetchGroups(true, true); 
         });
 
         document.getElementById('searchInput').addEventListener('input', function(event) {
             currentKeyword = event.target.value;
-            fetchGroups(true, true); // 검색어가 입력될 때마다 그룹을 필터링하여 불러옵니다.
+            fetchGroups(true, true);
         });
 
         document.getElementById('loadMoreButton').addEventListener('click', function() {
             currentPage++;
-            fetchGroups(true, false); // '더보기' 클릭 시 다음 페이지의 그룹을 로드합니다.
+            fetchGroups(true, false);
         });
 
         function setActiveButton(type) {
@@ -83,8 +82,8 @@
 
         function fetchGroups(isPublic, reset = false) {
             if (reset) {
-                currentPage = 1; // 검색어 변경이나 정렬 변경 시 페이지를 초기화
-                document.querySelector('.grid').innerHTML = ''; // 기존 그룹 목록 초기화
+                currentPage = 1; 
+                document.querySelector('.grid').innerHTML = ''; 
             }
 
             fetch(`/api/groups?isPublic=${isPublic}&sortBy=${currentSortBy}&keyword=${currentKeyword}&page=${currentPage}`)
@@ -127,8 +126,6 @@
             date.setHours(date.getHours()); 
             return date.toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
         }
-
-        // 페이지 로드 시 기본적으로 공개 그룹을 불러옴
         fetchGroups(true);
     </script>
 </body>
