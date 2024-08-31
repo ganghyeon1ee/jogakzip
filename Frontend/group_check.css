@@ -1,3 +1,4 @@
+/* group_check.css */
 html, body {
     margin: 0;
     padding: 0;
@@ -56,6 +57,7 @@ html, body {
     max-width: 100%; /* 입력창의 최대 너비를 100%로 설정합니다. */
     color: #B8B8B8;
     background-color: #FFFFFF; /* 입력창 배경 색상 설정 */
+    font-family: 'Spoqa Han Sans Neo', sans-serif; /* 입력창에 폰트 적용 */
 }
 
 .group-name-input::placeholder, .group-description-input::placeholder, .file-name-input::placeholder {
@@ -73,7 +75,7 @@ html, body {
 
 .group-name-input.clicked, .group-description-input.clicked, .file-name-input.clicked {
     color: #282828; /* 텍스트 색상 변경 */
-    border: 1px solid #282828; /* 입력창의 테두리를 설정합니다. */
+    border: 1px solid #282828; /* 입력창의 테두리 색상 변경 */
 }
 
 .file-upload-wrapper {
@@ -155,3 +157,4 @@ html, body {
     min-height: 100vh; /* 컨테이너의 최소 높이를 100% 뷰포트 높이로 설정 */
     justify-content: flex-start; /* 버튼을 페이지 하단으로 밀어내기 */
 }
+

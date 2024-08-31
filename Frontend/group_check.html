@@ -103,10 +103,12 @@
                 } else {
                     console.log('서버 응답:', data);
                     alert('그룹 생성에 실패했습니다: ' + data.message);
+                    window.location.href = 'http://localhost:3000/fail_popup.html';
                 }
             } catch (error) {
                 console.error('Error creating group:', error);
                 alert('서버와 통신하는 중 오류가 발생했습니다.');
+                window.location.href = 'http://localhost:3000/fail_popup.html';
             }
         });
     

@@ -1,16 +1,16 @@
 const groupModel = require('../models/groupModel');
 const postModel = require('../models/postModel');
 
-// 이미지 생성
+// 그룹 생성
 const createGroup = async (req, res) => {
     try {
-        console.log('요청 바디:', req.body);  // 요청 바디 로그 추가
-        console.log('업로드된 파일:', req.file);  // 업로드된 파일 로그 추가
+        console.log('요청 바디:', req.body); 
+        console.log('업로드된 파일:', req.file);  
 
         const { name, password, isPublic, introduction } = req.body;
         const imageUrl = req.file ? `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}` : null;
 
-        if (!name || !password) {
+        if (!name || !password || !isPublic || !introduction || !imageUrl) {
             return res.status(400).json({ message: "잘못된 요청입니다" });
         }
 
