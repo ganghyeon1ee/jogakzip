@@ -72,6 +72,12 @@
                                 </div>
                             </div>
                         `;
+                        
+                        // 카드 클릭 시 img_X_check.html로 이동하는 기능 추가
+                        card.addEventListener('click', function() {
+                            window.location.href = `img_X_check.html?groupId=${group.id}`;
+                        });
+
                         grid.appendChild(card);
                     });
                 });

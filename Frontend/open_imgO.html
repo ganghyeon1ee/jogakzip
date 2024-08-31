@@ -115,6 +115,15 @@
                                 </div>
                             </div>
                         `;
+                        // 그룹 카드 클릭 이벤트 리스너 추가
+                        card.addEventListener('click', function() {
+                            if (group.isPublic) {
+                                window.location.href = `Detail_page_open_dataO.html?groupId=${group.id}`;
+                            } else {
+                                window.location.href = `img_X_check.html?groupId=${group.id}`;
+                            }
+                        });
+
                         grid.appendChild(card);
                     });
                 })
@@ -126,6 +135,8 @@
             date.setHours(date.getHours()); 
             return date.toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
         }
+
+        // 초기화면으로 공개 그룹 불러오기
         fetchGroups(true);
     </script>
 </body>
