@@ -40,30 +40,33 @@
         let currentPage = 1;
         let currentSortBy = 'mostLiked';
         let currentKeyword = '';
+        let isPublic = true; // 초기값을 공개 그룹으로 설정
 
         document.getElementById('publicButton').addEventListener('click', function() {
             setActiveButton('public');
-            fetchGroups(true, true); 
+            isPublic = true; // 공개 그룹 설정
+            fetchGroups(isPublic, true); 
         });
 
         document.getElementById('privateButton').addEventListener('click', function() {
             setActiveButton('private');
-            fetchGroups(false, true); 
+            isPublic = false; // 비공개 그룹 설정
+            fetchGroups(isPublic, true); 
         });
 
         document.getElementById('sortBy').addEventListener('change', function(event) {
             currentSortBy = event.target.value;
-            fetchGroups(true, true); 
+            fetchGroups(isPublic, true); // 현재 isPublic 값 사용
         });
 
         document.getElementById('searchInput').addEventListener('input', function(event) {
             currentKeyword = event.target.value;
-            fetchGroups(true, true);
+            fetchGroups(isPublic, true); // 현재 isPublic 값 사용
         });
 
         document.getElementById('loadMoreButton').addEventListener('click', function() {
             currentPage++;
-            fetchGroups(true, false);
+            fetchGroups(isPublic, false); // 현재 isPublic 값 사용
         });
 
         function setActiveButton(type) {
@@ -132,7 +135,6 @@
 
         function convertToKoreanTime(utcTime) {
             const date = new Date(utcTime);
-            date.setHours(date.getHours()); 
             return date.toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
         }
 

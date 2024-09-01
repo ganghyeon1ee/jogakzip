@@ -30,7 +30,7 @@
             const groupId = urlParams.get('groupId');
 
             try {
-                const response = await fetch(`http://localhost:3000/api/groups/${groupId}/check-password`, {
+                const response = await fetch(`http://localhost:3000/api/groups/${groupId}/verify-password`, {  // 엔드포인트 수정
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
