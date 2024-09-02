@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
+<html lang="ko">
+<head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>그룹 상세 페이지 - 데이터 O</title>
@@ -15,7 +15,7 @@
     </div>
   </div>   
   <div class="detail_card">
-    <img id="group-image" src="img/image=img2.jpg" alt="그룹 이미지">
+    <img id="group-image" alt="그룹 이미지">
     <div class="card-content">
         <div class="information">
           <p><span class="date" id="group-created-at">D+265&nbsp; </span> &nbsp;| &nbsp;<span class="status" id="group-status">  &nbsp;공개</span>
@@ -40,7 +40,7 @@
               </span>
           </div>
       </div>
-      <a id="group-description">서로 한 마음으로 응원하고 아끼는 달봉이네 가족입니다.</a>
+      <a id="group-description"></a>
       <h5>획득 배지</h5>
       <div class="badge" id="badges-container">
         <div class="image-container">
@@ -55,236 +55,223 @@
     </div>
   </div>
   
-  <hr style="border: 1px solid #DDDDDD; width: 70%;">
-  <!-- 그룹 수정하기 팝업창 -->
-  <div class="popup-background" id="popup-background">
-    <div class="popup-content">
-        <div class="container3">
-            <div class="top-content">
-                <h1 class="center-text">그룹 정보 수정</h1>
-                <img src="img/X.png" class="close-icon" onclick="hidePopup()">
-            </div>
-            
-            <div class="input-wrapper">
-                <label for="group-name" class="group-name-label">그룹명</label>
-                <input type="text" id="edit-group-name" class="group-name-input" placeholder="그룹명을 입력하세요.">
-                
-                <label for="representative-image" class="group-name-label">대표 이미지</label>
-                <div class="file-upload-wrapper">
-                    <input type="text" id="representative-image" class="file-name-input" placeholder="파일을 선택해주세요." readonly>
-                    <label for="file-upload" class="file-upload-button">파일 선택</label>
-                    <input type="file" id="file-upload" class="file-input">
-                </div>
-    
-                <label for="group-description" class="group-name-label">그룹 소개</label>
-                <textarea id="edit-group-description" class="group-description-input" placeholder="그룹을 소개해 주세요."></textarea>
-            
-                <label for="group-visibility" class="group-name-label">그룹 공개 선택</label>
-                <div class="visibility-wrapper">
-                    <span id="edit-visibility-text" class="visibility-text">공개</span>
-                    <img id="edit-visibility-icon" src="img/state=active.png" alt="Visibility Icon" class="visibility-icon">
-                </div>
-            
-                <label for="group-password" class="group-name-label">수정 권한 인증</label>
-                <input type="password" id="edit-group-password" class="group-name-input" placeholder="그룹 비밀번호를 입력해 주세요.">
-    
-            </div>
-        </div>
-        <button class="popup-close" onclick="updateGroup()">수정하기</button>
+  <!-- 게시글 목록 섹션 추가 -->
+  <div class="container">
+    <div class="header">
+        <h1>추억 목록</h1>
+        <button onclick="location.href='http://127.0.0.1:3000/memory_update_page.html'">추억 올리기</button>
     </div>
-</div>
-<div class="popup-background" id="delete-popup-background">
-    <div class="popup-content2">
-        <div class="container4">
-            <div class="top-content">
-                <h1 class="center-text">그룹 삭제</h1>
-                <img src="img/X.png" class="close-icon" onclick="hideDeletePopup()">
-            </div>
-            <div class="input-wrapper">
-                <label for="delete-password" class="group-name-label">삭제 권한 인증</label>
-                <input type="password" id="delete-password" class="group-name-input" placeholder="그룹 비밀번호를 입력해 주세요.">
-            </div>
+    <div class="buttons-container">
+        <div class="buttons">
+            <button class="active" id="publicButton">공개</button>
+            <button class="inactive" id="inactiveButton">비공개</button>
         </div>
-        <button class="popup-close" onclick="deleteGroup()">삭제하기</button>
+        <div class="search-bar">
+            <div class="search-wrapper">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="태그 혹은 제목을 입력해 주세요.">
+            </div>
+            <select id="sortBy">
+                <option value="mostLiked">공감순</option>
+                <option value="latest">최신순</option>
+                <option value="mostPosted">게시글 많은순</option>
+                <option value="mostBadges">획득 배지순</option>
+            </select>
+        </div>
     </div>
-</div>
-    <!-- 팝업을 열고 닫는 스크립트 -->
-    <script>
-        function showPopup() {
-            document.getElementById('popup-background').style.display = 'flex';
-        }
+    <div class="grid" id="postGrid">
+        <!-- 게시글 카드가 여기에 추가됩니다. -->
+    </div>
+    <button class="load-more" id="loadMoreButton">더보기</button>
+  </div>
 
-        function hidePopup() {
-            document.getElementById('popup-background').style.display = 'none';
-        }
-        function showDeletePopup() {
-            document.getElementById('delete-popup-background').style.display = 'flex';
-        }
+  <script>
+    // 그룹 및 게시글 데이터 초기화
+    document.addEventListener("DOMContentLoaded", async () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const groupId = urlParams.get('groupId');
+  
+       // 그룹 정보 가져오기
+try {
+    const response = await fetch(`http://localhost:3000/api/groups/${groupId}`);
+    const groupData = await response.json();
 
-        function hideDeletePopup() {
-            document.getElementById('delete-popup-background').style.display = 'none';
-        }
+    if (response.ok) {
+        document.getElementById('group-image').src = groupData.imageUrl;
+        document.getElementById('group-name').textContent = groupData.name;
+        document.getElementById('group-created-at').textContent = new Date(groupData.createdAt).toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
+        document.getElementById('group-status').textContent = groupData.isPublic ? '공개' : '비공개';
+        document.getElementById('post-count').textContent = groupData.postCount;
+        document.getElementById('like-count').textContent = groupData.likeCount;
+        document.getElementById('group-description').textContent = groupData.introduction;
 
-        // 그룹 삭제 기능
-        async function deleteGroup() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const groupId = urlParams.get('groupId');
-            const password = document.getElementById('delete-password').value;
+        // 배지 정보 로드
+        const badgesContainer = document.getElementById('badge-container');
+        const badgeConditions = [
+            { condition: groupData.consecutivePosts >= 7, badge: 'Frame 1' },  // 7일 연속 추억 등록
+            { condition: groupData.likeCount >= 10000, badge: 'Frame 2' },    // 그룹 공감 1만 개 이상
+            { condition: groupData.postLikes >= 10000, badge: 'Frame 3' }      // 추억 공감 1만 개 이상
+        ];
 
-            if (password) {
-                try {
-                    const response = await fetch(`http://localhost:3000/api/groups/${groupId}`, {
-                        method: 'DELETE',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ password })
-                    });
-
-                    if (response.ok) {
-                        alert('그룹이 삭제되었습니다.');
-                        window.location.href = 'http://127.0.0.1:5500/public/open_imgO.html';
-                    } else {
-                        const result = await response.json();
-                        alert('삭제 실패: ' + result.message);
-                    }
-                } catch (error) {
-                    console.error('Error deleting group:', error);
-                }
-            }
-        }
-
-        // 그룹 수정 기능
-        async function updateGroup() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const groupId = urlParams.get('groupId');
-            const groupName = document.getElementById('edit-group-name').value;
-            const groupDescription = document.getElementById('edit-group-description').value;
-            const isPublic = document.getElementById('edit-visibility-text').textContent === '공개';
-            const password = document.getElementById('edit-group-password').value;
-
-            if (password) {
-                try {
-                    const response = await fetch(`http://localhost:3000/api/groups/${groupId}`, {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            name: groupName,
-                            introduction: groupDescription,
-                            isPublic,
-                            password
-                        })
-                    });
-
-                    if (response.ok) {
-                        alert('그룹 정보가 수정되었습니다.');
-                        location.reload();
-                    } else {
-                        const result = await response.json();
-                        alert('수정 실패: ' + result.message);
-                    }
-                } catch (error) {
-                    console.error('Error updating group:', error);
-                }
-            }
-        }
-
-        document.addEventListener("DOMContentLoaded", async () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const groupId = urlParams.get('groupId');
-            // 그룹 정보 가져오기
-            try {
-                const response = await fetch(`http://localhost:3000/api/groups/${groupId}`);
-                const groupData = await response.json();
-
-                if (response.ok) {
-                    document.getElementById('group-image').src = groupData.imageUrl;
-                    document.getElementById('group-name').textContent = groupData.name;
-                    document.getElementById('group-created-at').textContent = new Date(groupData.createdAt).toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
-                    document.getElementById('group-status').textContent = groupData.isPublic ? '공개' : '비공개';
-                    document.getElementById('post-count').textContent = groupData.postCount;
-                    document.getElementById('like-count').textContent = groupData.likeCount;
-                    document.getElementById('group-description').textContent = groupData.introduction;
-
-                    // 배지 정보 로드
-                    const badgesContainer = document.querySelector('.image-container');
-                    groupData.badges.forEach(badge => {
-                        const badgeImg = document.createElement('img');
-                        badgeImg.src = `img/${badge}.png`; // 배지 이미지 경로 설정
-                        badgesContainer.appendChild(badgeImg);
-                    });
-                } else {
-                    console.error('Error fetching group details:', groupData.message);
-                }
-            } catch (error) {
-                console.error('Error fetching group details:', error);
+        badgeConditions.forEach(({ condition, badge }) => {
+            if (condition) {
+                const badgeImg = document.createElement('img');
+                badgeImg.className = `img${badge.split(' ')[1]}`;
+                badgeImg.src = `img/${badge}.png`; // 배지 이미지 경로 설정
+                badgesContainer.appendChild(badgeImg);
             }
         });
 
-        // 좋아요 기능
-        document.getElementById("likeBtn").addEventListener("click", async function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const groupId = urlParams.get('groupId');
+        // 게시글 불러오기
+        fetchPosts(true);  // 초기화 시 공개된 게시글 불러오기
+    } else {
+        console.error('Error fetching group details:', groupData.message);
+    }
+} catch (error) {
+    console.error('Error fetching group details:', error);
+}
 
-            try {
-                const response = await fetch(`http://localhost:3000/api/groups/${groupId}/like`, {
-                    method: 'POST'
+    });
+  
+    // 게시글 불러오기 함수
+    function fetchPosts(isPublic = true, reset = false) {
+        const groupId = new URLSearchParams(window.location.search).get('groupId');
+        const postGrid = document.getElementById('postGrid');
+        const sortBy = document.getElementById('sortBy').value;
+        const keyword = document.getElementById('searchInput').value;
+  
+        if (reset) {
+            postGrid.innerHTML = ''; // 게시글 그리드 초기화
+        }
+  
+        fetch(`http://localhost:3000/api/groups/${groupId}/posts?isPublic=${isPublic}&sortBy=${sortBy}&keyword=${keyword}`)
+            .then(response => response.json())
+            .then(data => {
+                data.data.forEach(post => {
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.innerHTML = `
+                        <img src="${post.imageUrl}" alt="게시글 이미지">
+                        <div class="card-content2">
+                            <p><span class="date2">${post.nickname}</span> | <span class="status2">${post.isPublic ? '공개' : '비공개'}</span></p>
+                            <h2>${post.title}</h2>
+                            <a>#${post.tags.join(' #')}</a>
+                            <div class="info2">
+                                <div class="info-item3">
+                                    <span>${post.location}</span><span> • </span><span>${new Date(post.createdAt).toLocaleDateString('ko-KR')}</span>
+                                </div>
+                                <div class="num1"><img src="img/flower.png" alt="꽃">${post.likeCount}</div>
+                                <div class="num2"><img src="img/talk.png" alt="말풍선">${post.commentCount}</div>
+                            </div>
+                        </div>
+                    `;
+                    card.addEventListener('click', function() {
+                        window.location.href = `Detail_page_no_data.html?postId=${post.id}`;
+                    });
+                    postGrid.appendChild(card);
                 });
-
-                if (response.ok) {
-                    const flowerContainer = document.getElementById("flowerContainer");
-                    const containerWidth = 100; // 꽃이 분포할 최대 너비
-                    const containerHeight = 50; // 꽃이 분포할 최대 높이
-
-                    for (let i = 0; i < 8; i++) { // 꽃 이미지 8개 생성
-                        const flower = document.createElement("img");
-                        flower.src = "img/flower.png";
-                        flower.className = "flower-image";
-
-                        // 꽃 이미지를 버튼 위쪽에 넓게 분포시킴
-                        flower.style.left = `${Math.random() * containerWidth - containerWidth / 2}px`;
-                        flower.style.top = `${Math.random() * containerHeight - containerHeight / 2}px`;
-
-                        // 불투명도 조정
-                        if (i % 2 === 0) {
-                            flower.style.opacity = 0.2; // 일부 꽃을 불투명하게 설정
-                        }
-
-                        flowerContainer.appendChild(flower);
-
-                        setTimeout(() => {
-                            flower.remove(); // 애니메이션 후 이미지 제거
-                        }, 600);
-                    }
-                } else {
-                    console.error('Error liking group:', await response.json());
-                }
-            } catch (error) {
-                console.error('Error liking group:', error);
-            }
-        });
-
-        // 이미지 슬라이드 기능
-        let currentIndex = 0;
-
-        document.getElementById("nextBtn").addEventListener("click", function() {
-            const images = document.querySelectorAll(".image-container img");
-            const totalImages = images.length;
-            const visibleImages = 3; // 화면에 보이는 이미지 수
-
-            currentIndex++;
-            if (currentIndex > totalImages - visibleImages) {
-                currentIndex = 0; // 마지막 이미지를 넘어가면 처음으로 돌아감
-            }
-
-            const offset = currentIndex * 200; // 각 이미지의 너비 + 간격(5px)
-            images.forEach(img => {
-                img.style.transform = `translateX(${-offset}px)`;
+            })
+            .catch(error => console.error('Error fetching posts:', error));
+    }
+  
+    // 좋아요 기능
+    document.getElementById("likeBtn").addEventListener("click", async function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const groupId = urlParams.get('groupId');
+  
+        try {
+            const response = await fetch(`http://localhost:3000/api/groups/${groupId}/like`, {
+                method: 'POST'
             });
+  
+            if (response.ok) {
+                const flowerContainer = document.getElementById("flowerContainer");
+                const containerWidth = 100; // 꽃이 분포할 최대 너비
+                const containerHeight = 50; // 꽃이 분포할 최대 높이
+  
+                for (let i = 0; i < 8; i++) { // 꽃 이미지 8개 생성
+                    const flower = document.createElement("img");
+                    flower.src = "img/flower.png";
+                    flower.className = "flower-image";
+  
+                    // 꽃 이미지를 버튼 위쪽에 넓게 분포시킴
+                    flower.style.left = `${Math.random() * containerWidth - containerWidth / 2}px`;
+                    flower.style.top = `${Math.random() * containerHeight - containerHeight / 2}px`;
+  
+                    // 불투명도 조정
+                    if (i % 2 === 0) {
+                        flower.style.opacity = 0.2; // 일부 꽃을 불투명하게 설정
+                    }
+  
+                    flowerContainer.appendChild(flower);
+  
+                    setTimeout(() => {
+                        flower.remove(); // 애니메이션 후 이미지 제거
+                    }, 600);
+                }
+            } else {
+                console.error('Error liking group:', await response.json());
+            }
+        } catch (error) {
+            console.error('Error liking group:', error);
+        }
+    });
+  
+    // 이미지 슬라이드 기능
+    let currentIndex = 0;
+  
+    document.getElementById("nextBtn").addEventListener("click", function() {
+        const images = document.querySelectorAll(".image-container img");
+        const totalImages = images.length;
+        const visibleImages = 3; // 화면에 보이는 이미지 수
+  
+        currentIndex++;
+        if (currentIndex > totalImages - visibleImages) {
+            currentIndex = 0; // 마지막 이미지를 넘어가면 처음으로 돌아감
+        }
+  
+        const offset = currentIndex * 200; // 각 이미지의 너비 + 간격(5px)
+        images.forEach(img => {
+            img.style.transform = `translateX(${-offset}px)`;
         });
-    </script>
+    });
+  
+    // 게시글 공개/비공개 버튼 이벤트
+    document.getElementById('publicButton').addEventListener('click', function() {
+        setActiveButton('public');
+        fetchPosts(true, true); // 공개 게시글 불러오기
+    });
+  
+    document.getElementById('inactiveButton').addEventListener('click', function() {
+        setActiveButton('private');
+        fetchPosts(false, true); // 비공개 게시글 불러오기
+    });
+  
+    // 게시글 검색 및 정렬 이벤트
+    document.getElementById('searchInput').addEventListener('input', function() {
+        fetchPosts(true, true); // 검색 시 공개 게시글 불러오기
+    });
+  
+    document.getElementById('sortBy').addEventListener('change', function() {
+        fetchPosts(true, true); // 정렬 변경 시 공개 게시글 불러오기
+    });
+  
+    // 더보기 버튼 이벤트
+    document.getElementById('loadMoreButton').addEventListener('click', function() {
+        fetchPosts(true, false); // 더보기 시 기존 게시글에 추가
+    });
+  
+    // 버튼 활성화 설정
+    function setActiveButton(type) {
+        if (type === 'public') {
+            document.getElementById('publicButton').classList.add('active');
+            document.getElementById('inactiveButton').classList.remove('active');
+        } else {
+            document.getElementById('inactiveButton').classList.add('active');
+            document.getElementById('publicButton').classList.remove('active');
+        }
+    }
+  </script>
 </body>
 </html>
 

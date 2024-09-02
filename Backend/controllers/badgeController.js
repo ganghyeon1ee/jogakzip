@@ -1,5 +1,6 @@
 const groupModel = require('../models/groupModel');
 const badgeModel = require('../models/badgeModel');
+const postModel = require('../models/postModel'); // postModel을 추가하여 has7DayStreak와 hasMemoryWith10kLikes를 참조할 수 있도록 수정
 
 const checkAndAwardBadges = async (groupId) => {
     const group = await groupModel.findGroupById(groupId);
@@ -38,7 +39,11 @@ const checkAndAwardBadges = async (groupId) => {
 
     for (const badgeName of badgesToAward) {
         const badge = await badgeModel.findBadgeByName(badgeName);
-        await badgeModel.awardBadgeToGroup(groupId, badge.id);
+        const alreadyAwarded = await badgeModel.hasBadge(groupId, badge.id);
+
+        if (!alreadyAwarded) { // 배지를 이미 받은 경우 중복으로 부여하지 않도록 처리
+            await badgeModel.awardBadgeToGroup(groupId, badge.id);
+        }
     }
 };
 
