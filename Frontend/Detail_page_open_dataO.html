@@ -183,47 +183,58 @@
     }
   
     // 좋아요 기능
-    document.getElementById("likeBtn").addEventListener("click", async function() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const groupId = urlParams.get('groupId');
-  
-        try {
-            const response = await fetch(`http://localhost:3000/api/groups/${groupId}/like`, {
-                method: 'POST'
-            });
-  
-            if (response.ok) {
-                const flowerContainer = document.getElementById("flowerContainer");
-                const containerWidth = 100; // 꽃이 분포할 최대 너비
-                const containerHeight = 50; // 꽃이 분포할 최대 높이
-  
-                for (let i = 0; i < 8; i++) { // 꽃 이미지 8개 생성
-                    const flower = document.createElement("img");
-                    flower.src = "img/flower.png";
-                    flower.className = "flower-image";
-  
-                    // 꽃 이미지를 버튼 위쪽에 넓게 분포시킴
-                    flower.style.left = `${Math.random() * containerWidth - containerWidth / 2}px`;
-                    flower.style.top = `${Math.random() * containerHeight - containerHeight / 2}px`;
-  
-                    // 불투명도 조정
-                    if (i % 2 === 0) {
-                        flower.style.opacity = 0.2; // 일부 꽃을 불투명하게 설정
-                    }
-  
-                    flowerContainer.appendChild(flower);
-  
-                    setTimeout(() => {
-                        flower.remove(); // 애니메이션 후 이미지 제거
-                    }, 600);
-                }
-            } else {
-                console.error('Error liking group:', await response.json());
+// 좋아요 기능
+document.getElementById("likeBtn").addEventListener("click", async function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const groupId = urlParams.get('groupId');
+
+    try {
+        const response = await fetch(`http://localhost:3000/api/groups/${groupId}/like`, {
+            method: 'POST'
+        });
+
+        if (response.ok) {
+            const flowerContainer = document.getElementById("flowerContainer");
+            const containerWidth = 100; // 꽃이 분포할 최대 너비
+            const containerHeight = 50; // 꽃이 분포할 최대 높이
+
+            // 공감 수 업데이트
+            const likeCountElement = document.getElementById('like-count');
+            let currentLikeCount = parseInt(likeCountElement.textContent.replace(',', ''));
+
+            if (!isNaN(currentLikeCount)) {
+                currentLikeCount += 1;
+                likeCountElement.textContent = currentLikeCount.toLocaleString('ko-KR'); // 한국어 형식으로 콤마 추가
             }
-        } catch (error) {
-            console.error('Error liking group:', error);
+
+            for (let i = 0; i < 8; i++) { // 꽃 이미지 8개 생성
+                const flower = document.createElement("img");
+                flower.src = "img/flower.png";
+                flower.className = "flower-image";
+
+                // 꽃 이미지를 버튼 위쪽에 넓게 분포시킴
+                flower.style.left = `${Math.random() * containerWidth - containerWidth / 2}px`;
+                flower.style.top = `${Math.random() * containerHeight - containerHeight / 2}px`;
+
+                // 불투명도 조정
+                if (i % 2 === 0) {
+                    flower.style.opacity = 0.2; // 일부 꽃을 불투명하게 설정
+                }
+
+                flowerContainer.appendChild(flower);
+
+                setTimeout(() => {
+                    flower.remove(); // 애니메이션 후 이미지 제거
+                }, 600);
+            }
+        } else {
+            console.error('Error liking group:', await response.json());
         }
-    });
+    } catch (error) {
+        console.error('Error liking group:', error);
+    }
+});
+
   
     // 이미지 슬라이드 기능
 let currentIndex = 0; // 첫 번째 배지를 표시하기 위해 초기 인덱스를 0으로 설정
