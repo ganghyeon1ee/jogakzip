@@ -88,50 +88,58 @@
   <script>
     // 그룹 및 게시글 데이터 초기화
     document.addEventListener("DOMContentLoaded", async () => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const groupId = urlParams.get('groupId');
-  
-       // 그룹 정보 가져오기
-try {
-    const response = await fetch(`http://localhost:3000/api/groups/${groupId}`);
-    const groupData = await response.json();
+    const urlParams = new URLSearchParams(window.location.search);
+    const groupId = urlParams.get('groupId');
 
-    if (response.ok) {
-        document.getElementById('group-image').src = groupData.imageUrl;
-        document.getElementById('group-name').textContent = groupData.name;
-        document.getElementById('group-created-at').textContent = new Date(groupData.createdAt).toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
-        document.getElementById('group-status').textContent = groupData.isPublic ? '공개' : '비공개';
-        document.getElementById('post-count').textContent = groupData.postCount;
-        document.getElementById('like-count').textContent = groupData.likeCount;
-        document.getElementById('group-description').textContent = groupData.introduction;
+    // 그룹 정보 가져오기
+    try {
+        const response = await fetch(`http://localhost:3000/api/groups/${groupId}`);
+        const groupData = await response.json();
 
-        // 배지 정보 로드
-        const badgesContainer = document.getElementById('badge-container');
-        const badgeConditions = [
-            { condition: groupData.consecutivePosts >= 7, badge: 'Frame 1' },  // 7일 연속 추억 등록
-            { condition: groupData.likeCount >= 10000, badge: 'Frame 2' },    // 그룹 공감 1만 개 이상
-            { condition: groupData.postLikes >= 10000, badge: 'Frame 3' }      // 추억 공감 1만 개 이상
-        ];
+        if (response.ok) {
+            document.getElementById('group-image').src = groupData.imageUrl;
+            document.getElementById('group-name').textContent = groupData.name;
+            document.getElementById('group-created-at').textContent = new Date(groupData.createdAt).toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
+            document.getElementById('group-status').textContent = groupData.isPublic ? '공개' : '비공개';
+            document.getElementById('post-count').textContent = groupData.postCount;
+            document.getElementById('like-count').textContent = groupData.likeCount;
+            document.getElementById('group-description').textContent = groupData.introduction;
 
-        badgeConditions.forEach(({ condition, badge }) => {
-            if (condition) {
-                const badgeImg = document.createElement('img');
-                badgeImg.className = `img${badge.split(' ')[1]}`;
-                badgeImg.src = `img/${badge}.png`; // 배지 이미지 경로 설정
-                badgesContainer.appendChild(badgeImg);
+            // 배지 정보 로드
+            const badgesContainer = document.querySelector('.image-container');
+            badgesContainer.innerHTML = '';  // 기존 배지 내용 초기화
+
+            // check if badges exist and handle them correctly
+            if (groupData.badges && groupData.badges.length > 0) {
+                groupData.badges.forEach(badge => {
+                    const badgeImg = document.createElement('img');
+                    // Badge 이름에 따라 이미지 경로를 설정
+                    if (badge === '7일 연속 추억 등록') {
+                        badgeImg.src = 'img/7daysMemory.png';
+                    } else if (badge === '그룹 공감 1만 개 이상 받기') {
+                        badgeImg.src = 'img/10kGroupLikes.png';
+                    } else if (badge === '추억 공감 1만 개 이상 받기') {
+                        badgeImg.src = 'img/10kMemoryLikes.png';
+                    }
+                    badgeImg.alt = badge;  // 이미지 대체 텍스트 설정
+                    badgesContainer.appendChild(badgeImg);
+                });
+            } else {
+                // 배지가 없는 경우 처리 (예: 배지 없음 표시)
+                const noBadgeMessage = document.createElement('p');
+                noBadgeMessage.textContent = "획득한 배지가 없습니다.";
+                badgesContainer.appendChild(noBadgeMessage);
             }
-        });
 
-        // 게시글 불러오기
-        fetchPosts(true);  // 초기화 시 공개된 게시글 불러오기
-    } else {
-        console.error('Error fetching group details:', groupData.message);
+            // 게시글 불러오기
+            fetchPosts(true);  // 초기화 시 공개된 게시글 불러오기
+        } else {
+            console.error('Error fetching group details:', groupData.message);
+        }
+    } catch (error) {
+        console.error('Error fetching group details:', error);
     }
-} catch (error) {
-    console.error('Error fetching group details:', error);
-}
-
-    });
+});
   
     // 게시글 불러오기 함수
     function fetchPosts(isPublic = true, reset = false) {
@@ -218,23 +226,27 @@ try {
     });
   
     // 이미지 슬라이드 기능
-    let currentIndex = 0;
-  
-    document.getElementById("nextBtn").addEventListener("click", function() {
-        const images = document.querySelectorAll(".image-container img");
-        const totalImages = images.length;
-        const visibleImages = 3; // 화면에 보이는 이미지 수
-  
-        currentIndex++;
-        if (currentIndex > totalImages - visibleImages) {
-            currentIndex = 0; // 마지막 이미지를 넘어가면 처음으로 돌아감
-        }
-  
-        const offset = currentIndex * 200; // 각 이미지의 너비 + 간격(5px)
-        images.forEach(img => {
-            img.style.transform = `translateX(${-offset}px)`;
-        });
-    });
+let currentIndex = 0; // 첫 번째 배지를 표시하기 위해 초기 인덱스를 0으로 설정
+
+document.getElementById("nextBtn").addEventListener("click", function() {
+    const images = document.querySelectorAll(".image-container img");
+    const totalImages = images.length;
+    const visibleImages = 3; // 화면에 보이는 이미지 수
+
+    currentIndex++;
+    if (currentIndex > totalImages - visibleImages) {
+        currentIndex = 0; // 마지막 이미지를 넘어가면 처음으로 돌아감
+    }
+
+    const offset = currentIndex * 200; // 각 이미지의 너비 + 간격(5px)
+    document.querySelector('.image-container').style.transform = `translateX(${-offset}px)`;
+});
+
+// 초기에 첫 번째 배지를 보여주도록 설정
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelector('.image-container').style.transform = `translateX(0)`;
+});
+
   
     // 게시글 공개/비공개 버튼 이벤트
     document.getElementById('publicButton').addEventListener('click', function() {
