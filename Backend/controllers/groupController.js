@@ -35,13 +35,11 @@ const createGroup = async (req, res) => {
     }
 };
 
-
-
-
 const updateGroup = async (req, res) => {
     try {
         const { groupId } = req.params;
-        const { name, password, imageUrl, isPublic, introduction } = req.body;
+        const { name, password, introduction } = req.body;
+        let { isPublic } = req.body;
 
         if (!name || !password) {
             return res.status(400).json({ message: "잘못된 요청입니다" });
@@ -53,12 +51,17 @@ const updateGroup = async (req, res) => {
         }
 
         if (group.password !== password) {
+            console.log('비밀번호 불일치:', group.password, password);  // 디버그 용 로그 추가
             return res.status(403).json({ message: "비밀번호가 틀렸습니다" });
         }
 
-        await groupModel.updateGroup(groupId, req.body);
+        // isPublic을 boolean 값으로 변환 후 정수로 변환
+        isPublic = isPublic === 'true' || isPublic === true ? 1 : 0;
+
+        const imageUrl = req.file ? `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}` : req.body.imageUrl;
+        await groupModel.updateGroup(groupId, { name, imageUrl, isPublic, introduction });
         const updatedGroup = await groupModel.findGroupById(groupId);
-        const badges = await groupModel.getGroupBadges(groupId); 
+        const badges = await groupModel.getGroupBadges(groupId);
 
         res.status(200).json({
             id: updatedGroup.id,
@@ -66,12 +69,13 @@ const updateGroup = async (req, res) => {
             imageUrl: updatedGroup.imageUrl,
             isPublic: updatedGroup.isPublic,
             likeCount: updatedGroup.likeCount,
-            badges: badges.map(badge => badge.name), 
+            badges: badges.map(badge => badge.name),
             postCount: updatedGroup.postCount,
             createdAt: updatedGroup.createdAt,
             introduction: updatedGroup.introduction
         });
     } catch (error) {
+        console.error('Error updating group:', error);
         res.status(500).json({ message: "서버 오류" });
     }
 };

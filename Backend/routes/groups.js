@@ -8,9 +8,8 @@ const router = express.Router();
 // 그룹 생성 (multer 미들웨어 추가)
 router.post('/groups', imageController.upload.single('image'), groupController.createGroup);
 
-
-// 그룹 수정
-router.put('/groups/:groupId', groupController.updateGroup);
+// 그룹 수정 (multer 미들웨어 추가)
+router.put('/groups/:groupId', imageController.upload.single('image'), groupController.updateGroup);
 
 // 그룹 삭제
 router.delete('/groups/:groupId', groupController.deleteGroup);
