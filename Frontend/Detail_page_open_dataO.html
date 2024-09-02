@@ -250,14 +250,14 @@ document.getElementById('file-upload').addEventListener('change', function() {
     const password = document.getElementById('delete-password').value;
 
     try {
-        const response = await fetch(`/groups/${groupId}/verify-password`, {
+        const response = await fetch(`/api/groups/${groupId}/verify-password`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ password }),
         });
 
         if (response.ok) {
-            const deleteResponse = await fetch(`/groups/${groupId}`, {
+            const deleteResponse = await fetch(`/api/groups/${groupId}`, {
                 method: 'DELETE',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ password }),
