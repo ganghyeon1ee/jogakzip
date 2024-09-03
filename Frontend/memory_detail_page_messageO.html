@@ -164,7 +164,7 @@
                     <label for="group-password-2" class="group-name-label">수정 권한 인증</label>
                     <input type="password" id="group-password-2" class="group-name-input" placeholder="댓글 비밀번호를 생성해 주세요.">
                 </div>
-                <button class="submit-button2" id="create-group-button">등록하기</button>
+                <button class="submit-button2" id="update-button" data-post-id="123">등록하기</button>
             </div>
         </div>
     </div>
@@ -290,34 +290,9 @@
 
         visibilityIcon.addEventListener('click', toggleVisibility);
     </script>
-    <!-- 데이터 속성으로 postId 저장 -->
-    <button id="update-button" data-post-id="12345">Update Post</button>
+    
+    
 
-    <!-- 숨겨진 입력 필드로 postId 저장 -->
-    <input type="hidden" id="post-id" value="12345">
-
-    <script>
-        function updatePost(postId) {
-            console.log('Updating post with ID:', postId);
-            // 실제 업데이트 로직을 여기에 추가
-        }
-
-        // 데이터 속성에서 postId 가져오기
-        document.getElementById('update-button').addEventListener('click', () => {
-            const postId = document.getElementById('update-button').getAttribute('data-post-id');
-            if (postId) {
-                updatePost(postId);
-            }
-        });
-
-        // 숨겨진 입력 필드에서 postId 가져오기
-        document.getElementById('update-button').addEventListener('click', () => {
-            const postId = document.getElementById('post-id').value;
-            if (postId) {
-                updatePost(postId);
-            }
-        });
-    </script>
     <script>
         async function createPost() {
         const groupId = '/api/groups/{groupId}/posts'; // 실제 groupId를 설정하세요
@@ -356,128 +331,77 @@
 
     </script>
     
+    
 <!-- Additional Scripts -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // 팝업 열기
-            document.getElementById('edit-trigger').addEventListener('click', () => {
-                const popup = document.getElementById('popup-background');
-                popup.style.display = 'flex'; // 팝업을 열기 위해 display를 flex로 설정
+<script>
+function showPopup() {
+    document.getElementById('popup-background').style.display = 'block';
+}
 
-                // 예시: 데이터를 서버로부터 받아와서 폼을 채우는 부분 (필요한 경우)
-                // loadPostData(postId);
-            });
+function hidePopup() {
+    document.getElementById('popup-background').style.display = 'none';
+}
 
-            // 수정하기 버튼 클릭 이벤트
-            document.getElementById('update-button').addEventListener('click', () => {
-                const postId = document.getElementById('update-button').getAttribute('data-post-id'); // 데이터 속성에서 postId 가져오기
-                if (postId) {
-                    updatePost(postId);
-                }
-            });
+async function updatePost(postId) {
+    // 요청을 보내기 전에 올바른 postId를 사용하고 있는지 확인합니다.
+    console.log('Updating post with ID:', postId);
+
+    const nickname = document.getElementById('nickname').value.trim();
+    const title = document.getElementById('title').value.trim();
+    const content = document.getElementById('content').value.trim();
+    const postPassword = document.getElementById('post-password').value.trim();
+    const imageUrl = document.getElementById('image-url').value.trim();
+    const tags = document.getElementById('tags').value.split(',').map(tag => tag.trim()).filter(tag => tag);
+    const location = document.getElementById('location').value.trim();
+    const moment = document.getElementById('moment').value.trim();
+    const isPublic = document.getElementById('visibility-text').textContent === '공개';
+
+    const formData = new FormData();
+    formData.append('nickname', nickname);
+    formData.append('title', title);
+    formData.append('content', content);
+    formData.append('postPassword', postPassword);
+    formData.append('imageUrl', imageUrl);
+    formData.append('tags', JSON.stringify(tags));
+    formData.append('location', location);
+    formData.append('moment', moment);
+    formData.append('isPublic', isPublic ? 1 : 0);
+
+    const fileInput = document.getElementById('file-upload');
+    if (fileInput.files.length > 0) {
+        formData.append('image', fileInput.files[0]);
+    }
+
+    try {
+        const response = await fetch(`/api/posts/${postId}`, {
+            method: 'PUT',
+            body: formData,
         });
 
-        function hidePopup() {
-            document.getElementById('popup-background').style.display = 'none';
+        if (response.ok) {
+            const updatedPost = await response.json();
+            // 수정된 내용을 화면에 반영
+            document.getElementById('post-title').textContent = updatedPost.title;
+            document.getElementById('post-content').textContent = updatedPost.content;
+            document.getElementById('post-image').src = updatedPost.imageUrl;
+            document.getElementById('post-tags').textContent = updatedPost.tags.join(', ');
+            document.getElementById('post-location').textContent = updatedPost.location;
+            document.getElementById('post-moment').textContent = updatedPost.moment;
+            document.getElementById('post-visibility').textContent = updatedPost.isPublic ? '공개' : '비공개';
+            hidePopup(); // 팝업 닫기
+        } else {
+            alert('게시글 수정에 실패했습니다. 다시 시도해 주세요.');
         }
-
-        function updateFileName() {
-            const fileInput = document.getElementById('file-upload');
-            const fileName = fileInput.files.length > 0 ? fileInput.files[0].name : '';
-            document.getElementById('image-url').value = fileName;
-        }
-
-        function toggleVisibility() {
-            const visibilityText = document.getElementById('visibility-text');
-            const visibilityIcon = document.getElementById('visibility-icon');
-            
-            if (visibilityText.textContent === '공개') {
-                visibilityText.textContent = '비공개';
-                visibilityIcon.src = 'img/state=default.png'; // 비공개 아이콘으로 변경
-            } else {
-                visibilityText.textContent = '공개';
-                visibilityIcon.src = 'img/state=active.png'; // 공개 아이콘으로 변경
-            }
-        }
-
-        async function updatePost(postId) {
-            const nickname = document.getElementById('nickname').value.trim() || '';
-            const title = document.getElementById('title').value.trim() || '';
-            const content = document.getElementById('content').value.trim() || '';
-            const postPassword = document.getElementById('post-password').value.trim() || '';
-            const imageUrl = document.getElementById('image-url').value.trim() || '';
-            const tags = document.getElementById('tags').value.split(',').map(tag => tag.trim()).filter(tag => tag) || [];
-            const location = document.getElementById('location').value.trim() || '';
-            const moment = document.getElementById('moment').value.trim() || '';
-            const isPublic = document.getElementById('visibility-text').textContent === '공개';
-
-            const updatedPost = {
-                nickname: nickname,
-                title: title,
-                content: content,
-                postPassword: postPassword,
-                imageUrl: imageUrl,
-                tags: tags,
-                location: location,
-                moment: moment,
-                isPublic: isPublic
-            };
-
-            try {
-                const response = await fetch(`/api/posts/${postId}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(updatedPost)
-                });
-
-                if (!response.ok) {
-                    throw new Error('게시글 수정에 실패했습니다.');
-                }
-
-                const result = await response.json();
-                console.log('게시글 수정 성공:', result);
-
-                // 페이지 요소 업데이트
-                document.querySelector('.date').textContent = nickname;
-                document.querySelector('.info h2').textContent = title;
-                document.querySelector('.info a').textContent = tags.map(tag => `#${tag}`).join(' ');
-                
-                const infoItem3 = document.querySelector('.info-item3');
-                infoItem3.children[0].textContent = location;
-                infoItem3.children[2].textContent = moment;
-
-                // 이미지 업데이트
-                const imageInput = document.getElementById('file-upload');
-                if (imageInput.files.length > 0) {
-                    document.getElementById('main-image').src = URL.createObjectURL(imageInput.files[0]);
-                } else if (imageUrl) {
-                    document.getElementById('main-image').src = imageUrl;
-                }
-
-                // 본문 내용 업데이트
-                document.getElementById('main-content-body').innerHTML = content.replace(/\n/g, '<br>');
-
-                // 팝업 창 닫기
-                hidePopup();
-            } catch (error) {
-                console.error('오류:', error);
-            }
-        }
+    } catch (error) {
+        console.error('Error updating post:', error);
+        alert('게시글 수정 중 오류가 발생했습니다. 다시 시도해 주세요.');
+    }
+}
+</script>
 
 
-        document.getElementById('update-button').addEventListener('click', () => {
-            const postId = document.getElementById('update-button').getAttribute('data-post-id'); // 데이터 속성에서 postId 가져오기
-            if (postId) {
-                updatePost(postId);
-            }
-        });
 
-    </script>
 
-    
-    
     
     
     <script>
