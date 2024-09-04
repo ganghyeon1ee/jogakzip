@@ -62,49 +62,53 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // URL에서 groupId 추출
-            const urlParams = new URLSearchParams(window.location.search);
-            const groupId = urlParams.get('groupId');
-            
-            // groupId가 제대로 추출되었는지 확인하는 로그 추가
-            console.log('Extracted groupId:', groupId);
+    // URL에서 groupId 추출
+    const urlParams = new URLSearchParams(window.location.search);
+    const groupId = urlParams.get('groupId');
 
-            // 폼 제출 시 groupId 포함하여 요청
-            document.getElementById('create-post-form').addEventListener('submit', async function(event) {
-                event.preventDefault();
+    // groupId가 제대로 추출되었는지 확인하는 로그 추가
+    console.log('Extracted groupId:', groupId);
 
-                const form = event.target;
-                const formData = new FormData(form);
+    // 폼 제출 시 groupId 포함하여 요청
+    document.getElementById('create-post-form').addEventListener('submit', async function(event) {
+        event.preventDefault();
 
-                // 필수 필드가 비어 있는지 확인
-                if (!formData.get('nickname') || !formData.get('title') || !formData.get('content') || !formData.get('postPassword')) {
-                    alert("모든 필수 필드를 입력해 주세요.");
-                    return;
-                }
+        const form = event.target;
+        const formData = new FormData(form);
 
-                // groupId를 formData에 추가
-                formData.append('groupId', groupId);
+        // 필수 필드가 비어 있는지 확인
+        if (!formData.get('nickname') || !formData.get('title') || !formData.get('content') || !formData.get('postPassword')) {
+            alert("모든 필수 필드를 입력해 주세요.");
+            return;
+        }
 
-                try {
-                    const response = await fetch(`/api/groups/${groupId}/posts`, {
-                        method: 'POST',
-                        body: formData
-                    });
+        // groupId를 formData에 추가
+        formData.append('groupId', groupId);
 
-                    if (response.ok) {
-                        alert('게시글이 성공적으로 등록되었습니다!');
-                        // 성공적으로 등록된 후 페이지 리디렉션 등 추가 작업 수행
-                    } else {
-                        const errorData = await response.json();
-                        console.error('Error response:', errorData);
-                        alert('게시글 등록 중 오류가 발생했습니다.');
-                    }
-                } catch (error) {
-                    console.error('Error:', error);
-                    alert('서버 오류가 발생했습니다.');
-                }
+        try {
+            const response = await fetch(`/api/groups/${groupId}/posts`, {
+                method: 'POST',
+                body: formData
             });
-        });
+
+            if (response.ok) {
+                const result = await response.json();
+                alert('게시글이 성공적으로 등록되었습니다!');
+
+                // 게시글 작성 성공 시, groupId와 postId를 사용하여 이동
+                const postId = result.id;
+                window.location.href = `memory_detail_page.html?groupId=${groupId}&postId=${postId}`;
+            } else {
+                const errorData = await response.json();
+                console.error('Error response:', errorData);
+                alert('게시글 등록 중 오류가 발생했습니다.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('서버 오류가 발생했습니다.');
+        }
+    });
+});
 
         // 파일 선택 시 파일 이름 표시
         document.getElementById('file-upload').addEventListener('change', function() {
