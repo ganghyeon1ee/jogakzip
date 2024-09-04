@@ -297,6 +297,29 @@ body {
     border-radius: 4px;
 }
 
+.group-name-input, .group-description-input, .file-name-input, .date-picker-input {
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #DDDDDD;
+    border-radius: 5px;
+    width: 100%;
+    color: #282828; /* 검정색으로 설정 */
+    background-color: #FFFFFF;
+}
+
+.group-name-input::placeholder, .group-description-input::placeholder, .file-name-input::placeholder {
+    color: #B8B8B8; /* 회색으로 유지 */
+}
+
+.group-name-input:focus, .group-description-input:focus, .file-name-input:focus {
+    border-color: #282828;
+    outline: none;
+}
+
+.group-name-input:focus::placeholder, .group-description-input:focus::placeholder, .file-name-input:focus::placeholder {
+    color: transparent; /* 입력 중 플레이스홀더 투명 */
+}
+
 .submit-button {
     font-size: 16px;
     color: #fff;

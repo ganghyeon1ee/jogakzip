@@ -1,10 +1,12 @@
 const express = require('express');
 const postController = require('../controllers/postController');
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' });
 
 const router = express.Router();
 
 // 게시글 등록
-router.post('/groups/:groupId/posts', postController.createPost);
+router.post('/groups/:groupId/posts', upload.single('image'), postController.createPost);
 
 // 게시글 수정
 router.put('/posts/:postId', postController.updatePost);

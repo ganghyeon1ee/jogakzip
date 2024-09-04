@@ -5,23 +5,30 @@ const path = require('path');
 const cron = require('node-cron');
 const { checkBadgesForAllGroups } = require('./services/badgeService');
 
-const commentRoutes = require('./routes/comments');
+// 라우트 파일 임포트
 const groupRoutes = require('./routes/groups');
 const postRoutes = require('./routes/posts');
+const commentRoutes = require('./routes/comments');
 const imageRoutes = require('./routes/images');
 
 const app = express();
+
+// 미들웨어 설정
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.use(express.static(path.join(__dirname, '../Frontend')));  
+// 정적 파일 제공 설정
+app.use(express.static(path.join(__dirname, '../Frontend')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+// 라우트 설정
 app.use('/api', groupRoutes);
 app.use('/api', postRoutes);
 app.use('/api', commentRoutes);
 app.use('/api', imageRoutes);
 
+// 크론 작업 설정
 cron.schedule('0 0 * * *', async () => {
     console.log('배지 확인 및 부여 작업 시작');
     try {
@@ -32,6 +39,7 @@ cron.schedule('0 0 * * *', async () => {
     }
 });
 
+// 서버 시작
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

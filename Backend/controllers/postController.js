@@ -1,16 +1,43 @@
 const postModel = require('../models/postModel');
 const { checkAndAwardBadges } = require('../services/badgeService'); 
+const groupModel = require('../models/groupModel'); // 그룹 모델 임포트 추가
 
 const createPost = async (req, res) => {
     try {
-        const { groupId } = req.params;
-        const { nickname, title, content, postPassword, imageUrl, tags, location, moment, isPublic } = req.body;
+        const { groupId } = req.params;  // 여기서 groupId를 params에서 가져오므로 URL에서 전달해야 합니다
+        const { nickname, title, content, postPassword, tags, location, moment, isPublic } = req.body;
 
-        if (!nickname || !title || !content || !postPassword) {
-            return res.status(400).json({ message: "잘못된 요청입니다" });
+        console.log('Received groupId:', groupId); // groupId가 제대로 전달되는지 로그 확인
+
+        // 필수 필드 검증
+        if (!groupId || !nickname || !title || !content || !postPassword) {
+            return res.status(400).json({ message: "모든 필수 필드를 입력해 주세요." });
         }
 
-        const postId = await postModel.createPost(groupId, req.body);
+        // groupId 유효성 검사
+        const groupExists = await groupModel.findGroupById(groupId);
+        if (!groupExists) {
+            return res.status(400).json({ message: "유효하지 않은 그룹 ID입니다." });
+        }
+
+        // 태그 처리
+        const parsedTags = tags ? tags.split(',').map(tag => tag.trim()) : [];
+
+        // 파일 업로드 처리
+        const imageUrl = req.file ? `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}` : null;
+
+        // 게시글 데이터베이스에 저장
+        const postId = await postModel.createPost(groupId, {
+            nickname,
+            title,
+            content,
+            postPassword,
+            imageUrl,
+            tags: JSON.stringify(parsedTags),
+            location,
+            moment,
+            isPublic: parseInt(isPublic, 10) === 1
+        });
 
         await checkAndAwardBadges(groupId);
 
@@ -21,10 +48,10 @@ const createPost = async (req, res) => {
             title,
             content,
             imageUrl,
-            tags,
+            tags: parsedTags,
             location,
             moment,
-            isPublic,
+            isPublic: parseInt(isPublic, 10) === 1,
             likeCount: 0,
             commentCount: 0,
             createdAt: new Date().toISOString()
@@ -34,6 +61,7 @@ const createPost = async (req, res) => {
         res.status(500).json({ message: "서버 오류" });
     }
 };
+
 
 // 게시글 수정
 const updatePost = async (req, res) => {

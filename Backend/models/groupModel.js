@@ -16,13 +16,6 @@ const createGroup = async (groupData) => {
     }
 };
 
-
-// 그룹 id를 활용해 그룹 정보 가져오기
-const findGroupById = async (groupId) => {
-    const [rows] = await db.execute('SELECT * FROM `groups` WHERE id = ?', [groupId]);
-    return rows[0];
-};
-
 // 그룹 수정하기
 const updateGroup = async (groupId, groupData) => {
     const { name, imageUrl, isPublic, introduction } = groupData;
@@ -94,6 +87,16 @@ const getGroups = async (filters) => {
     }
 };
 
+// 그룹 ID로 그룹 찾기
+const findGroupById = async (groupId) => {
+    try {
+        const [rows] = await db.query('SELECT * FROM `groups` WHERE id = ?', [groupId]); // 백틱으로 groups를 감싸서 SQL 구문 오류 해결
+        return rows.length > 0;
+    } catch (error) {
+        console.error('Error finding group:', error);
+        throw new Error('그룹 조회 중 오류가 발생했습니다.');
+    }
+};
 
 // 그룹 공감하기
 const incrementLikeCount = async (groupId) => {
@@ -161,6 +164,7 @@ const getAllGroups = async () => {
 };
 
 module.exports = {
+    findGroupById,
     getAllGroups,
     has7DayStreak,
     hasMemoryWith10kLikes,
@@ -171,7 +175,6 @@ module.exports = {
     getPostsByGroupId,
     incrementLikeCount,
     createGroup,
-    findGroupById,
     updateGroup,
     deleteGroup,
     getGroups,
