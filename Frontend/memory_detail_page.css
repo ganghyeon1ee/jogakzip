@@ -736,34 +736,37 @@ body {
     border: none;
 }
 
-.message-box{
+.message-box {
     margin-bottom: 100px;
 }
 
-.message-box p{
+.message-box p {
     margin-left: 230px;
     font-weight: 500;
+    text-align: left; /* 댓글 수를 왼쪽 정렬 */
 }
 
-.message .message-content h4{
-    margin-left:230px;
-    margin-bottom: 0px;
+.message {
+    text-align: center; /* 댓글이 없을 때의 메시지를 중앙 정렬 */
 }
 
-.message .message-content .date-time{
-    font-weight: 300;
-    color: #b8b8b8;
+#no-comments-message {
+    margin-top: 20px; /* 여유 공간 추가 */
+    display: flex; /* Flexbox를 사용하여 중앙 정렬 */
+    flex-direction: column; /* 세로 방향으로 정렬 */
+    align-items: center; /* 자식 요소를 수평으로 중앙 정렬 */
+    justify-content: center; /* 자식 요소를 수직으로 중앙 정렬 */
+    text-align: center; /* 텍스트를 중앙 정렬 */
 }
 
-.message .message-content .edit{
-    width: 18px;
-    margin-left: 880px;
+#no-comments-message h2 {
+    margin-bottom: 10px; /* '등록된 댓글이 없습니다.'와 '가장 먼저 댓글을 등록해보세요!' 사이에 10px 간격 추가 */
 }
 
-.message .message-content .delete{
-    width: 18px;
-    margin-left: 10px;
+#no-comments-message p {
+    margin: 0; /* 추가적인 여백 제거 */
 }
+
 
 .pagination {
     display: flex;

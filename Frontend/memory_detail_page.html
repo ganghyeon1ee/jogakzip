@@ -7,10 +7,7 @@
     <link rel="stylesheet" href="memory_detail_page.css">
     <link href="https://spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script src="/server.js" defer></script>
-    <script src="/posts.js" defer></script>
-    <script src="/postModel.js" defer></script>
-</head>
+  </head>
 <body>
   <div class="container2">
     <div class="header2">
@@ -20,25 +17,30 @@
   <div class="detail_card">
     <div class="card-content">
         <div class="information">
-          <p><span class="date">달봉이아들&nbsp; </span> &nbsp;| &nbsp;<span class="status">  &nbsp;공개</span>
+          <p>
+            <span class="date" id="group-name">그룹 이름</span>
+            &nbsp; | &nbsp;
+            <span class="status" id="post-visibility">공개 여부</span>
             <div class="info-buttons">
               <!-- 추억 수정하기를 누르면 팝업창 뜨도록 설정 -->
-              <a href="#" onclick="showPopup(); onclick=updatePost('unique-id'); return false;">추억 수정하기</a>
-              <a class="delete" href="#" onclick="showDeletePopup(); onclick=deletePost('unique-id'); return false;">추억 삭제하기</a>
+              <a href="#" onclick="showPopup(); return false;">추억 수정하기</a>
+              <a class="delete" href="#" onclick="showDeletePopup(); return false;">추억 삭제하기</a>
              </div>
           </p>
         </div>
         <div class="info">
-          <h2>인천 앞바다에서 무려 60cm 월척을 낚다!</h2>
+          <h2 id="post-title">게시글 제목</h2>
         </div>
-      <a>#인천&nbsp;&nbsp;#낚시</a>
-      <div class="card-content2">
+        <div id="post-tags">태그들</div>
+        <div class="card-content2">
         <div class="info2">
             <div class="info-item3">
-                <span>인천 앞바다&nbsp;</span><span>&nbsp;•&nbsp;&nbsp;</span><span>24.01.19</span>
+                <span id="post-location">장소</span>
+                &nbsp;•&nbsp;&nbsp;
+                <span id="post-moment">날짜</span>
             </div>
-            <div class="num1"><img src="img/flower.png" alt="꽃">120</div>
-            <div class="num2"><img src="img/talk.png" alt="말풍선">8</div>
+            <div class="num1"><img src="img/flower.png" alt="꽃" id="like-count">0</div>
+            <div class="num2"><img src="img/talk.png" alt="말풍선" id="comment-count">0</div>
             <div class="badge">
                 <button class="like-button" id="likeBtn">
                     <img class="flower" src="img/flower.png" alt="꽃">공감 보내기
@@ -52,8 +54,7 @@
 
   <hr style="border: 1px solid #DDDDDD; width: 75%;">
 
-
-<!-- 추억 수정하기 팝업창 -->
+  <!-- 추억 수정하기 팝업창 -->
 <div class="popup-background" id="popup-background">
     <div class="popup-content">
         <div class="container3">
@@ -88,23 +89,8 @@
                 <div class="input-wrapper">
                     <label for="tags" class="group-name-label">태그</label>
                     <input type="text" id="tags" class="group-name-input" placeholder="태그를 입력해 주세요. (쉼표로 구분)">
-                    <div class="hash-tag">
-                        <p>
-                            <span>#낚시&nbsp;</span>
-                            <span>X&nbsp;&nbsp;</span>
-                            <span>#인천&nbsp;</span>
-                            <span>X&nbsp;&nbsp;</span>
-                            <span>#바다낚시&nbsp;</span>
-                            <span>X&nbsp;&nbsp;</span>
-                            <span>#꽃&nbsp;</span>
-                            <span>X&nbsp;&nbsp;</span>
-                            <span>#취미&nbsp;</span>
-                            <span>X&nbsp;&nbsp;</span>
-                            <span>#추천&nbsp;</span>
-                            <span>X&nbsp;&nbsp;</span>
-                            <span>#여행&nbsp;</span>
-                            <span>X&nbsp;&nbsp;</span>
-                        </p>
+                    <div class="hash-tag" id="hash-tags">
+                        <!-- 해시 태그를 여기에 동적으로 추가합니다. -->
                     </div>
                     
                     <label for="location" class="group-name-label">장소</label>
@@ -113,10 +99,10 @@
                     <label for="moment" class="group-name-label">추억의 순간</label>
                     <input type="date" id="moment" class="date-picker-input">
 
-                    <label for="visibility" class="group-name-label"  onclick="toggleVisibility()">추억 공개 선택</label>
+                    <label for="visibility" class="group-name-label" onclick="toggleVisibility()">추억 공개 선택</label>
                     <div class="visibility-wrapper">
                         <span id="visibility-text" class="visibility-text">공개</span>
-                        <img id="visibility-icon" src="img/state=active.png" alt="Visibility Icon" class="visibility-icon" onclick="toggleVisibility()">
+                        <img id="visibility-icon" src="img/state=active.png" alt="Visibility Icon" class="visibility-icon">
                     </div>
                 
                     <label for="post-password" class="group-name-label">비밀번호 생성</label>
@@ -129,49 +115,25 @@
     </div>
 </div>
 
-
-<div class="popup-background" id="delete-popup-background">
-    <div class="popup-content2">
-        <div class="container4">
-            <div class="top-content">
-                <h1 class="center-text">추억 삭제</h1>
-                <img src="img/X.png" class="close-icon" onclick="hideDeletePopup()">
-            </div>
-            <div class="input-wrapper">
-                <label for="delete-password" class="group-name-label">삭제 권한 인증</label>
-                <input type="password" id="delete-password" class="group-name-input" placeholder="추억 비밀번호를 입력해 주세요.">
-            </div>
-        </div>
-        <button class="popup-close" onclick="onDeleteButtonClick('YOUR_POST_ID_HERE')">삭제하기</button>
-    </div>
-</div>
-
-    <!-- 댓글 등록하기 팝업 -->
-    <div id="RegisteringPopup" class="popup-overlay">
-        <div class="popup-inner-content">
-            <div class="top-content">
-                <h2>댓글 등록</h2>
-                <img src="img/X.png" class="close-icon" onclick="hideRegisteringPopup()"> <!-- 이미지 클릭 시 팝업 닫기 -->
-            </div>
-            <div class="center-content">
-                <div class="input-wrapper4">
-                    <label for="group-name" class="group-name-label">닉네임</label>
-                    <input type="text" id="group-name" class="group-name-input" placeholder="닉네임을 입력해 주세요.">
-        
-                    <label for="group-description" class="group-name-label">댓글</label>
-                    <textarea id="group-description" class="group-description-input" placeholder="댓글을 입력해 주세요."></textarea>
-        
-                    <label for="group-password-2" class="group-name-label">수정 권한 인증</label>
-                    <input type="password" id="group-password-2" class="group-name-input" placeholder="댓글 비밀번호를 생성해 주세요.">
+    <div class="popup-background" id="delete-popup-background">
+        <div class="popup-content2">
+            <div class="container4">
+                <div class="top-content">
+                    <h1 class="center-text">추억 삭제</h1>
+                    <img src="img/X.png" class="close-icon" onclick="hideDeletePopup()">
                 </div>
-                <button class="submit-button2" id="update-button" data-post-id="123">등록하기</button>
+                <div class="input-wrapper">
+                    <label for="delete-password" class="group-name-label">삭제 권한 인증</label>
+                    <input type="password" id="delete-password" class="group-name-input" placeholder="추억 비밀번호를 입력해 주세요.">
+                </div>
             </div>
+            <button class="popup-close" onclick="onDeleteButtonClick('YOUR_POST_ID_HERE')">삭제하기</button>
         </div>
     </div>
 
     <div class="main-content">
-        <img src="img/image=img4.jpg">
-        <p>
+        <img src="img/image=img4.jpg" id="post-image"> <!-- 게시글 이미지 -->
+        <p id="post-content"> <!-- 게시글 내용 -->
             인천 앞바다에서 월척을 낚았습니다!<br>
             가족들과 기억에 오래도록 남을 멋진 하루였어요 가족들과 기억에 오래도록 남을 멋진 하루였어요 가족들과 기억에 오래도록 남을 멋진 하루였어요<br>
             <br>
@@ -183,273 +145,72 @@
         <button class="load-more" onclick="messageRegisteringPopup()">댓글 등록하기</button>
     </div>
 
-    <!-- 댓글 수정하기 팝업 -->
-    <div id="editCommentPopup" class="popup-overlay">
-        <div class="popup-inner-content">
-            <div class="top-content">
-                <h2>댓글 수정</h2>
-                <img src="img/X.png" class="close-icon" onclick="hideEditCommentPopup()"> <!-- 이미지 클릭 시 팝업 닫기 -->
-            </div>
-            <div class="center-content">
-                <div class="input-wrapper4">
-                    <label for="group-name" class="group-name-label">닉네임</label>
-                    <input type="text" id="group-name" class="group-name-input" placeholder="닉네임을 입력해 주세요.">
-        
-                    <label for="group-description" class="group-name-label">댓글</label>
-                    <textarea id="group-description" class="group-description-input" placeholder="댓글을 입력해 주세요."></textarea>
-        
-                    <label for="group-password-2" class="group-name-label">수정 권한 인증</label>
-                    <input type="password" id="group-password-2" class="group-name-input" placeholder="댓글 비밀번호를 입력해 주세요.">
-                </div>
-                <button class="submit-button2" id="create-group-button">등록하기</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 댓글 삭제하기 팝업 -->
-    <div id="deleteCommentPopup" class="popup-overlay">
-        <div class="popup-content2">
-            <div class="container4">
-                <div class="top-content">
-                    <h1 class="center-text">댓글 삭제</h1>
-                    <img src="img/X.png" class="close-icon" onclick="hideDeleteCommentPopup()"> <!-- 수정된 함수명 사용 -->
-                </div>
-                <div class="input-wrapper">
-                    <label for="delete-password" class="group-name-label">삭제 권한 인증</label>
-                    <input type="password" id="delete-password" class="group-name-input" placeholder="댓글 비밀번호를 입력해 주세요.">
-                </div>
-            </div>
-            <button class="popup-close" onclick="hideDeleteCommentPopup()">삭제하기</button> <!-- 수정된 함수명 사용 -->
-        </div>
-    </div>
-
     <div class="message-box">
-        <p>댓글&nbsp;8</p>
+        <p>댓글&nbsp;<span id="comment-count-display">0</span></p>
         <hr style="border: 1px solid #b8b8b8; width: 75%;">
-        <div class="message">
-            <div class="message-content">
-                <h4>다람이네가족&nbsp;<span class="date-time">&nbsp;&nbsp;24.01.18&nbsp; 21:50</span></h4>
-                <div>
-                    <p>우와 60cm이라니..!! 저도 가족들과 가봐야겠어요~
-                        <img class="edit" src="img/icon=edit.png" onclick="showEditCommentPopup()" alt="Edit">
-                        <img class="delete" src="img/icon=delete.png" onclick="showDeleteCommentPopup()" alt="Delete">
-                    </p>
-                </div>
-            </div>
-            <hr style="border: 1px solid #DDDDDD; width: 75%;">
-            <div class="message-content">
-                <h4>핑구&nbsp;<span class="date-time">&nbsp;&nbsp;24.01.18&nbsp; 21:50</span></h4>
-                <div>
-                    <p>우와 60cm이라니..!! 저도 가족들과 가봐야겠어요~
-                        <img class="edit" src="img/icon=edit.png" onclick="showEditCommentPopup()" alt="Edit">
-                        <img class="delete" src="img/icon=delete.png" onclick="showDeleteCommentPopup()" alt="Delete">
-                    </p>
-                </div>
-            </div>
-            <hr style="border: 1px solid #DDDDDD; width: 75%;">
-            <div class="message-content">
-                <h4>달팽스&nbsp;<span class="date-time">&nbsp;&nbsp;24.01.18&nbsp; 21:50</span></h4>
-                <div>
-                    <p>우와 60cm이라니..!! 저도 가족들과 가봐야겠어요~
-                        <img class="edit" src="img/icon=edit.png" onclick="showEditCommentPopup()" alt="Edit">
-                        <img class="delete" src="img/icon=delete.png" onclick="showDeleteCommentPopup()" alt="Delete">
-                    </p>
-                </div>
-            </div>
-            <hr style="border: 1px solid #DDDDDD; width: 75%;">
+        <div class="message" id="no-comments-message">
+            <h2>등록된 댓글이 없습니다.</h2>
+            <p>가장 먼저 댓글을 등록해보세요!</p>
         </div>
-    </div>
-    <div class="pagination">
-        <a href="#" class="prev">&lt;</a> <!-- 이전 페이지 버튼 -->
-        <a href="#" class="page active">1</a> <!-- 현재 페이지 (활성화된 페이지) -->
-        <a href="#" class="page">2</a>
-        <a href="#" class="page">3</a>
-        <a href="#" class="page">4</a>
-        <a href="#" class="page">5</a>
-        <a href="#" class="next">&gt;</a> <!-- 다음 페이지 버튼 -->
-    </div>
-
+    </div>    
 
     <script>
-        // JavaScript for toggling visibility
-        const visibilityText = document.getElementById('visibility-text-2'); // 올바른 ID 사용
-        const visibilityIcon = document.getElementById('visibility-icon-2'); // 올바른 ID 사용
-
-        let isPublic = true; // Initial state is public
-
-        function toggleVisibility() {
-        if (isPublic) {
-            visibilityText.textContent = '비공개';
-            visibilityIcon.src = 'img/state=default.png'; // 변경할 비공개 이미지 경로
-        } else {
-            visibilityText.textContent = '공개';
-            visibilityIcon.src = 'img/state=active.png'; // 원래 공개 이미지 경로
-        }
-        isPublic = !isPublic; // Toggle state
-        }
-
-        visibilityIcon.addEventListener('click', toggleVisibility);
-    </script>
+        document.addEventListener("DOMContentLoaded", async function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const groupId = urlParams.get('groupId');
+            const postId = urlParams.get('postId');
     
-    
-
-    <script>
-        async function createPost() {
-        const groupId = '/api/groups/{groupId}/posts'; // 실제 groupId를 설정하세요
-        const post = {
-            id: 'unique-id', // 서버에서 자동 생성될 수도 있음
-            nickname: '닉네임',
-            title: '제목',
-            content: '내용',
-            postPassword: '비밀번호',
-            imageUrl: '이미지 URL',
-            tags: ['태그1', '태그2'],
-            location: '위치',
-            moment: '모멘트',
-            isPublic: true
-        };
-
-        try {
-            const response = await fetch('/api/posts', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ groupId, ...post }) // groupId를 포함하여 POST 요청
-            });
-
-            if (!response.ok) {
-                throw new Error('게시글 생성에 실패했습니다.');
+            if (!groupId || !postId) {
+                alert("올바른 groupId와 postId가 필요합니다.");
+                return;
             }
-
-            const result = await response.json();
-            console.log('게시글 생성 성공:', result);
-        } catch (error) {
-            console.error('오류:', error);
-        }
-    }
-
-    </script>
     
-    
-<!-- Additional Scripts -->
-<script>
-function showPopup() {
-    document.getElementById('popup-background').style.display = 'block';
-}
-
-function hidePopup() {
-    document.getElementById('popup-background').style.display = 'none';
-}
-
-async function updatePost(postId) {
-    // 요청을 보내기 전에 올바른 postId를 사용하고 있는지 확인합니다.
-    console.log('Updating post with ID:', postId);
-
-    const nickname = document.getElementById('nickname').value.trim();
-    const title = document.getElementById('title').value.trim();
-    const content = document.getElementById('content').value.trim();
-    const postPassword = document.getElementById('post-password').value.trim();
-    const imageUrl = document.getElementById('image-url').value.trim();
-    const tags = document.getElementById('tags').value.split(',').map(tag => tag.trim()).filter(tag => tag);
-    const location = document.getElementById('location').value.trim();
-    const moment = document.getElementById('moment').value.trim();
-    const isPublic = document.getElementById('visibility-text').textContent === '공개';
-
-    const formData = new FormData();
-    formData.append('nickname', nickname);
-    formData.append('title', title);
-    formData.append('content', content);
-    formData.append('postPassword', postPassword);
-    formData.append('imageUrl', imageUrl);
-    formData.append('tags', JSON.stringify(tags));
-    formData.append('location', location);
-    formData.append('moment', moment);
-    formData.append('isPublic', isPublic ? 1 : 0);
-
-    const fileInput = document.getElementById('file-upload');
-    if (fileInput.files.length > 0) {
-        formData.append('image', fileInput.files[0]);
-    }
-
-    try {
-        const response = await fetch(`/api/posts/${postId}`, {
-            method: 'PUT',
-            body: formData,
-        });
-
-        if (response.ok) {
-            const updatedPost = await response.json();
-            // 수정된 내용을 화면에 반영
-            document.getElementById('post-title').textContent = updatedPost.title;
-            document.getElementById('post-content').textContent = updatedPost.content;
-            document.getElementById('post-image').src = updatedPost.imageUrl;
-            document.getElementById('post-tags').textContent = updatedPost.tags.join(', ');
-            document.getElementById('post-location').textContent = updatedPost.location;
-            document.getElementById('post-moment').textContent = updatedPost.moment;
-            document.getElementById('post-visibility').textContent = updatedPost.isPublic ? '공개' : '비공개';
-            hidePopup(); // 팝업 닫기
-        } else {
-            alert('게시글 수정에 실패했습니다. 다시 시도해 주세요.');
-        }
-    } catch (error) {
-        console.error('Error updating post:', error);
-        alert('게시글 수정 중 오류가 발생했습니다. 다시 시도해 주세요.');
-    }
-}
-</script>
-
-
-
-
-    
-    
-    <script>
-        async function handleDeletePost(postId) {
-            const passwordInput = document.getElementById('delete-password').value;
-            const isPasswordValid = await validatePassword(passwordInput);
-
-            if (isPasswordValid) {
-                try {
-                    const response = await fetch(`/api/posts/${postId}`, {
-                        method: 'DELETE',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    });
-
-                    if (!response.ok) {
-                        throw new Error('게시글 삭제에 실패했습니다.');
-                    }
-
-                    const result = await response.json();
-                    console.log('게시글 삭제 성공:', result);
-                    hideDeletePopup();
-                } catch (error) {
-                    console.error('오류:', error);
+            // 게시글 정보 가져오기
+            try {
+                const response = await fetch(`/api/posts/${postId}`);
+                if (!response.ok) {
+                    throw new Error("게시글 정보를 불러오는 데 실패했습니다.");
                 }
-            } else {
-                alert('비밀번호가 잘못되었습니다.');
+                const postData = await response.json();
+    
+                // 게시글 정보를 페이지에 반영
+                document.getElementById('group-name').textContent = postData.groupName;
+                document.getElementById('post-visibility').textContent = postData.isPublic ? '공개' : '비공개';
+                document.getElementById('post-title').textContent = postData.title;
+                
+                // tags 필드를 배열로 변환
+                const tagsArray = Array.isArray(postData.tags) ? postData.tags : JSON.parse(postData.tags || '[]');
+                document.getElementById('post-tags').textContent = tagsArray.map(tag => `#${tag}`).join(' ');
+
+                // 날짜 형식 yy.mm.dd 변환
+                function formatDate(dateString) {
+                    const date = new Date(dateString);
+                    const year = date.getFullYear().toString().slice(2); // 연도 뒤 두 자리
+                    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // 월 두 자리
+                    const day = date.getDate().toString().padStart(2, '0'); // 일 두 자리
+                    return `${year}.${month}.${day}`;
+                }
+
+                document.getElementById('post-location').textContent = postData.location;
+                document.getElementById('post-moment').textContent = formatDate(postData.moment);
+                document.getElementById('like-count').textContent = postData.likeCount;
+                document.getElementById('comment-count').textContent = postData.commentCount;
+                document.getElementById('comment-count-display').textContent = postData.commentCount;
+                document.getElementById('post-image').src = postData.imageUrl;
+                document.getElementById('post-content').innerHTML = postData.content;
+    
+                // 댓글이 없을 때의 메시지
+                if (postData.commentCount > 0) {
+                    document.getElementById('no-comments-message').style.display = 'none';
+                }
+    
+            } catch (error) {
+                console.error('Error fetching post data:', error);
+                alert('게시글 정보를 불러오는 중 오류가 발생했습니다.');
             }
-        }
-
-
-        async function validatePassword(password) {
-            return password === '1234'; // Replace with actual validation logic
-        }
-
-        function showDeletePopup() {
-            document.getElementById('delete-popup-background').style.display = 'block';
-        }
-
-        function hideDeletePopup() {
-            document.getElementById('delete-popup-background').style.display = 'none';
-        }
-
-        function onDeleteButtonClick(postId) {
-            handleDeletePost(postId);
-        }
+        });
     </script>
+    
 
     <script>
         // 댓글 등록 팝업을 여는 함수
@@ -470,153 +231,6 @@ async function updatePost(postId) {
             }
         };
     </script>
-    <script>
-        // 댓글 수정 팝업을 여는 함수
-        function showEditCommentPopup() {
-            document.getElementById('editCommentPopup').style.display = 'flex';
-        }
-
-        // 댓글 수정 팝업을 닫는 함수
-        function hideEditCommentPopup() {
-            document.getElementById('editCommentPopup').style.display = 'none';
-        }
-
-        // 댓글 삭제 팝업을 여는 함수
-        function showDeleteCommentPopup() {
-            document.getElementById('deleteCommentPopup').style.display = 'flex';
-        }
-
-        // 댓글 삭제 팝업을 닫는 함수
-        function hideDeleteCommentPopup() {
-            document.getElementById('deleteCommentPopup').style.display = 'none';
-        }
-
-        // 팝업 외부를 클릭하면 닫기
-        window.onclick = function(event) {
-            if (event.target.classList.contains('popup-overlay')) {
-                document.querySelectorAll('.popup-overlay').forEach(function(overlay) {
-                    overlay.style.display = 'none';
-                });
-            }
-        };
-    </script>
-    <script>
-        document.getElementById("likeBtn").addEventListener("click", function() {
-            const flowerContainer = document.getElementById("flowerContainer");
-            const containerWidth = 50; // 꽃이 분포할 최대 너비
-            const containerHeight = 90; // 꽃이 분포할 최대 높이
-    
-            for (let i = 0; i < 8; i++) { // 꽃 이미지 8개 생성
-                const flower = document.createElement("img");
-                flower.src = "img/flower.png";
-                flower.className = "flower-image";
-    
-                // 꽃 이미지를 버튼 위쪽에 넓게 분포시킴
-                flower.style.left = `${Math.random() * containerWidth - containerWidth / 2}px`;
-                flower.style.top = `${Math.random() * containerHeight - containerHeight / 2}px`;
-    
-                // 불투명도 조정
-                if (i % 2 === 0) {
-                    flower.style.opacity = 0.2; // 일부 꽃을 불투명하게 설정
-                }
-    
-                flowerContainer.appendChild(flower);
-    
-                setTimeout(() => {
-                    flower.remove(); // 애니메이션 후 이미지 제거
-                }, 600);
-            }
-        });
-    </script>
-    <script>
-        const comments = [
-            "댓글 1",
-            "댓글 2",
-            "댓글 3",
-            "댓글 4",
-            "댓글 5",
-            "댓글 6",
-            "댓글 7",
-            "댓글 8",
-            "댓글 9",
-            "댓글 10"
-        ];
-    
-        const commentsPerPage = 3;
-        let currentPage = 1;
-    
-        function displayComments(page) {
-            const start = (page - 1) * commentsPerPage;
-            const end = page * commentsPerPage;
-            const commentsToDisplay = comments.slice(start, end);
-    
-            const commentsContainer = document.getElementById('comments-container');
-            commentsContainer.innerHTML = commentsToDisplay.map(comment => `<p>${comment}</p>`).join('');
-        }
-    
-        function updatePagination() {
-            const paginationLinks = document.querySelectorAll('.pagination .page');
-            paginationLinks.forEach(link => {
-                link.classList.remove('active');
-                if (parseInt(link.textContent) === currentPage) {
-                    link.classList.add('active');
-                }
-            });
-        }
-    
-        document.querySelectorAll('.pagination .page').forEach(link => {
-            link.addEventListener('click', function(event) {
-                event.preventDefault();
-                currentPage = parseInt(this.textContent);
-    
-                // 모든 페이지 링크에서 'active' 클래스 제거
-                document.querySelectorAll('.pagination a').forEach(a => a.classList.remove('active'));
-    
-                // 클릭된 링크에 'active' 클래스 추가
-                this.classList.add('active');
-    
-                // 이전 및 다음 버튼 색상 업데이트
-                document.querySelector('.pagination .prev').classList.remove('active');
-                document.querySelector('.pagination .next').classList.remove('active');
-    
-                displayComments(currentPage);
-            });
-        });
-    
-        document.querySelector('.pagination .prev').addEventListener('click', function(event) {
-            event.preventDefault();
-            if (currentPage > 1) {
-                currentPage--;
-    
-                // 모든 페이지 링크에서 'active' 클래스 제거
-                document.querySelectorAll('.pagination a').forEach(a => a.classList.remove('active'));
-    
-                // 이전 페이지 링크에 'active' 클래스 추가
-                document.querySelector(`.pagination a.page:nth-child(${currentPage + 1})`).classList.add('active');
-    
-                displayComments(currentPage);
-            }
-        });
-    
-        document.querySelector('.pagination .next').addEventListener('click', function(event) {
-            event.preventDefault();
-            if (currentPage < Math.ceil(comments.length / commentsPerPage)) {
-                currentPage++;
-    
-                // 모든 페이지 링크에서 'active' 클래스 제거
-                document.querySelectorAll('.pagination a').forEach(a => a.classList.remove('active'));
-    
-                // 다음 페이지 링크에 'active' 클래스 추가
-                document.querySelector(`.pagination a.page:nth-child(${currentPage + 1})`).classList.add('active');
-    
-                displayComments(currentPage);
-            }
-        });
-    
-        // 초기 댓글 표시
-        displayComments(currentPage);
-    </script>
-    
 
     <!-- 팝업을 열고 닫는 스크립트 -->
     <script>
@@ -635,7 +249,26 @@ async function updatePost(postId) {
             document.getElementById('delete-popup-background').style.display = 'none';
         }
     </script>
-    
+    <script>
+        // JavaScript for toggling visibility
+        const visibilityText = document.getElementById('visibility-text');
+        const visibilityIcon = document.getElementById('visibility-icon');
+
+        let isPublic = true; // Initial state is public
+
+        function toggleVisibility() {
+        if (isPublic) {
+            visibilityText.textContent = '비공개';
+            visibilityIcon.src = 'img/state=default.png'; // 변경할 비공개 이미지 경로
+        } else {
+            visibilityText.textContent = '공개';
+            visibilityIcon.src = 'img/state=active.png'; // 원래 공개 이미지 경로
+        }
+        isPublic = !isPublic; // Toggle state
+        }
+
+        visibilityIcon.addEventListener('click', toggleVisibility);
+    </script>
     <script>
         const inputs = document.querySelectorAll('.group-name-input, .group-description-input, .file-name-input');
   
@@ -646,3 +279,4 @@ async function updatePost(postId) {
         });
     </script>
 </body>
+</html>
