@@ -424,9 +424,14 @@ function fetchPosts(isPublic = true, reset = false) {
                 </div>
             </div>
         `;
-        card.addEventListener('click', function() {
-            window.location.href = `memory_detail.html?groupId=${groupId}&postId=${post.id}`;
-        });
+        // 게시글 클릭 이벤트
+card.addEventListener('click', function() {
+    if (post.isPublic) {
+        window.location.href = `post_detail.html?groupId=${groupId}&postId=${post.id}`;
+    } else {
+        window.location.href = `private_post_auth.html?groupId=${groupId}&postId=${post.id}`;
+    }
+});
         postGrid.appendChild(card);
     });
 })

@@ -1,19 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>그룹 만들기 실패</title>
-    <link rel="stylesheet" href="group_create_fail.css">
+    <title>비공개 그룹 접근 실패</title>
+    <link rel="stylesheet" href="private_group_auth_fail.css">
     <link href="https://spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <div id="popup-background">
         <div id="popup">
-            <h3>그룹 만들기 실패</h3>
-            <p>그룹 등록에 실패했습니다.</p>
+            <h3>비공개 그룹 접근 실패</h3>
+            <p>비밀번호가 일치하지 않습니다.</p>
             <button id="confirm-button">확인</button>
         </div>
     </div>
+    <script>
+        document.getElementById('confirm-button').addEventListener('click', function() {
+            window.location.href = 'group_list.html';
+        });
+    </script>
 </body>
+</html>

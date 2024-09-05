@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>조각집_추억 만들기</title>
+    <title>추억 만들기</title>
     <link rel="stylesheet" href="memory_update_page.css">
     <link href="https://spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css" rel="stylesheet">
 </head>
@@ -97,7 +97,7 @@
 
                 // 게시글 작성 성공 시, groupId와 postId를 사용하여 이동
                 const postId = result.id;
-                window.location.href = `memory_detail.html?groupId=${groupId}&postId=${postId}`;
+                window.location.href = `post_detail.html?groupId=${groupId}&postId=${postId}`;
             } else {
                 const errorData = await response.json();
                 console.error('Error response:', errorData);
