@@ -18,7 +18,7 @@
     <div class="card-content">
         <div class="information">
           <p>
-            <span class="date" id="group-name">그룹 이름</span>
+            <span class="nickname" id="nickname">닉네임</span>
             &nbsp; | &nbsp;
             <span class="status" id="post-visibility">공개 여부</span>
             <div class="info-buttons">
@@ -167,7 +167,8 @@
                 const postData = await response.json();
     
                 // 게시글 정보를 페이지에 반영
-                document.getElementById('group-name').textContent = postData.groupName;
+                // 닉네임 요소에 데이터 설정
+                document.getElementById('nickname').textContent = postData.nickname;
                 document.getElementById('post-visibility').textContent = postData.isPublic ? '공개' : '비공개';
                 document.getElementById('post-title').textContent = postData.title;
                 

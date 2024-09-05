@@ -59,7 +59,7 @@
   <div class="container">
     <div class="header">
         <h1>추억 목록</h1>
-        <button onclick="location.href='http://127.0.0.1:3000/memory_update_page.html'">추억 올리기</button>
+        <button onclick="location.href='http://127.0.0.1:3000/memory_update_page.html?groupId=' + new URLSearchParams(window.location.search).get('groupId')">추억 올리기</button>
     </div>
     <div class="buttons-container">
         <div class="buttons">
@@ -425,7 +425,7 @@ function fetchPosts(isPublic = true, reset = false) {
             </div>
         `;
         card.addEventListener('click', function() {
-            window.location.href = `Detail_page_no_data.html?postId=${post.id}`;
+            window.location.href = `memory_detail_page.html?postId=${post.id}`;
         });
         postGrid.appendChild(card);
     });
