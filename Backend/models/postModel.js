@@ -71,8 +71,8 @@ const getPosts = async (groupId, { page, pageSize, sortBy, keyword, isPublic }) 
 
     if (keyword) {
         const searchPattern = `%${keyword}%`;
-        query += ` AND (title LIKE ? OR JSON_CONTAINS(tags, ?, "$"))`;
-        queryParams.push(searchPattern, `"${keyword}"`);
+        query += ` AND (title LIKE ? OR JSON_CONTAINS(tags, ?))`;
+        queryParams.push(searchPattern, JSON.stringify([keyword]));
     }
 
     switch (sortBy) {
@@ -98,7 +98,7 @@ const getPosts = async (groupId, { page, pageSize, sortBy, keyword, isPublic }) 
         FROM posts
         WHERE groupId = ?
         ${isPublic !== undefined ? ' AND isPublic = ?' : ''}
-        ${keyword ? ' AND (title LIKE ? OR JSON_CONTAINS(tags, ?, "$"))' : ''}`,
+        ${keyword ? ' AND (title LIKE ? OR JSON_CONTAINS(tags, ?))' : ''}`,
         isPublic !== undefined ? [groupId, isPublic, ...queryParams.slice(2, queryParams.length - 2)] : [groupId, ...queryParams.slice(1, queryParams.length - 2)]
     );
     
@@ -109,7 +109,7 @@ const getPosts = async (groupId, { page, pageSize, sortBy, keyword, isPublic }) 
         currentPage: page,
         totalPages: totalPages,
         totalItemCount: totalItemCount,
-        data: posts, // posts 데이터 추가
+        data: posts,
     };
 };
 

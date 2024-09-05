@@ -129,6 +129,7 @@ const getPosts = async (req, res) => {
         const { groupId } = req.params;
         const { page = 1, pageSize = 10, sortBy = 'latest', keyword = '', isPublic = 1 } = req.query;
 
+        // 유효성 검사
         if (isNaN(page) || isNaN(pageSize) || page <= 0 || pageSize <= 0) {
             return res.status(400).json({ message: "잘못된 요청입니다" });
         }
@@ -156,6 +157,7 @@ const getPosts = async (req, res) => {
         res.status(500).json({ message: "서버 오류" });
     }
 };
+
 
 
 // 게시글 상세 정보 조회

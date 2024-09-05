@@ -648,10 +648,10 @@ body {
 
 
 .grid {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 20px;
-    justify-content: center;
+    justify-items: center;
     margin-top: 20px;
 }
 
@@ -659,39 +659,39 @@ body {
     background-color: #fff;
     border: 1px solid #f4f4f4;
     border-radius: 10px;
-    display: inline-block; /* 카드가 텍스트에 맞춰 확장되도록 변경 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    vertical-align: top; /* 여러 카드가 있을 때 세로 정렬을 맞춤 */
-    width: 20%;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
 }
+
 .card:hover {
     transform: translateY(-10px) scale(1.05);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .card img {
-    width: 90%;
+    width: 100%;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
-    margin-top: 20px;
 }
 
 .card-content2 {
-    padding: 5px 8px;
+    padding: 10px;
     text-align: left;
-    padding-top: 5px;
-    white-space: nowrap; /* 텍스트가 한 줄로 유지되도록 설정 */
-    padding-left: 15px;
-    padding-right: 10px;
+    width: 100%;
 }
 
 .card-content2 h2 {
     margin: 5px 0;
     font-size: 16px;
-    white-space: nowrap; /* 텍스트가 한 줄로 유지되도록 설정 */
-    overflow: hidden; /* 카드 너비가 고정된 경우 넘치는 텍스트를 숨김 */
-    text-overflow: ellipsis; /* 카드 너비가 고정된 경우 넘치는 텍스트에 ... 추가 */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .card-content2 p {
@@ -701,12 +701,8 @@ body {
     margin-bottom: 10px;
 }
 
-.date2 {
+.date2, .status2 {
     color: #282828;
-}
-
-.status2 {
-    color: #8d8d8d;
 }
 
 .card-content2 a {
@@ -720,41 +716,56 @@ body {
 
 .card-content2 .info2 {
     display: flex;
-    gap: 15px;
-    justify-content: flex-start;
+    justify-content: space-between;
     font-size: 10px;
     color: #b8b8b8;
-    padding-left: 5px;
-    padding-right: 5px;
-    padding-bottom: 5px;
-    padding-top: 5px;
-}
-.info2 .num1{
-    margin-left: 50px;
+    padding: 5px 0;
 }
 
-.info2 .info-item3 .num1{
-    color: #282828;
-    font-size: 14px;
-}
-
-.info2 .info-item3 .num2{
-    color: #282828;
-    font-size: 14px;
-}
-
-.info-item3 {
-    text-align: left; /* 왼쪽 정렬 */
-    color: #282828;
-    font-size: 10px;
+.info2 .num1, .info2 .num2 {
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
 }
 
 .info2 img {
     width: 14px;
     height: 14px;
     vertical-align: middle;
-    margin-top: 0px;
-    margin-right: 0px;
+}
+
+/* Load more button style */
+.load-more {
+    display: block;
+    width: 200px;
+    text-align: center;
+    padding: 15px;
+    background-color: #fff;
+    border: 1px solid #282828;
+    border-radius: 10px;
+    margin: 20px auto;
+    cursor: pointer;
+}
+
+.load-more:hover {
+    background-color: #282828;
+    color: white;
+    border: none;
+}
+
+@media (max-width: 992px) {
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+    .card {
+        max-width: 100%;
+    }
 }
 
 .load-more {

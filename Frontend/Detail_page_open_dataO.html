@@ -74,7 +74,7 @@
             <select id="sortBy">
                 <option value="mostLiked">공감순</option>
                 <option value="latest">최신순</option>
-                <option value="mostPosted">게시글 많은순</option>
+                <option value="mostCommented">댓글 많은순</option>
                 <option value="mostBadges">획득 배지순</option>
             </select>
         </div>
@@ -377,45 +377,61 @@ document.getElementById('file-upload').addEventListener('change', function() {
     });
 
     // 게시글 불러오기 함수
-    function fetchPosts(isPublic = true, reset = false) {
-        const groupId = new URLSearchParams(window.location.search).get('groupId');
-        const postGrid = document.getElementById('postGrid');
-        const sortBy = document.getElementById('sortBy').value;
-        const keyword = document.getElementById('searchInput').value;
+function fetchPosts(isPublic = true, reset = false) {
+    const groupId = new URLSearchParams(window.location.search).get('groupId');
+    const postGrid = document.getElementById('postGrid');
+    const sortBy = document.getElementById('sortBy').value;
+    const keyword = document.getElementById('searchInput').value;
 
-        if (reset) {
-            postGrid.innerHTML = ''; // 게시글 그리드 초기화
+    if (reset) {
+        postGrid.innerHTML = ''; // 게시글 그리드 초기화
+    }
+
+    fetch(`http://localhost:3000/api/groups/${groupId}/posts?isPublic=${isPublic ? 1 : 0}&sortBy=${sortBy}&keyword=${encodeURIComponent(keyword)}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch posts');
+            }
+            return response.json();
+        })
+        .then(data => {
+    data.data.forEach(post => {
+        const card = document.createElement('div');
+        card.className = 'card';
+
+        // `post.tags`가 JSON 문자열로 반환된 경우, 이를 파싱합니다.
+        let tagsArray = [];
+        if (typeof post.tags === 'string' && post.tags.trim() !== '') {
+            try {
+                tagsArray = JSON.parse(post.tags);
+            } catch (error) {
+                console.error('Error parsing tags:', error);
+            }
         }
 
-        fetch(`http://localhost:3000/api/groups/${groupId}/posts?isPublic=${isPublic}&sortBy=${sortBy}&keyword=${keyword}`)
-            .then(response => response.json())
-            .then(data => {
-                data.data.forEach(post => {
-                    const card = document.createElement('div');
-                    card.className = 'card';
-                    card.innerHTML = `
-                        <img src="${post.imageUrl}" alt="게시글 이미지">
-                        <div class="card-content2">
-                            <p><span class="date2">${post.nickname}</span> | <span class="status2">${post.isPublic ? '공개' : '비공개'}</span></p>
-                            <h2>${post.title}</h2>
-                            <a>#${post.tags.join(' #')}</a>
-                            <div class="info2">
-                                <div class="info-item3">
-                                                                      <span>${post.location}</span><span> • </span><span>${new Date(post.createdAt).toLocaleDateString('ko-KR')}</span>
-                                </div>
-                                <div class="num1"><img src="img/flower.png" alt="꽃">${post.likeCount}</div>
-                                <div class="num2"><img src="img/talk.png" alt="말풍선">${post.commentCount}</div>
-                            </div>
-                        </div>
-                    `;
-                    card.addEventListener('click', function() {
-                        window.location.href = `Detail_page_no_data.html?postId=${post.id}`;
-                    });
-                    postGrid.appendChild(card);
-                });
-            })
-            .catch(error => console.error('Error fetching posts:', error));
-    }
+        card.innerHTML = `
+            <img src="${post.imageUrl}" alt="게시글 이미지">
+            <div class="card-content2">
+                <p><span class="date2">${post.nickname}</span> | <span class="status2">${post.isPublic ? '공개' : '비공개'}</span></p>
+                <h2>${post.title}</h2>
+                <a>#${tagsArray.join(' #')}</a>
+                <div class="info2">
+                    <div class="info-item3">
+                        <span>${post.location}</span><span> • </span><span>${new Date(post.createdAt).toLocaleDateString('ko-KR')}</span>
+                    </div>
+                    <div class="num1"><img src="img/flower.png" alt="꽃">${post.likeCount}</div>
+                    <div class="num2"><img src="img/talk.png" alt="말풍선">${post.commentCount}</div>
+                </div>
+            </div>
+        `;
+        card.addEventListener('click', function() {
+            window.location.href = `Detail_page_no_data.html?postId=${post.id}`;
+        });
+        postGrid.appendChild(card);
+    });
+})
+        .catch(error => console.error('Error fetching posts:', error));
+}
 
     // 게시글 공개/비공개 버튼 이벤트
     document.getElementById('publicButton').addEventListener('click', function() {
@@ -427,6 +443,13 @@ document.getElementById('file-upload').addEventListener('change', function() {
         setActiveButton('private');
         fetchPosts(false, true); // 비공개 게시글 불러오기
     });
+
+    document.querySelectorAll('.buttons button').forEach(button => {
+    button.addEventListener('click', function() {
+        document.querySelectorAll('.buttons button').forEach(btn => btn.classList.remove('active'));
+        this.classList.add('active');
+    });
+});
 
     // 게시글 검색 및 정렬 이벤트
     document.getElementById('searchInput').addEventListener('input', function() {

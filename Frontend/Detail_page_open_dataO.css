@@ -448,42 +448,33 @@ body {
     margin-bottom: 40px;
 }
 
-.buttons {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 10px;
-}
-
 .buttons button {
     margin: 5px;
     padding: 8px 15px;
+    font-weight: 600;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* Active button style */
 .buttons .active {
-    background-color: #282828;
-    border: none;
-    color: white;
-    font-weight: 600;
-    border-radius: 20px;
+    background-color: #282828; /* Black background for the active button */
+    color: white; /* White text for the active button */
 }
 
+/* Inactive button style */
 .buttons .inactive {
-    background-color: white;
-    border: none;
-    font-weight: 600;
-    color: #282828;
-    border-radius: 20px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* 부드러운 애니메이션 추가 */
+    background-color: white; /* White background for the inactive button */
+    color: #282828; /* Black text for the inactive button */
+    border: 1px solid #282828; /* Optional: Add a border to the inactive button */
 }
 
-.buttons .inactive:hover{
+.buttons button:hover {
     background-color: #282828;
     color: white;
-    transform: translateY(-1px) scale(1.01); /* 마우스가 다가가면 들썩이고 커지는 효과 */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* 그림자 증가 효과 */
 }
-
 .search-bar {
     display: flex;
     flex-wrap: nowrap;
