@@ -38,7 +38,10 @@
                 &nbsp;•&nbsp;&nbsp;
                 <span id="post-moment">날짜</span>
             </div>
-            <div class="num1"><img src="img/flower.png" alt="꽃" id="like-count">0</div>
+            <div class="num1">
+                <img src="img/flower.png" alt="꽃" id="like-icon">
+                <span id="like-count">0</span>
+            </div>            
             <div class="num2"><img src="img/talk.png" alt="말풍선" id="comment-count">0</div>
             <div class="badge">
                 <button class="like-button" id="likeBtn">
@@ -268,6 +271,39 @@
         inputs.forEach(input => {
             input.addEventListener('click', () => {
                 input.classList.add('clicked');
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("likeBtn").addEventListener("click", async function () {
+                const urlParams = new URLSearchParams(window.location.search);
+                const postId = urlParams.get("postId");
+    
+                if (!postId) {
+                    alert("올바른 postId가 필요합니다.");
+                    return;
+                }
+    
+                try {
+                    const response = await fetch(`/api/posts/${postId}/like`, {
+                        method: "POST"
+                    });
+    
+                    if (response.ok) {
+                        const likeCountElement = document.getElementById("like-count");
+                        let currentLikeCount = parseInt(likeCountElement.textContent);
+    
+                        if (!isNaN(currentLikeCount)) {
+                            currentLikeCount += 1;
+                            likeCountElement.textContent = currentLikeCount;
+                        }
+                    } else {
+                        console.error("Error liking post:", await response.text());
+                    }
+                } catch (error) {
+                    console.error("Error liking post:", error);
+                }
             });
         });
     </script>
