@@ -44,7 +44,9 @@
                         <img src="img/flower.png" alt="꽃" id="like-icon">
                         <span id="like-count">0</span>
                     </div>            
-                    <div class="num2"><img src="img/talk.png" alt="말풍선" id="comment-count">0</div>
+                    <div class="num2">
+                        <img src="img/talk.png" alt="말풍선" id="comment-count">0
+                    </div>
                     <div class="badge">
                         <button class="like-button" id="likeBtn">
                             <img class="flower" src="img/flower.png" alt="꽃">공감 보내기
@@ -135,7 +137,30 @@
     <div class="main-content">
         <img src="404.png" id="post-image">
         <p id="post-content"></p>
-        <button class="load-more" onclick="messageRegisteringPopup()">댓글 등록하기</button>
+        <button class="load-more" onclick="showCommentPopup()">댓글 등록하기</button>
+    </div>
+
+    <!-- 댓글 등록하기 팝업 -->
+    <div class="popup-background" id="comment-popup-background">
+        <div class="popup-content">
+            <div class="container">
+                <div class="top-content">
+                    <h1 class="center-text">댓글 등록하기</h1>
+                    <img src="img/X.png" class="close-icon" onclick="hideCommentPopup()">
+                </div>
+                <div class="input-wrapper">
+                    <label for="comment-nickname" class="group-name-label">닉네임</label>
+                    <input type="text" id="comment-nickname" class="group-name-input" placeholder="닉네임을 입력해 주세요.">
+                    
+                    <label for="comment-content" class="group-name-label">댓글 내용</label>
+                    <textarea id="comment-content" class="group-description-input" placeholder="댓글 내용을 입력해 주세요."></textarea>
+                    
+                    <label for="comment-password" class="group-name-label">비밀번호</label>
+                    <input type="password" id="comment-password" class="group-name-input" placeholder="비밀번호를 입력해 주세요.">
+                </div>
+                <button class="submit-button2" onclick="submitComment()">등록하기</button>
+            </div>
+        </div>
     </div>
 
     <div class="message-box">
@@ -148,47 +173,56 @@
     </div>    
 
     <script>
-        // 게시글 데이터 가져오기
+        // 게시글과 댓글 데이터 가져오기
         document.addEventListener("DOMContentLoaded", async function() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const postId = urlParams.get('postId');
-    
-    if (!postId) {
-        alert("올바른 postId가 필요합니다.");
-        return;
-    }
-
-    try {
-        const response = await fetch(`/api/posts/${postId}`);
-        if (!response.ok) {
-            throw new Error("게시글 정보를 불러오는 데 실패했습니다.");
-        }
-        const postData = await response.json();
-
-        document.getElementById('nickname').textContent = postData.nickname;
-        document.getElementById('post-visibility').textContent = postData.isPublic ? '공개' : '비공개';
-        document.getElementById('post-title').textContent = postData.title;
-
-        // tags 처리
-        let tagsArray = [];
-        if (postData.tags) {
-            try {
-                // postData.tags가 JSON 문자열인 경우 파싱
-                tagsArray = JSON.parse(postData.tags);
-
-                // 배열이 아닌 경우 처리
-                if (!Array.isArray(tagsArray)) {
-                    tagsArray = [];
-                }
-            } catch (error) {
-                console.error('Error parsing tags:', error);
-                tagsArray = []; // 파싱 오류 시 빈 배열로 처리
+            const urlParams = new URLSearchParams(window.location.search);
+            const postId = urlParams.get('postId');
+            
+            if (!postId) {
+                alert("올바른 postId가 필요합니다.");
+                return;
             }
-        }
 
-        // 태그 표시
-        document.getElementById('post-tags').textContent = tagsArray.map(tag => `#${tag}`).join(' ');
+            try {
+                // 게시글 데이터 요청
+                const postResponse = await fetch(`/api/posts/${postId}`);
+                if (!postResponse.ok) {
+                    throw new Error("게시글 정보를 불러오는 데 실패했습니다.");
+                }
+                const postData = await postResponse.json();
 
+                // 게시글 데이터 반영
+                document.getElementById('nickname').textContent = postData.nickname;
+                document.getElementById('post-visibility').textContent = postData.isPublic ? '공개' : '비공개';
+                document.getElementById('post-title').textContent = postData.title;
+                document.getElementById('post-location').textContent = postData.location;
+                document.getElementById('post-moment').textContent = formatDate(postData.moment);
+                document.getElementById('like-count').textContent = postData.likeCount;
+                document.getElementById('post-image').src = postData.imageUrl;
+                document.getElementById('post-content').innerHTML = postData.content;
+
+                // 댓글 목록 요청
+                const commentsResponse = await fetch(`/api/posts/${postId}/comments?page=1&pageSize=10`);
+                if (!commentsResponse.ok) {
+                    throw new Error("댓글 정보를 불러오는 데 실패했습니다.");
+                }
+                const commentsData = await commentsResponse.json();
+
+                // 댓글 수 반영
+                document.getElementById('comment-count').textContent = commentsData.totalItemCount; // 댓글 수 업데이트
+                document.getElementById('comment-count-display').textContent = commentsData.totalItemCount;
+
+                if (commentsData.totalItemCount > 0) {
+                    document.getElementById('no-comments-message').style.display = 'none';
+                }
+
+            } catch (error) {
+                console.error('Error fetching post or comments data:', error);
+                alert('게시글 또는 댓글 정보를 불러오는 중 오류가 발생했습니다.');
+            }
+        });
+
+        // 날짜 포맷 함수
         function formatDate(dateString) {
             const date = new Date(dateString);
             const year = date.getFullYear().toString().slice(2); 
@@ -197,25 +231,50 @@
             return `${year}.${month}.${day}`;
         }
 
-        document.getElementById('post-location').textContent = postData.location;
-        document.getElementById('post-moment').textContent = formatDate(postData.moment);
-        document.getElementById('like-count').textContent = postData.likeCount;
-        document.getElementById('comment-count').textContent = postData.commentCount;
-        document.getElementById('comment-count-display').textContent = postData.commentCount;
-        document.getElementById('post-image').src = postData.imageUrl;
-        document.getElementById('post-content').innerHTML = postData.content;
-
-        if (postData.commentCount > 0) {
-            document.getElementById('no-comments-message').style.display = 'none';
+        // 댓글 등록 팝업
+        function showCommentPopup() {
+            document.getElementById('comment-popup-background').style.display = 'flex';
         }
 
-    } catch (error) {
-        console.error('Error fetching post data:', error);
-        alert('게시글 정보를 불러오는 중 오류가 발생했습니다.');
-    }
-});
+        function hideCommentPopup() {
+            document.getElementById('comment-popup-background').style.display = 'none';
+        }
 
+        // 댓글 등록 로직
+        async function submitComment() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const postId = urlParams.get('postId');
+            const nickname = document.getElementById('comment-nickname').value;
+            const content = document.getElementById('comment-content').value;
+            const password = document.getElementById('comment-password').value;
 
+            if (!nickname || !content || !password) {
+                alert('모든 필드를 입력해 주세요.');
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/posts/${postId}/comments`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ nickname, content, password })
+                });
+
+                if (response.ok) {
+                    alert('댓글이 등록되었습니다!');
+                    location.reload(); // 페이지 새로고침으로 댓글 수 반영
+                } else {
+                    const errorData = await response.json();
+                    alert(errorData.message || '댓글 등록 중 오류가 발생했습니다.');
+                }
+            } catch (error) {
+                console.error('Error submitting comment:', error);
+                alert('댓글 등록 중 오류가 발생했습니다.');
+            }
+            hideCommentPopup();
+        }
+
+        // 추억 수정하기 팝업
         function showEditPopup() {
             document.getElementById('edit-popup-background').style.display = 'flex';
         }
@@ -283,109 +342,6 @@
             }
         });
 
-        // 추억 수정하기
-        async function updateMemory() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const postId = urlParams.get('postId');
-
-    const nickname = document.getElementById('edit-nickname').value;
-    const title = document.getElementById('edit-title').value;
-    const content = document.getElementById('edit-content').value;
-    const postPassword = document.getElementById('edit-password').value;
-    const tags = document.getElementById('edit-tags').value;
-    const location = document.getElementById('edit-location').value;
-    const moment = document.getElementById('edit-moment').value;
-    const isPublic = document.getElementById('edit-visibility-text').textContent === '공개' ? 1 : 0;
-
-    // 이미지 파일
-    const imageFile = document.getElementById('edit-file-upload').files[0];
-
-    if (!nickname || !title || !content || !postPassword) {
-        alert('모든 필드를 입력해 주세요.');
-        return;
-    }
-
-    // FormData 사용하여 multipart/form-data 요청 생성
-    const formData = new FormData();
-    formData.append('nickname', nickname);
-    formData.append('title', title);
-    formData.append('content', content);
-    formData.append('postPassword', postPassword);
-    formData.append('tags', tags);
-    formData.append('location', location);
-    formData.append('moment', moment);
-    formData.append('isPublic', isPublic);
-    
-    if (imageFile) {
-        formData.append('image', imageFile); // 이미지 파일 추가
-    }
-
-    try {
-        const response = await fetch(`/api/posts/${postId}`, {
-            method: 'PUT',
-            body: formData // FormData 객체를 전달하여 이미지 포함 요청
-        });
-
-        if (response.ok) {
-            const updatedPost = await response.json();
-            alert('추억이 성공적으로 수정되었습니다.');
-
-            // 수정된 데이터를 즉시 반영하기 위해 DOM을 업데이트
-            document.getElementById('nickname').textContent = updatedPost.nickname;
-            document.getElementById('post-title').textContent = updatedPost.title;
-            document.getElementById('post-content').innerHTML = updatedPost.content;
-            document.getElementById('post-location').textContent = updatedPost.location;
-            document.getElementById('post-moment').textContent = updatedPost.moment;
-
-            // 이미지가 있으면 업데이트
-            if (updatedPost.imageUrl) {
-                document.getElementById('post-image').src = updatedPost.imageUrl;
-            }
-
-            hideEditPopup();
-        } else {
-            const errorData = await response.json();
-            alert(errorData.message);
-        }
-    } catch (error) {
-        console.error('Error updating post:', error);
-        alert('추억 수정 중 오류가 발생했습니다.');
-    }
-}
-
-        // 추억 삭제하기
-        async function verifyPasswordAndDeleteMemory() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const postId = urlParams.get('postId');
-        const postPassword = document.getElementById('delete-password').value;
-
-        if (!postPassword) {
-            alert('비밀번호를 입력해 주세요.');
-            return;
-        }
-
-        try {
-            const response = await fetch(`/api/posts/${postId}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ postPassword })
-            });
-
-            if (response.ok) {
-                alert('추억이 삭제되었습니다.');
-                hideDeletePopup();
-                window.location.href = 'group_list.html'; 
-            } else {
-                const errorData = await response.json();
-                alert(errorData.message);
-            }
-        } catch (error) {
-            console.error('Error deleting post:', error);
-            alert('추억 삭제 중 오류가 발생했습니다.');
-        }
-    }
     </script>
 </body>
 </html>

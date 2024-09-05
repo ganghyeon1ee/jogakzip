@@ -114,7 +114,6 @@
     });
 });
 
-        // 파일 선택 시 파일 이름 표시
         document.getElementById('file-upload').addEventListener('change', function() {
             const fileName = this.files[0]?.name || '파일을 선택해 주세요.';
             document.getElementById('image-name').value = fileName;
