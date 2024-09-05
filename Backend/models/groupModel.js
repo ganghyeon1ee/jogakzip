@@ -87,16 +87,16 @@ const getGroups = async (filters) => {
     }
 };
 
-// 그룹 ID로 그룹 찾기
 const findGroupById = async (groupId) => {
     try {
-        const [rows] = await db.query('SELECT * FROM `groups` WHERE id = ?', [groupId]); // 백틱으로 groups를 감싸서 SQL 구문 오류 해결
-        return rows.length > 0;
+        const [rows] = await db.query('SELECT * FROM `groups` WHERE id = ?', [groupId]);
+        return rows[0]; // 변경된 부분: 실제 그룹 데이터를 반환해야 함
     } catch (error) {
         console.error('Error finding group:', error);
         throw new Error('그룹 조회 중 오류가 발생했습니다.');
     }
 };
+
 
 // 그룹 공감하기
 const incrementLikeCount = async (groupId) => {
