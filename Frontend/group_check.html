@@ -43,10 +43,19 @@
     </div>
     <script>
         const inputs = document.querySelectorAll('.group-name-input, .group-description-input, .file-name-input');
-    
+        
         inputs.forEach(input => {
             input.addEventListener('click', () => {
                 input.classList.add('clicked');
+            });
+    
+            // Add event listener to change text color to black when input has value
+            input.addEventListener('keyup', () => {
+                if (input.value.trim() !== '') {
+                    input.classList.add('clicked');
+                } else {
+                    input.classList.remove('clicked');
+                }
             });
         });
     
@@ -116,12 +125,14 @@
             const fileNameInput = document.getElementById('representative-image');
             if (this.files.length > 0) {
                 fileNameInput.value = this.files[0].name;
+                fileNameInput.classList.add('clicked'); // Change text color to black
             } else {
                 fileNameInput.value = '파일을 선택해 주세요.'; 
+                fileNameInput.classList.remove('clicked'); // Reset text color to gray
             }
         });
     
         document.getElementById('representative-image').value = '파일을 선택해 주세요.';
-    </script>    
+    </script>               
 </body>
 </html>
