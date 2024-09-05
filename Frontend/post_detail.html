@@ -11,7 +11,13 @@
 <body>
   <div class="container2">
     <div class="header2">
-        <img src="img/logo.png" alt="Centered Image" class="center-image2">
+        <a href="group_list.html">
+            <a href="group_list.html">
+    <a href="group_list.html">
+    <img src="img/logo.png" alt="Centered Image" class="center-image2">
+</a>
+</a>
+        </a>        
     </div>
   </div>   
   <div class="detail_card">
@@ -50,13 +56,12 @@
             </div>
         </div>
     </div>
-    <div class="flower-container" id="flowerContainer"></div> <!-- 꽃 이미지가 나타날 컨테이너 -->
+    <div class="flower-container" id="flowerContainer"></div> 
     </div>
   </div>
 
   <hr style="border: 1px solid #DDDDDD; width: 75%;">
 
-  <!-- 추억 수정하기 팝업창 -->
 <div class="popup-background" id="popup-background">
     <div class="popup-content">
         <div class="container3">
@@ -134,8 +139,8 @@
     </div>
 
     <div class="main-content">
-        <img src="404.png" id="post-image"> <!-- 게시글 이미지 -->
-        <p id="post-content"> <!-- 게시글 내용 -->
+        <img src="404.png" id="post-image">
+        <p id="post-content"> 
         </p>
         <button class="load-more" onclick="messageRegisteringPopup()">댓글 등록하기</button>
     </div>
@@ -168,22 +173,18 @@
                 }
                 const postData = await response.json();
     
-                // 게시글 정보를 페이지에 반영
-                // 닉네임 요소에 데이터 설정
                 document.getElementById('nickname').textContent = postData.nickname;
                 document.getElementById('post-visibility').textContent = postData.isPublic ? '공개' : '비공개';
                 document.getElementById('post-title').textContent = postData.title;
                 
-                // tags 필드를 배열로 변환
                 const tagsArray = Array.isArray(postData.tags) ? postData.tags : JSON.parse(postData.tags || '[]');
                 document.getElementById('post-tags').textContent = tagsArray.map(tag => `#${tag}`).join(' ');
 
-                // 날짜 형식 yy.mm.dd 변환
                 function formatDate(dateString) {
                     const date = new Date(dateString);
-                    const year = date.getFullYear().toString().slice(2); // 연도 뒤 두 자리
-                    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // 월 두 자리
-                    const day = date.getDate().toString().padStart(2, '0'); // 일 두 자리
+                    const year = date.getFullYear().toString().slice(2); 
+                    const month = (date.getMonth() + 1).toString().padStart(2, '0'); 
+                    const day = date.getDate().toString().padStart(2, '0'); 
                     return `${year}.${month}.${day}`;
                 }
 
@@ -246,21 +247,20 @@
         }
     </script>
     <script>
-        // JavaScript for toggling visibility
         const visibilityText = document.getElementById('visibility-text');
         const visibilityIcon = document.getElementById('visibility-icon');
 
-        let isPublic = true; // Initial state is public
+        let isPublic = true; 
 
         function toggleVisibility() {
         if (isPublic) {
             visibilityText.textContent = '비공개';
-            visibilityIcon.src = 'img/state=default.png'; // 변경할 비공개 이미지 경로
+            visibilityIcon.src = 'img/state=default.png'; 
         } else {
             visibilityText.textContent = '공개';
-            visibilityIcon.src = 'img/state=active.png'; // 원래 공개 이미지 경로
+            visibilityIcon.src = 'img/state=active.png';
         }
-        isPublic = !isPublic; // Toggle state
+        isPublic = !isPublic; 
         }
 
         visibilityIcon.addEventListener('click', toggleVisibility);
