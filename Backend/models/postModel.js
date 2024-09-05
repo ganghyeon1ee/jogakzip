@@ -27,11 +27,28 @@ const findPostById = async (postId) => {
 // 게시글 수정
 const updatePost = async (postId, postData) => {
     const { nickname, title, content, imageUrl, tags, location, moment, isPublic } = postData;
-    await db.execute(
-        'UPDATE posts SET nickname = ?, title = ?, content = ?, imageUrl = ?, tags = ?, location = ?, moment = ?, isPublic = ? WHERE id = ?',
-        [nickname, title, content, imageUrl, JSON.stringify(tags), location, moment, isPublic, postId]
-    );
+
+    try {
+        await db.execute(
+            `UPDATE posts SET nickname = ?, title = ?, content = ?, imageUrl = ?, tags = ?, location = ?, moment = ?, isPublic = ? WHERE id = ?`,
+            [
+                nickname || null,
+                title || null,
+                content || null,
+                imageUrl || null,
+                tags || null, // tags는 null을 허용
+                location || null,
+                moment || null,
+                isPublic !== undefined ? isPublic : null,
+                postId
+            ]
+        );
+    } catch (error) {
+        console.error('Error updating post:', error);
+        throw new Error('게시글 수정 중 오류가 발생했습니다.');
+    }
 };
+
 
 // 게시글 삭제
 const deletePost = async (postId) => {

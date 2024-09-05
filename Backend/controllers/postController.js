@@ -67,26 +67,38 @@ const createPost = async (req, res) => {
 const updatePost = async (req, res) => {
     try {
         const { postId } = req.params;
-        const { nickname, title, content, postPassword, imageUrl, tags, location, moment, isPublic } = req.body;
+        const { nickname, title, content, postPassword, tags, location, moment, isPublic } = req.body;
 
-        if (!nickname || !title || !content || !postPassword) {
-            return res.status(400).json({ message: "잘못된 요청입니다" });
-        }
-
+        // 기존 게시글 확인
         const existingPost = await postModel.findPostById(postId);
-
         if (!existingPost) {
-            return res.status(404).json({ message: "존재하지 않습니다" });
+            return res.status(404).json({ message: "존재하지 않는 게시글입니다." });
         }
 
         if (existingPost.postPassword !== postPassword) {
-            return res.status(403).json({ message: "비밀번호가 틀렸습니다" });
+            return res.status(403).json({ message: "비밀번호가 일치하지 않습니다." });
         }
 
-        await postModel.updatePost(postId, req.body);
+        // 이미지 처리: 새 이미지를 업로드한 경우에는 해당 URL을 사용하고, 아니면 기존 URL 사용
+        const imageUrl = req.file ? `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}` : existingPost.imageUrl;
+
+        // 태그 처리
+        const parsedTags = tags ? tags.split(',').map(tag => tag.trim()) : [];
+
+        // 게시글 업데이트
+        await postModel.updatePost(postId, {
+            nickname,
+            title,
+            content,
+            postPassword,
+            imageUrl,
+            tags: JSON.stringify(parsedTags),
+            location,
+            moment,
+            isPublic: parseInt(isPublic, 10) === 1
+        });
 
         const updatedPost = await postModel.findPostById(postId);
-
         res.status(200).json(updatedPost);
     } catch (error) {
         console.error('Error updating post:', error);

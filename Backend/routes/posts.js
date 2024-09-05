@@ -9,7 +9,7 @@ const router = express.Router();
 router.post('/groups/:groupId/posts', upload.single('image'), postController.createPost);
 
 // 게시글 수정
-router.put('/posts/:postId', postController.updatePost);
+router.put('/posts/:postId', upload.single('image'), postController.updatePost);
 
 // 게시글 삭제
 router.delete('/posts/:postId', postController.deletePost);
