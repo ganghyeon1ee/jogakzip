@@ -63,7 +63,6 @@ const createPost = async (req, res) => {
 };
 
 
-// 게시글 수정
 const updatePost = async (req, res) => {
     try {
         const { postId } = req.params;
@@ -79,8 +78,11 @@ const updatePost = async (req, res) => {
             return res.status(403).json({ message: "비밀번호가 일치하지 않습니다." });
         }
 
-        // 이미지 처리: 새 이미지를 업로드한 경우에는 해당 URL을 사용하고, 아니면 기존 URL 사용
-        const imageUrl = req.file ? `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}` : existingPost.imageUrl;
+        // 이미지 처리: req.file이 존재하는 경우 새로운 이미지 URL 생성, 없을 경우 기존 이미지 사용
+        let imageUrl = existingPost.imageUrl; // 기존 이미지 URL
+        if (req.file) {
+            imageUrl = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`; // 새로운 이미지 URL
+        }
 
         // 태그 처리
         const parsedTags = tags ? tags.split(',').map(tag => tag.trim()) : [];
@@ -91,7 +93,7 @@ const updatePost = async (req, res) => {
             title,
             content,
             postPassword,
-            imageUrl,
+            imageUrl,  // 이미지 URL 처리
             tags: JSON.stringify(parsedTags),
             location,
             moment,
@@ -105,6 +107,7 @@ const updatePost = async (req, res) => {
         res.status(500).json({ message: "서버 오류" });
     }
 };
+
 
 // 게시글 삭제
 const deletePost = async (req, res) => {
