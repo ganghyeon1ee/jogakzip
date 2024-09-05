@@ -3,8 +3,8 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>공개 그룹 목록</title>
-    <link rel="stylesheet" href="open_imgO.css">
+    <title>그룹 목록</title>
+    <link rel="stylesheet" href="group_list.css">
     <link href="https://spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
@@ -12,7 +12,7 @@
     <div class="container">
         <div class="header">
             <img src="img/logo.png" alt="Centered Image" class="center-image">
-            <button onclick="location.href='http://127.0.0.1:3000/group_check.html'">그룹 만들기</button>
+            <button onclick="location.href='http://127.0.0.1:3000/group_create.html'">그룹 만들기</button>
         </div>
         <div class="buttons-container">
             <div class="buttons">
@@ -121,9 +121,9 @@
                         // 그룹 카드 클릭 이벤트 리스너 추가
                         card.addEventListener('click', function() {
                             if (group.isPublic) {
-                                window.location.href = `Detail_page_open_dataO.html?groupId=${group.id}`;
+                                window.location.href = `group_detail.html?groupId=${group.id}`;
                             } else {
-                                window.location.href = `img_X_check.html?groupId=${group.id}`;
+                                window.location.href = `private_group_auth.html?groupId=${group.id}`;
                             }
                         });
 

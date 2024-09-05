@@ -97,7 +97,7 @@
 
                 // 게시글 작성 성공 시, groupId와 postId를 사용하여 이동
                 const postId = result.id;
-                window.location.href = `memory_detail_page.html?groupId=${groupId}&postId=${postId}`;
+                window.location.href = `memory_detail.html?groupId=${groupId}&postId=${postId}`;
             } else {
                 const errorData = await response.json();
                 console.error('Error response:', errorData);

@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>비공개 그룹 권한 확인</title>
-    <link rel="stylesheet" href="img_X_check.css">
+    <link rel="stylesheet" href="private_group_auth.css">
     <link href="https://spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css" rel="stylesheet">
 </head>
 <body>
@@ -41,13 +41,13 @@
                 const result = await response.json();
                 
                 if (response.ok) {
-                    window.location.href = `Detail_page_open_dataO.html?groupId=${groupId}`;
+                    window.location.href = `group_detail.html?groupId=${groupId}`;
                 } else {
-                    window.location.href = 'No_open_fail_popup.html';
+                    window.location.href = 'private_group_auth_fail.html';
                 }
             } catch (error) {
                 console.error('Error checking password:', error);
-                window.location.href = 'No_open_fail_popup.html';
+                window.location.href = 'private_group_auth_fail.html';
             }
         });
     </script>

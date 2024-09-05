@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>조각집_그룹 만들기</title>
-    <link rel="stylesheet" href="group_check.css">
+    <link rel="stylesheet" href="group_create.css">
     <link href="https://spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css" rel="stylesheet">
 </head>
 <body>
@@ -108,7 +108,7 @@
                 if (response.ok) {
                     console.log('서버 응답:', data);
                     alert('그룹이 성공적으로 생성되었습니다.');
-                    window.location.href = 'http://localhost:3000/open_imgO.html';
+                    window.location.href = 'http://localhost:3000/group_list.html';
                 } else {
                     console.log('서버 응답:', data);
                     alert('그룹 생성에 실패했습니다: ' + data.message);

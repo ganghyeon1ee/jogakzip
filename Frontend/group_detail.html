@@ -3,8 +3,8 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>그룹 상세 페이지 - 데이터 O</title>
-    <link rel="stylesheet" href="Detail_page_open_dataO.css">
+    <title>그룹 상세 페이지</title>
+    <link rel="stylesheet" href="group_detail.css">
     <link href="https://spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
@@ -266,7 +266,7 @@ document.getElementById('file-upload').addEventListener('change', function() {
 
             if (deleteResponse.ok) {
                 alert('그룹이 성공적으로 삭제되었습니다.');
-                window.location.href = '/open_imgO.html';  // 삭제 후 메인 페이지로 이동
+                window.location.href = '/group_list.html';  // 삭제 후 메인 페이지로 이동
             } else {
                 alert('그룹 삭제에 실패했습니다. 다시 시도해 주세요.');
             }
@@ -425,7 +425,7 @@ function fetchPosts(isPublic = true, reset = false) {
             </div>
         `;
         card.addEventListener('click', function() {
-            window.location.href = `memory_detail_page.html?groupId=${groupId}&postId=${post.id}`;
+            window.location.href = `memory_detail.html?groupId=${groupId}&postId=${post.id}`;
         });
         postGrid.appendChild(card);
     });
