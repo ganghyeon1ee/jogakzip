@@ -1,5 +1,5 @@
 ### 댓글 등록
-POST http://localhost:3000/api/posts/48/comments
+POST http://localhost:3000/api/posts/50/comments
 Content-Type: application/json
 
 {

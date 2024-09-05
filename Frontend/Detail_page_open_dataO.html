@@ -425,7 +425,7 @@ function fetchPosts(isPublic = true, reset = false) {
             </div>
         `;
         card.addEventListener('click', function() {
-            window.location.href = `memory_detail_page.html?postId=${post.id}`;
+            window.location.href = `memory_detail_page.html?groupId=${groupId}&postId=${post.id}`;
         });
         postGrid.appendChild(card);
     });
