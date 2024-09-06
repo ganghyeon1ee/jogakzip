@@ -93,8 +93,7 @@
                     <div class="input-wrapper">
                         <label for="edit-tags" class="group-name-label">태그</label>
                         <input type="text" id="edit-tags" class="group-name-input" placeholder="태그를 입력해 주세요. (쉼표로 구분)">
-                        <div class="hash-tag" id="edit-hash-tags">
-                        </div>
+                        <div class="hash-tag" id="edit-hash-tags"></div>
                         
                         <label for="edit-location" class="group-name-label">장소</label>
                         <input type="text" id="edit-location" class="group-name-input" placeholder="장소를 입력해 주세요.">
@@ -108,8 +107,8 @@
                             <img id="edit-visibility-icon" src="img/state=active.png" alt="Visibility Icon" class="visibility-icon">
                         </div>
                     
-                        <label for="edit-password" class="group-name-label">비밀번호 생성</label>
-                        <input type="password" id="edit-password" class="group-name-input" placeholder="추억 비밀번호를 생성해 주세요.">
+                        <label for="edit-password" class="group-name-label">비밀번호 확인</label>
+                        <input type="password" id="edit-password" class="group-name-input" placeholder="추억 비밀번호를 해 주세요.">
                     </div>
                 </div>
 
@@ -139,57 +138,6 @@
         <img src="404.png" id="post-image">
         <p id="post-content"></p>
         <button class="load-more" onclick="showCommentPopup()">댓글 등록하기</button>
-    </div>
-
-    <!-- 댓글 등록하기 팝업 -->
-    <div class="popup-background" id="comment-popup-background">
-        <div class="popup-content"> 
-            <div class="container">
-                <div class="top-content">
-                    <h1 class="center-text">댓글 등록하기</h1>
-                    <img src="img/X.png" class="close-icon" onclick="hideCommentPopup()">
-                </div>
-                <div class="input-wrapper">
-                    <label for="comment-nickname" class="group-name-label">닉네임</label>
-                    <input type="text" id="comment-nickname" class="group-name-input" placeholder="닉네임을 입력해 주세요.">
-                    
-                    <label for="comment-content" class="group-name-label">댓글 내용</label>
-                    <textarea id="comment-content" class="group-description-input" placeholder="댓글 내용을 입력해 주세요."></textarea>
-                    
-                    <label for="comment-password" class="group-name-label">비밀번호</label>
-                    <input type="password" id="comment-password" class="group-name-input" placeholder="비밀번호를 입력해 주세요.">
-                </div>
-                <button class="submit-button2" onclick="submitComment()">등록하기</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 댓글 수정 팝업 -->
-    <div class="popup-background" id="edit-comment-popup-background">
-        <div class="popup-content">
-            <h1>댓글 수정하기</h1>
-            <input type="hidden" id="edit-comment-id">
-            <label for="edit-comment-nickname">닉네임</label>
-            <input type="text" id="edit-comment-nickname" class="group-name-input">
-            <label for="edit-comment-content">댓글 내용</label>
-            <textarea id="edit-comment-content" class="group-description-input"></textarea>
-            <label for="edit-comment-password">비밀번호</label>
-            <input type="password" id="edit-comment-password" class="group-name-input">
-            <button onclick="submitEditComment()">수정</button>
-            <button onclick="hideEditCommentPopup()">취소</button>
-        </div>
-    </div>
-
-    <!-- 댓글 삭제 팝업 -->
-    <div class="popup-background" id="delete-comment-popup-background">
-        <div class="popup-content">
-            <h1>댓글 삭제</h1>
-            <input type="hidden" id="delete-comment-id">
-            <label for="delete-comment-password">비밀번호</label>
-            <input type="password" id="delete-comment-password" class="group-name-input">
-            <button onclick="submitDeleteComment()">삭제</button>
-            <button onclick="hideDeleteCommentPopup()">취소</button>
-        </div>
     </div>
 
     <!-- 댓글 목록 -->
@@ -231,6 +179,18 @@
                 document.getElementById('like-count').textContent = postData.likeCount;
                 document.getElementById('post-image').src = postData.imageUrl;
                 document.getElementById('post-content').innerHTML = postData.content;
+
+                // 태그 데이터 처리
+                let tagsArray = [];
+                if (typeof postData.tags === 'string' && postData.tags.trim() !== '') {
+                    try {
+                        tagsArray = JSON.parse(postData.tags);
+                    } catch (error) {
+                        console.error('Error parsing tags:', error);
+                    }
+                }
+                const tagContainer = document.getElementById('post-tags');
+                tagContainer.textContent = tagsArray.length > 0 ? `#${tagsArray.join(' #')}` : '태그 없음';
 
                 // 댓글 목록 요청
                 const commentsResponse = await fetch(`/api/posts/${postId}/comments?page=1&pageSize=10`);
@@ -276,136 +236,8 @@
             return `${year}.${month}.${day}`;
         }
 
-        // 댓글 등록 팝업
-        function showCommentPopup() {
-            document.getElementById('comment-popup-background').style.display = 'flex';
-        }
+        // 팝업 열기/닫기 로직
 
-        function hideCommentPopup() {
-            document.getElementById('comment-popup-background').style.display = 'none';
-        }
-
-        // 댓글 등록 로직
-        async function submitComment() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const postId = urlParams.get('postId');
-            const nickname = document.getElementById('comment-nickname').value;
-            const content = document.getElementById('comment-content').value;
-            const password = document.getElementById('comment-password').value;
-
-            if (!nickname || !content || !password) {
-                alert('모든 필드를 입력해 주세요.');
-                return;
-            }
-
-            try {
-                const response = await fetch(`/api/posts/${postId}/comments`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ nickname, content, password })
-                });
-
-                if (response.ok) {
-                    alert('댓글이 등록되었습니다!');
-                    location.reload(); // 페이지 새로고침으로 댓글 수 반영
-                } else {
-                    const errorData = await response.json();
-                    alert(errorData.message || '댓글 등록 중 오류가 발생했습니다.');
-                }
-            } catch (error) {
-                console.error('Error submitting comment:', error);
-                alert('댓글 등록 중 오류가 발생했습니다.');
-            }
-            hideCommentPopup();
-        }
-
-        // 댓글 수정 팝업
-        function showEditCommentPopup(commentId, nickname, content) {
-            document.getElementById('edit-comment-id').value = commentId;
-            document.getElementById('edit-comment-nickname').value = nickname;
-            document.getElementById('edit-comment-content').value = content;
-            document.getElementById('edit-comment-popup-background').style.display = 'flex';
-        }
-
-        function hideEditCommentPopup() {
-            document.getElementById('edit-comment-popup-background').style.display = 'none';
-        }
-
-        // 댓글 수정 로직
-        async function submitEditComment() {
-            const commentId = document.getElementById('edit-comment-id').value;
-            const nickname = document.getElementById('edit-comment-nickname').value;
-            const content = document.getElementById('edit-comment-content').value;
-            const password = document.getElementById('edit-comment-password').value;
-
-            if (!nickname || !content || !password) {
-                alert('모든 필드를 입력해 주세요.');
-                return;
-            }
-
-            try {
-                const response = await fetch(`/api/comments/${commentId}`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ nickname, content, password })
-                });
-
-                if (response.ok) {
-                    alert('댓글이 수정되었습니다!');
-                    location.reload();
-                } else {
-                    const errorData = await response.json();
-                    alert(errorData.message || '댓글 수정 중 오류가 발생했습니다.');
-                }
-            } catch (error) {
-                console.error('Error updating comment:', error);
-                alert('댓글 수정 중 오류가 발생했습니다.');
-            }
-            hideEditCommentPopup();
-        }
-
-        // 댓글 삭제 팝업
-        function showDeleteCommentPopup(commentId) {
-            document.getElementById('delete-comment-id').value = commentId;
-            document.getElementById('delete-comment-popup-background').style.display = 'flex';
-        }
-
-        function hideDeleteCommentPopup() {
-            document.getElementById('delete-comment-popup-background').style.display = 'none';
-        }
-
-        // 댓글 삭제 로직
-        async function submitDeleteComment() {
-            const commentId = document.getElementById('delete-comment-id').value;
-            const password = document.getElementById('delete-comment-password').value;
-
-            if (!password) {
-                alert('비밀번호를 입력해 주세요.');
-                return;
-            }
-
-            try {
-                const response = await fetch(`/api/comments/${commentId}`, {
-                    method: 'DELETE',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ password })
-                });
-
-                if (response.ok) {
-                    alert('댓글이 삭제되었습니다!');
-                    location.reload();
-                } else {
-                    const errorData = await response.json();
-                    alert(errorData.message || '댓글 삭제 중 오류가 발생했습니다.');
-                }
-            } catch (error) {
-                console.error('Error deleting comment:', error);
-                alert('댓글 삭제 중 오류가 발생했습니다.');
-            }
-            hideDeleteCommentPopup();
-        }
-
-        // 추억 수정하기 팝업
         function showEditPopup() {
             document.getElementById('edit-popup-background').style.display = 'flex';
         }
@@ -421,6 +253,36 @@
         function hideDeletePopup() {
             document.getElementById('delete-popup-background').style.display = 'none';
         }
+
+        function showCommentPopup() {
+            document.getElementById('comment-popup-background').style.display = 'flex';
+        }
+
+        function hideCommentPopup() {
+            document.getElementById('comment-popup-background').style.display = 'none';
+        }
+
+        function showEditCommentPopup(commentId, nickname, content) {
+            document.getElementById('edit-comment-id').value = commentId;
+            document.getElementById('edit-comment-nickname').value = nickname;
+            document.getElementById('edit-comment-content').value = content;
+            document.getElementById('edit-comment-popup-background').style.display = 'flex';
+        }
+
+        function hideEditCommentPopup() {
+            document.getElementById('edit-comment-popup-background').style.display = 'none';
+        }
+
+        function showDeleteCommentPopup(commentId) {
+            document.getElementById('delete-comment-id').value = commentId;
+            document.getElementById('delete-comment-popup-background').style.display = 'flex';
+        }
+
+        function hideDeleteCommentPopup() {
+            document.getElementById('delete-comment-popup-background').style.display = 'none';
+        }
+
+        // 추억 수정 및 삭제 로직
 
         function toggleEditVisibility() {
             const visibilityText = document.getElementById('edit-visibility-text');
@@ -472,6 +334,103 @@
                 console.error("Error liking post:", error);
             }
         });
+
+        // 추억 수정하기 로직
+        async function updateMemory() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const postId = urlParams.get('postId');
+
+            const nickname = document.getElementById('edit-nickname').value;
+            const title = document.getElementById('edit-title').value;
+            const content = document.getElementById('edit-content').value;
+            const postPassword = document.getElementById('edit-password').value;
+            const tags = document.getElementById('edit-tags').value;
+            const location = document.getElementById('edit-location').value;
+            const moment = document.getElementById('edit-moment').value;
+            const isPublic = document.getElementById('edit-visibility-text').textContent === '공개' ? 1 : 0;
+
+            const imageFile = document.getElementById('edit-file-upload').files[0];
+
+            if (!nickname || !title || !content || !postPassword) {
+                alert('모든 필드를 입력해 주세요.');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('nickname', nickname);
+            formData.append('title', title);
+            formData.append('content', content);
+            formData.append('postPassword', postPassword);
+            formData.append('tags', tags);
+            formData.append('location', location);
+            formData.append('moment', moment);
+            formData.append('isPublic', isPublic);
+            
+            if (imageFile) {
+                formData.append('image', imageFile);
+            }
+
+            try {
+                const response = await fetch(`/api/posts/${postId}`, {
+                    method: 'PUT',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    const updatedPost = await response.json();
+                    alert('추억이 성공적으로 수정되었습니다.');
+                    document.getElementById('nickname').textContent = updatedPost.nickname;
+                    document.getElementById('post-title').textContent = updatedPost.title;
+                    document.getElementById('post-content').innerHTML = updatedPost.content;
+                    document.getElementById('post-location').textContent = updatedPost.location;
+                    document.getElementById('post-moment').textContent = updatedPost.moment;
+                    if (updatedPost.imageUrl) {
+                        document.getElementById('post-image').src = updatedPost.imageUrl;
+                    }
+                    hideEditPopup();
+                } else {
+                    const errorData = await response.json();
+                    alert(errorData.message);
+                }
+            } catch (error) {
+                console.error('Error updating post:', error);
+                alert('추억 수정 중 오류가 발생했습니다.');
+            }
+        }
+
+        // 추억 삭제 로직
+        async function verifyPasswordAndDeleteMemory() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const postId = urlParams.get('postId');
+            const postPassword = document.getElementById('delete-password').value;
+
+            if (!postPassword) {
+                alert('비밀번호를 입력해 주세요.');
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/posts/${postId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ postPassword })
+                });
+
+                if (response.ok) {
+                    alert('추억이 삭제되었습니다.');
+                    hideDeletePopup();
+                    window.location.href = 'group_list.html'; 
+                } else {
+                    const errorData = await response.json();
+                    alert(errorData.message);
+                }
+            } catch (error) {
+                console.error('Error deleting post:', error);
+                alert('추억 삭제 중 오류가 발생했습니다.');
+            }
+        }
     </script>
 </body>
 </html>
