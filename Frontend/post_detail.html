@@ -45,8 +45,9 @@
                         <span id="like-count">0</span>
                     </div>            
                     <div class="num2">
-                        <img src="img/talk.png" alt="말풍선" id="comment-count">0
-                    </div>
+                        <img src="img/talk.png" alt="말풍선">
+                        <span id="comment-count">0</span>
+                    </div>                    
                     <div class="badge">
                         <button class="like-button" id="likeBtn">
                             <img class="flower" src="img/flower.png" alt="꽃">공감 보내기
@@ -141,30 +142,30 @@
     </div>
 
     <!-- 댓글 등록하기 팝업 -->
-    <div class="popup-background" id="comment-popup-background">
-        <div class="popup-content">
-            <div class="container">
-                <div class="top-content">
-                    <h1 class="center-text">댓글 등록하기</h1>
-                    <img src="img/X.png" class="close-icon" onclick="hideCommentPopup()">
-                </div>
-                <div class="input-wrapper">
-                    <label for="comment-nickname" class="group-name-label">닉네임</label>
-                    <input type="text" id="comment-nickname" class="group-name-input" placeholder="닉네임을 입력해 주세요.">
-                    
-                    <label for="comment-content" class="group-name-label">댓글 내용</label>
-                    <textarea id="comment-content" class="group-description-input" placeholder="댓글 내용을 입력해 주세요."></textarea>
-                    
-                    <label for="comment-password" class="group-name-label">비밀번호</label>
-                    <input type="password" id="comment-password" class="group-name-input" placeholder="비밀번호를 입력해 주세요.">
-                </div>
-                <button class="submit-button2" onclick="submitComment()">등록하기</button>
+<div class="popup-background" id="comment-popup-background">
+    <div class="popup-content"> <!-- 이 부분에 popup-content 클래스를 사용하여 크기를 조정 -->
+        <div class="container">
+            <div class="top-content">
+                <h1 class="center-text">댓글 등록하기</h1>
+                <img src="img/X.png" class="close-icon" onclick="hideCommentPopup()">
             </div>
+            <div class="input-wrapper">
+                <label for="comment-nickname" class="group-name-label">닉네임</label>
+                <input type="text" id="comment-nickname" class="group-name-input" placeholder="닉네임을 입력해 주세요.">
+                
+                <label for="comment-content" class="group-name-label">댓글 내용</label>
+                <textarea id="comment-content" class="group-description-input" placeholder="댓글 내용을 입력해 주세요."></textarea>
+                
+                <label for="comment-password" class="group-name-label">비밀번호</label>
+                <input type="password" id="comment-password" class="group-name-input" placeholder="비밀번호를 입력해 주세요.">
+            </div>
+            <button class="submit-button2" onclick="submitComment()">등록하기</button>
         </div>
     </div>
+</div>
 
     <div class="message-box">
-        <p>댓글&nbsp;<span id="comment-count-display">0</span></p>
+        <p>댓글&nbsp;<span id="comment-count-display"></span></p>
         <hr style="border: 1px solid #b8b8b8; width: 75%;">
         <div class="message" id="no-comments-message">
             <h2>등록된 댓글이 없습니다.</h2>
@@ -174,53 +175,54 @@
 
     <script>
         // 게시글과 댓글 데이터 가져오기
-        document.addEventListener("DOMContentLoaded", async function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const postId = urlParams.get('postId');
-            
-            if (!postId) {
-                alert("올바른 postId가 필요합니다.");
-                return;
-            }
+document.addEventListener("DOMContentLoaded", async function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const postId = urlParams.get('postId');
+    
+    if (!postId) {
+        alert("올바른 postId가 필요합니다.");
+        return;
+    }
 
-            try {
-                // 게시글 데이터 요청
-                const postResponse = await fetch(`/api/posts/${postId}`);
-                if (!postResponse.ok) {
-                    throw new Error("게시글 정보를 불러오는 데 실패했습니다.");
-                }
-                const postData = await postResponse.json();
+    try {
+        // 게시글 데이터 요청
+        const postResponse = await fetch(`/api/posts/${postId}`);
+        if (!postResponse.ok) {
+            throw new Error("게시글 정보를 불러오는 데 실패했습니다.");
+        }
+        const postData = await postResponse.json();
 
-                // 게시글 데이터 반영
-                document.getElementById('nickname').textContent = postData.nickname;
-                document.getElementById('post-visibility').textContent = postData.isPublic ? '공개' : '비공개';
-                document.getElementById('post-title').textContent = postData.title;
-                document.getElementById('post-location').textContent = postData.location;
-                document.getElementById('post-moment').textContent = formatDate(postData.moment);
-                document.getElementById('like-count').textContent = postData.likeCount;
-                document.getElementById('post-image').src = postData.imageUrl;
-                document.getElementById('post-content').innerHTML = postData.content;
+        // 게시글 데이터 반영
+        document.getElementById('nickname').textContent = postData.nickname;
+        document.getElementById('post-visibility').textContent = postData.isPublic ? '공개' : '비공개';
+        document.getElementById('post-title').textContent = postData.title;
+        document.getElementById('post-location').textContent = postData.location;
+        document.getElementById('post-moment').textContent = formatDate(postData.moment);
+        document.getElementById('like-count').textContent = postData.likeCount;
+        document.getElementById('post-image').src = postData.imageUrl;
+        document.getElementById('post-content').innerHTML = postData.content;
 
-                // 댓글 목록 요청
-                const commentsResponse = await fetch(`/api/posts/${postId}/comments?page=1&pageSize=10`);
-                if (!commentsResponse.ok) {
-                    throw new Error("댓글 정보를 불러오는 데 실패했습니다.");
-                }
-                const commentsData = await commentsResponse.json();
+        // 댓글 목록 요청
+        const commentsResponse = await fetch(`/api/posts/${postId}/comments?page=1&pageSize=10`);
+        if (!commentsResponse.ok) {
+            throw new Error("댓글 정보를 불러오는 데 실패했습니다.");
+        }
+        const commentsData = await commentsResponse.json();
 
-                // 댓글 수 반영
-                document.getElementById('comment-count').textContent = commentsData.totalItemCount; // 댓글 수 업데이트
-                document.getElementById('comment-count-display').textContent = commentsData.totalItemCount;
+        // 댓글 수 반영
+        console.log(commentsData.totalItemCount); // 로그에 totalItemCount 출력
+document.getElementById('comment-count').textContent = commentsData.totalItemCount;
+document.getElementById('comment-count-display').textContent = commentsData.totalItemCount;
 
-                if (commentsData.totalItemCount > 0) {
-                    document.getElementById('no-comments-message').style.display = 'none';
-                }
+        if (commentsData.totalItemCount > 0) {
+            document.getElementById('no-comments-message').style.display = 'none';
+        }
 
-            } catch (error) {
-                console.error('Error fetching post or comments data:', error);
-                alert('게시글 또는 댓글 정보를 불러오는 중 오류가 발생했습니다.');
-            }
-        });
+    } catch (error) {
+        console.error('Error fetching post or comments data:', error);
+        alert('게시글 또는 댓글 정보를 불러오는 중 오류가 발생했습니다.');
+    }
+});
 
         // 날짜 포맷 함수
         function formatDate(dateString) {
@@ -241,38 +243,38 @@
         }
 
         // 댓글 등록 로직
-        async function submitComment() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const postId = urlParams.get('postId');
-            const nickname = document.getElementById('comment-nickname').value;
-            const content = document.getElementById('comment-content').value;
-            const password = document.getElementById('comment-password').value;
+async function submitComment() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const postId = urlParams.get('postId');
+    const nickname = document.getElementById('comment-nickname').value;
+    const content = document.getElementById('comment-content').value;
+    const password = document.getElementById('comment-password').value;
 
-            if (!nickname || !content || !password) {
-                alert('모든 필드를 입력해 주세요.');
-                return;
-            }
+    if (!nickname || !content || !password) {
+        alert('모든 필드를 입력해 주세요.');
+        return;
+    }
 
-            try {
-                const response = await fetch(`/api/posts/${postId}/comments`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ nickname, content, password })
-                });
+    try {
+        const response = await fetch(`/api/posts/${postId}/comments`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ nickname, content, password })
+        });
 
-                if (response.ok) {
-                    alert('댓글이 등록되었습니다!');
-                    location.reload(); // 페이지 새로고침으로 댓글 수 반영
-                } else {
-                    const errorData = await response.json();
-                    alert(errorData.message || '댓글 등록 중 오류가 발생했습니다.');
-                }
-            } catch (error) {
-                console.error('Error submitting comment:', error);
-                alert('댓글 등록 중 오류가 발생했습니다.');
-            }
-            hideCommentPopup();
+        if (response.ok) {
+            alert('댓글이 등록되었습니다!');
+            location.reload(); // 페이지 새로고침으로 댓글 수 반영
+        } else {
+            const errorData = await response.json();
+            alert(errorData.message || '댓글 등록 중 오류가 발생했습니다.');
         }
+    } catch (error) {
+        console.error('Error submitting comment:', error);
+        alert('댓글 등록 중 오류가 발생했습니다.');
+    }
+    hideCommentPopup();
+}
 
         // 추억 수정하기 팝업
         function showEditPopup() {
