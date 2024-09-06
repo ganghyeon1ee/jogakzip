@@ -369,46 +369,53 @@ function fetchPosts(isPublic = true, reset = false) {
             return response.json();
         })
         .then(data => {
-    data.data.forEach(post => {
-        const card = document.createElement('div');
-        card.className = 'card';
+            data.data.forEach(post => {
+                const card = document.createElement('div');
+                card.className = 'card';
 
-        let tagsArray = [];
-        if (typeof post.tags === 'string' && post.tags.trim() !== '') {
-            try {
-                tagsArray = JSON.parse(post.tags);
-            } catch (error) {
-                console.error('Error parsing tags:', error);
-            }
-        }
+                // 태그 데이터 처리
+                let tagsArray = [];
+                if (Array.isArray(post.tags)) {
+                    tagsArray = post.tags;
+                } else if (typeof post.tags === 'string' && post.tags.trim() !== '') {
+                    try {
+                        tagsArray = JSON.parse(post.tags);
+                    } catch (error) {
+                        console.error('Error parsing tags:', error);
+                        tagsArray = post.tags.split(',').map(tag => tag.trim());
+                    }
+                }
 
-        card.innerHTML = `
-            <img src="${post.imageUrl}" alt="게시글 이미지">
-            <div class="card-content2">
-                <p><span class="date2">${post.nickname}</span> | <span class="status2">${post.isPublic ? '공개' : '비공개'}</span></p>
-                <h2>${post.title}</h2>
-                <a>#${tagsArray.join(' #')}</a>
-                <div class="info2">
-                    <div class="info-item3">
-                        <span>${post.location}</span><span> • </span><span>${new Date(post.createdAt).toLocaleDateString('ko-KR')}</span>
+                card.innerHTML = `
+                    <img src="${post.imageUrl}" alt="게시글 이미지">
+                    <div class="card-content2">
+                        <p><span class="date2">${post.nickname}</span> | <span class="status2">${post.isPublic ? '공개' : '비공개'}</span></p>
+                        <h2>${post.title}</h2>
+                        <a>${tagsArray.length > 0 ? `#${tagsArray.join(' #')}` : '태그 없음'}</a>
+                        <div class="info2">
+                            <div class="info-item3">
+                                <span>${post.location}</span><span> • </span><span>${new Date(post.createdAt).toLocaleDateString('ko-KR')}</span>
+                            </div>
+                            <div class="num1"><img src="img/flower.png" alt="꽃">${post.likeCount}</div>
+                            <div class="num2"><img src="img/talk.png" alt="말풍선">${post.commentCount}</div>
+                        </div>
                     </div>
-                    <div class="num1"><img src="img/flower.png" alt="꽃">${post.likeCount}</div>
-                    <div class="num2"><img src="img/talk.png" alt="말풍선">${post.commentCount}</div>
-                </div>
-            </div>
-        `;
-card.addEventListener('click', function() {
-    if (post.isPublic) {
-        window.location.href = `post_detail.html?groupId=${groupId}&postId=${post.id}`;
-    } else {
-        window.location.href = `private_post_auth.html?groupId=${groupId}&postId=${post.id}`;
-    }
-});
-        postGrid.appendChild(card);
-    });
-})
+                `;
+                
+                card.addEventListener('click', function() {
+                    if (post.isPublic) {
+                        window.location.href = `post_detail.html?groupId=${groupId}&postId=${post.id}`;
+                    } else {
+                        window.location.href = `private_post_auth.html?groupId=${groupId}&postId=${post.id}`;
+                    }
+                });
+
+                postGrid.appendChild(card);
+            });
+        })
         .catch(error => console.error('Error fetching posts:', error));
 }
+
 
 document.getElementById('publicButton').addEventListener('click', function() {
     setActiveButton('public');

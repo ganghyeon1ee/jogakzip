@@ -182,15 +182,25 @@
 
                 // 태그 데이터 처리
                 let tagsArray = [];
-                if (typeof postData.tags === 'string' && postData.tags.trim() !== '') {
+                if (Array.isArray(postData.tags)) {
+                    // tags가 배열인 경우
+                    tagsArray = postData.tags;
+                } else if (typeof postData.tags === 'string' && postData.tags.trim() !== '') {
+                    // tags가 문자열인 경우 JSON 파싱
                     try {
                         tagsArray = JSON.parse(postData.tags);
                     } catch (error) {
                         console.error('Error parsing tags:', error);
+                        tagsArray = postData.tags.split(',').map(tag => tag.trim());
                     }
                 }
+
                 const tagContainer = document.getElementById('post-tags');
-                tagContainer.textContent = tagsArray.length > 0 ? `#${tagsArray.join(' #')}` : '태그 없음';
+                if (tagsArray.length > 0) {
+                    tagContainer.innerHTML = tagsArray.map(tag => `<span class="tag">#${tag}</span>`).join(' ');
+                } else {
+                    tagContainer.textContent = '태그 없음';
+                }
 
                 // 댓글 목록 요청
                 const commentsResponse = await fetch(`/api/posts/${postId}/comments?page=1&pageSize=10`);
