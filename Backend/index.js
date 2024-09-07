@@ -20,7 +20,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // 정적 파일 제공 설정
 app.use('/img', express.static(path.join(__dirname, '../Frontend/img')));
-app.use('/uploads', express.static(path.join(__dirname, '../Backend/uploads')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // 라우트 설정
 app.use('/api', groupRoutes);
