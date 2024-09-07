@@ -28,8 +28,8 @@ app.use('/api', postRoutes);
 app.use('/api', commentRoutes);
 app.use('/api', imageRoutes);
 
-// 크론 작업 설정
-cron.schedule('0 0 * * *', async () => {
+// 크론 작업 설정 - 5초마다 작업 수행
+cron.schedule('*/5 * * * * *', async () => {
     console.log('배지 확인 및 부여 작업 시작');
     try {
         await checkBadgesForAllGroups();

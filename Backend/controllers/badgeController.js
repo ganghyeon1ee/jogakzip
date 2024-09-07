@@ -1,6 +1,5 @@
 const groupModel = require('../models/groupModel');
 const badgeModel = require('../models/badgeModel');
-const postModel = require('../models/postModel'); // postModel을 추가하여 has7DayStreak와 hasMemoryWith10kLikes를 참조할 수 있도록 수정
 
 const checkAndAwardBadges = async (groupId) => {
     const group = await groupModel.findGroupById(groupId);
@@ -10,7 +9,7 @@ const checkAndAwardBadges = async (groupId) => {
     const badgesToAward = [];
 
     // 7일 연속 추억 등록
-    const has7DayStreak = await postModel.has7DayStreak(groupId);
+    const has7DayStreak = await groupModel.has7DayStreak(groupId);
     if (has7DayStreak) {
         badgesToAward.push('7일 연속 추억 등록');
     }
@@ -32,19 +31,23 @@ const checkAndAwardBadges = async (groupId) => {
     }
 
     // 추억 공감 1만 개 이상 받기
-    const hasMemoryWith10kLikes = await postModel.hasMemoryWith10kLikes(groupId);
+    const hasMemoryWith10kLikes = await groupModel.hasMemoryWith10kLikes(groupId);
     if (hasMemoryWith10kLikes) {
         badgesToAward.push('추억 공감 1만 개 이상 받기');
     }
 
-    for (const badgeName of badgesToAward) {
-        const badge = await badgeModel.findBadgeByName(badgeName);
-        const alreadyAwarded = await badgeModel.hasBadge(groupId, badge.id);
+    // 현재 그룹이 이미 가지고 있는 배지를 조회합니다.
+    const existingBadges = await groupModel.getGroupBadges(groupId);
+    const existingBadgeNames = existingBadges.map(badge => badge.name);
 
-        if (!alreadyAwarded) { // 배지를 이미 받은 경우 중복으로 부여하지 않도록 처리
-            await badgeModel.awardBadgeToGroup(groupId, badge.id);
+    for (const badgeName of badgesToAward) {
+        // 이미 그룹이 보유하고 있는 배지는 건너뜁니다.
+        if (!existingBadgeNames.includes(badgeName)) {
+            const badge = await badgeModel.findBadgeByName(badgeName);
+            if (badge && badge.image) {
+                await badgeModel.awardBadgeToGroup(groupId, badge.id);
+                console.log(`그룹에 '${badgeName}' 배지가 부여되었습니다. 이미지: ${badge.image}`);
+            }
         }
     }
 };
-
-module.exports = { checkAndAwardBadges };
