@@ -9,7 +9,8 @@ const createGroup = async (req, res) => {
 
         const { name, password, isPublic, introduction } = req.body;
         const imageUrl = req.file ? `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}` : null;
-
+        console.log('생성된 이미지 URL:', imageUrl);
+        
         if (!name || !password || !isPublic || !introduction || !imageUrl) {
             return res.status(400).json({ message: "잘못된 요청입니다" });
         }
