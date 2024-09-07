@@ -5,19 +5,19 @@ const { v4: uuidv4 } = require('uuid');
 // 이미지 저장 경로 및 파일명 설정
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        const uploadPath = path.join(__dirname, '../uploads');
-        console.log('파일 저장 경로:', uploadPath);  // 파일 경로 로그 추가
-        cb(null, uploadPath);  // 올바른 경로 설정
+      cb(null, 'uploads/');
     },
     filename: (req, file, cb) => {
-        const uniqueFilename = uuidv4() + path.extname(file.originalname);
-        console.log('저장할 파일명:', uniqueFilename);  // 파일명 로그 추가
-        cb(null, uniqueFilename);  // 고유한 파일 이름 생성
+      const ext = path.extname(file.originalname);  // 파일 확장자 추출
+      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);  // 고유한 파일명 생성
+      cb(null, uniqueSuffix + ext);  // 파일명에 확장자 포함
     }
-});
-
-
-const upload = multer({ storage: storage });
+  });
+  
+  const upload = multer({ 
+    storage: storage,
+    limits: { fileSize: 10 * 1024 * 1024 }  // 10MB로 파일 크기 제한
+  });
 
 const uploadImage = async (req, res) => {
     try {
