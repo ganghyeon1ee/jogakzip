@@ -99,7 +99,7 @@
             }
     
             try {
-                const response = await fetch('http://18.222.136.10/api/groups', {
+                const response = await fetch('/api/groups', {
                     method: 'POST',
                     body: formData
                 });
@@ -108,16 +108,16 @@
                 if (response.ok) {
                     console.log('서버 응답:', data);
                     alert('그룹이 성공적으로 생성되었습니다.');
-                    window.location.href = 'http://18.222.136.10/group_list.html';
+                    window.location.href = '/group_list.html';
                 } else {
                     console.log('서버 응답:', data);
                     alert('그룹 생성에 실패했습니다: ' + data.message);
-                    window.location.href = 'http://18.222.136.10/fail_popup.html';
+                    window.location.href = '/fail_popup.html';
                 }
             } catch (error) {
                 console.error('Error creating group:', error);
                 alert('서버와 통신하는 중 오류가 발생했습니다.');
-                window.location.href = 'http://18.222.136.10/fail_popup.html';
+                window.location.href = '/fail_popup.html';
             }
         });
     
