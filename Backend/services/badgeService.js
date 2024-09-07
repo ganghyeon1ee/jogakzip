@@ -56,8 +56,7 @@ const checkBadgesForAllGroups = async () => {
         for (const group of groups) {
             await checkAndAwardBadges(group.id);
         }
-
-        console.log('모든 그룹에 대해 배지 확인 및 부여 작업을 완료했습니다.');
+        
     } catch (error) {
         console.error('배지 확인 작업 중 오류 발생:', error);
     }

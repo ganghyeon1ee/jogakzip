@@ -33,9 +33,8 @@ cron.schedule('*/5 * * * * *', async () => {
     console.log('배지 확인 및 부여 작업 시작');
     try {
         await checkBadgesForAllGroups();
-        console.log('배지 확인 및 부여 작업 완료');
     } catch (error) {
-        console.error('배지 작업 중 에러 발생:', error);
+        console.error(error);
     }
 });
 
