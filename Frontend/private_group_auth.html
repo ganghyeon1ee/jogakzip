@@ -31,7 +31,7 @@
             const groupId = urlParams.get('groupId');
 
             try {
-                const response = await fetch(`http://localhost:3000/api/groups/${groupId}/verify-password`, {  // 엔드포인트 수정
+                const response = await fetch(`http://18.222.136.10/api/groups/${groupId}/verify-password`, {  // 엔드포인트 수정
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
