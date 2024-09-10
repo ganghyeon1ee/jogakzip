@@ -1,21 +1,17 @@
+const { uploadImageToS3 } = require('./imageController');
 const groupModel = require('../models/groupModel');
 const postModel = require('../models/postModel');
 
 // 그룹 생성
 const createGroup = async (req, res) => {
     try {
-        console.log('요청 바디:', req.body); 
-        console.log('업로드된 파일:', req.file);  
-
         const { name, password, isPublic, introduction } = req.body;
-        const imageUrl = req.file ? `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}` : null;
-        console.log('생성된 이미지 URL:', imageUrl);
-        
+        const imageUrl = req.file ? await uploadImageToS3(req.file) : null;
+
         if (!name || !password || !isPublic || !introduction || !imageUrl) {
             return res.status(400).json({ message: "잘못된 요청입니다" });
         }
 
-        // 그룹 생성 및 데이터베이스 저장
         const groupId = await groupModel.createGroup({ name, password, imageUrl, isPublic, introduction });
         const group = await groupModel.findGroupById(groupId);
 
@@ -31,8 +27,8 @@ const createGroup = async (req, res) => {
             introduction: group.introduction
         });
     } catch (error) {
-        console.error('Error creating group:', error);  // 오류 로그 추가
-        res.status(500).json({ message: "서버 오류", error: error.message });  // JSON 형식의 오류 응답
+        console.error('Error creating group:', error);
+        res.status(500).json({ message: "서버 오류", error: error.message });
     }
 };
 
@@ -42,28 +38,37 @@ const updateGroup = async (req, res) => {
         const { name, password, introduction } = req.body;
         let { isPublic } = req.body;
 
+        // 필수 필드 검증
         if (!name || !password) {
             return res.status(400).json({ message: "잘못된 요청입니다" });
         }
 
+        // 그룹 존재 여부 확인
         const group = await groupModel.findGroupById(groupId);
         if (!group) {
             return res.status(404).json({ message: "존재하지 않습니다" });
         }
 
+        // 비밀번호 일치 여부 확인
         if (group.password !== password) {
-            console.log('비밀번호 불일치:', group.password, password);  // 디버그 용 로그 추가
             return res.status(403).json({ message: "비밀번호가 틀렸습니다" });
         }
 
-        // isPublic을 boolean 값으로 변환 후 정수로 변환
+        // 공개 여부 처리
         isPublic = isPublic === 'true' || isPublic === true ? 1 : 0;
 
-        const imageUrl = req.file ? `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}` : req.body.imageUrl;
+        // S3에 이미지 업로드 처리 (이미지가 있는 경우)
+        let imageUrl = group.imageUrl;  // 기존 이미지 URL 사용
+        if (req.file) {
+            imageUrl = await uploadImageToS3(req.file);  // S3 업로드 후 URL 반환
+        }
+
+        // 그룹 정보 업데이트
         await groupModel.updateGroup(groupId, { name, imageUrl, isPublic, introduction });
         const updatedGroup = await groupModel.findGroupById(groupId);
         const badges = await groupModel.getGroupBadges(groupId);
 
+        // 업데이트된 그룹 정보 반환
         res.status(200).json({
             id: updatedGroup.id,
             name: updatedGroup.name,

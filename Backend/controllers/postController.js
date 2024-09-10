@@ -1,32 +1,25 @@
+const { uploadImageToS3 } = require('./imageController');
 const postModel = require('../models/postModel');
-const { checkAndAwardBadges } = require('../services/badgeService'); 
-const groupModel = require('../models/groupModel'); // 그룹 모델 임포트 추가
+const { checkAndAwardBadges } = require('../services/badgeService');
+const groupModel = require('../models/groupModel');
 
 const createPost = async (req, res) => {
     try {
-        const { groupId } = req.params;  // 여기서 groupId를 params에서 가져오므로 URL에서 전달해야 합니다
+        const { groupId } = req.params;
         const { nickname, title, content, postPassword, tags, location, moment, isPublic } = req.body;
 
-        console.log('Received groupId:', groupId); // groupId가 제대로 전달되는지 로그 확인
-
-        // 필수 필드 검증
         if (!groupId || !nickname || !title || !content || !postPassword) {
             return res.status(400).json({ message: "모든 필수 필드를 입력해 주세요." });
         }
 
-        // groupId 유효성 검사
         const groupExists = await groupModel.findGroupById(groupId);
         if (!groupExists) {
             return res.status(400).json({ message: "유효하지 않은 그룹 ID입니다." });
         }
 
-        // 태그 처리
         const parsedTags = tags ? tags.split(',').map(tag => tag.trim()) : [];
+        const imageUrl = req.file ? await uploadImageToS3(req.file) : null;
 
-        // 파일 업로드 처리
-        const imageUrl = req.file ? `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}` : null;
-
-        // 게시글 데이터베이스에 저장
         const postId = await postModel.createPost(groupId, {
             nickname,
             title,
@@ -62,7 +55,6 @@ const createPost = async (req, res) => {
     }
 };
 
-
 const updatePost = async (req, res) => {
     try {
         const { postId } = req.params;
@@ -74,14 +66,15 @@ const updatePost = async (req, res) => {
             return res.status(404).json({ message: "존재하지 않는 게시글입니다." });
         }
 
+        // 비밀번호 확인
         if (existingPost.postPassword !== postPassword) {
             return res.status(403).json({ message: "비밀번호가 일치하지 않습니다." });
         }
 
-        // 이미지 처리: req.file이 존재하는 경우 새로운 이미지 URL 생성, 없을 경우 기존 이미지 사용
-        let imageUrl = existingPost.imageUrl; // 기존 이미지 URL
+        // 이미지 처리: req.file이 존재하는 경우 S3에 업로드, 없으면 기존 이미지 사용
+        let imageUrl = existingPost.imageUrl;  // 기존 이미지 URL 사용
         if (req.file) {
-            imageUrl = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`; // 새로운 이미지 URL
+            imageUrl = await uploadImageToS3(req.file);  // S3에 업로드 후 URL 반환
         }
 
         // 태그 처리
@@ -107,7 +100,6 @@ const updatePost = async (req, res) => {
         res.status(500).json({ message: "서버 오류" });
     }
 };
-
 
 // 게시글 삭제
 const deletePost = async (req, res) => {
