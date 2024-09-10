@@ -1,7 +1,7 @@
 const db = require('../db/db');
 const groupModel = require('./groupModel');
 
-// 그룹 생성하기
+// models/groupModel.js
 const createGroup = async (groupData) => {
     try {
         const { name, password, imageUrl, isPublic, introduction } = groupData;

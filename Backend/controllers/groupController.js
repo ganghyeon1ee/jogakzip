@@ -1,17 +1,33 @@
-const { uploadImageToS3 } = require('./imageController');
 const groupModel = require('../models/groupModel');
+const { uploadImageToS3 } = require('../utils/imageUtils');  // S3 업로드 함수
 
-// 그룹 생성
 const createGroup = async (req, res) => {
     try {
         const { name, password, isPublic, introduction } = req.body;
-        const imageUrl = req.file ? await uploadImageToS3(req.file) : null;
+        let imageUrl = '';
 
-        if (!name || !password || !isPublic || !introduction || !imageUrl) {
+        if (!name || !password || !isPublic || !introduction) {
             return res.status(400).json({ message: "잘못된 요청입니다" });
         }
 
-        const groupId = await groupModel.createGroup({ name, password, imageUrl, isPublic, introduction });
+        // 이미지 업로드가 포함된 경우
+        if (req.file) {
+            try {
+                imageUrl = await uploadImageToS3(req.file);  // S3에 이미지 업로드하고 URL 받기
+            } catch (uploadError) {
+                console.error('Image upload failed:', uploadError);
+                return res.status(500).json({ message: "이미지 업로드 오류", error: uploadError.message });
+            }
+        }
+
+        const groupId = await groupModel.createGroup({
+            name,
+            password,
+            imageUrl, // 이미지 URL 포함
+            isPublic,
+            introduction
+        });
+
         const group = await groupModel.findGroupById(groupId);
 
         res.status(201).json({
@@ -31,49 +47,32 @@ const createGroup = async (req, res) => {
     }
 };
 
-// 그룹 업데이트
 const updateGroup = async (req, res) => {
     try {
         const { groupId } = req.params;
-        const { name, password, introduction } = req.body;
-        let { isPublic } = req.body;
+        const { name, password, isPublic, introduction, imageUrl } = req.body;
 
-        if (!name || !password) {
+        if (!name || !password || !isPublic || !introduction) {
             return res.status(400).json({ message: "잘못된 요청입니다" });
         }
 
+        await groupModel.updateGroup(groupId, { name, password, imageUrl, isPublic, introduction });
         const group = await groupModel.findGroupById(groupId);
-        if (!group) {
-            return res.status(404).json({ message: "존재하지 않습니다" });
-        }
-
-        if (group.password !== password) {
-            return res.status(403).json({ message: "비밀번호가 틀렸습니다" });
-        }
-
-        isPublic = isPublic === 'true' || isPublic === true ? 1 : 0;
-
-        let imageUrl = group.imageUrl;  // 기존 이미지 URL 사용
-        if (req.file) {
-            imageUrl = await uploadImageToS3(req.file);  // S3 업로드 후 URL 반환
-        }
-
-        await groupModel.updateGroup(groupId, { name, imageUrl, isPublic, introduction });
-        const updatedGroup = await groupModel.findGroupById(groupId);
 
         res.status(200).json({
-            id: updatedGroup.id,
-            name: updatedGroup.name,
-            imageUrl: updatedGroup.imageUrl,
-            isPublic: updatedGroup.isPublic,
-            likeCount: updatedGroup.likeCount,
-            postCount: updatedGroup.postCount,
-            createdAt: updatedGroup.createdAt,
-            introduction: updatedGroup.introduction
+            id: group.id,
+            name: group.name,
+            imageUrl: group.imageUrl,
+            isPublic: group.isPublic,
+            likeCount: group.likeCount,
+            badges: [],
+            postCount: group.postCount,
+            createdAt: group.createdAt,
+            introduction: group.introduction
         });
     } catch (error) {
         console.error('Error updating group:', error);
-        res.status(500).json({ message: "서버 오류" });
+        res.status(500).json({ message: "서버 오류", error: error.message });
     }
 };
 

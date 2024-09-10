@@ -1,5 +1,5 @@
+// utils/imageUtils.js
 const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
-const multer = require('multer');
 const path = require('path');
 require('dotenv').config();
 
@@ -11,9 +11,6 @@ const s3 = new S3Client({
     }
 });
 
-const memoryStorage = multer.memoryStorage();
-const uploadToS3 = multer({ storage: memoryStorage });
-
 const uploadImageToS3 = async (file) => {
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
     const fileName = uniqueSuffix + path.extname(file.originalname);
@@ -22,7 +19,7 @@ const uploadImageToS3 = async (file) => {
         Bucket: process.env.AWS_S3_BUCKET_NAME,
         Key: fileName,
         Body: file.buffer,
-        ACL: 'public-read', // 파일을 퍼블릭으로 설정
+        ACL: 'public-read',
     };
 
     try {
@@ -35,4 +32,4 @@ const uploadImageToS3 = async (file) => {
     }
 };
 
-module.exports = { uploadToS3, uploadImageToS3 };
+module.exports = { uploadImageToS3 };
