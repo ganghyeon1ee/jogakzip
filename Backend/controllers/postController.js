@@ -19,7 +19,7 @@ const createPost = async (req, res) => {
         }
 
         const parsedTags = tags ? tags.split(',').map(tag => tag.trim()) : [];
-        const imageUrl = req.file ? await uploadImageToS3(req.file) : null;
+        const imageUrl = req.file ? await uploadImageToS3(req.file) : null; // S3로 이미지 업로드
 
         const postId = await postModel.createPost(groupId, {
             nickname,
@@ -56,7 +56,7 @@ const createPost = async (req, res) => {
     }
 };
 
-// 게시글 업데이트
+// 게시글 수정
 const updatePost = async (req, res) => {
     try {
         const { postId } = req.params;

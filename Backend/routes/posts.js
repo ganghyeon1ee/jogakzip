@@ -1,19 +1,9 @@
 const express = require('express');
 const postController = require('../controllers/postController');
 const multer = require('multer');
-const path = require('path');
+const { uploadImageToS3 } = require('../utils/imageUtils'); // S3 업로드 함수 불러오기
 
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-      cb(null, 'uploads/');
-    },
-    filename: (req, file, cb) => {
-      const ext = path.extname(file.originalname);
-      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-      cb(null, uniqueSuffix + ext);
-    }
-  });
-
+const storage = multer.memoryStorage(); // 메모리 스토리지로 설정
 const upload = multer({ storage: storage, limits: { fileSize: 10 * 1024 * 1024 } });
 
 const router = express.Router();
