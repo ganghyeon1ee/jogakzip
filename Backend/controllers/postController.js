@@ -3,6 +3,7 @@ const postModel = require('../models/postModel');
 const { checkAndAwardBadges } = require('../services/badgeService');
 const groupModel = require('../models/groupModel');
 
+// 게시글 생성
 const createPost = async (req, res) => {
     try {
         const { groupId } = req.params;
@@ -55,38 +56,34 @@ const createPost = async (req, res) => {
     }
 };
 
+// 게시글 업데이트
 const updatePost = async (req, res) => {
     try {
         const { postId } = req.params;
         const { nickname, title, content, postPassword, tags, location, moment, isPublic } = req.body;
 
-        // 기존 게시글 확인
         const existingPost = await postModel.findPostById(postId);
         if (!existingPost) {
             return res.status(404).json({ message: "존재하지 않는 게시글입니다." });
         }
 
-        // 비밀번호 확인
         if (existingPost.postPassword !== postPassword) {
             return res.status(403).json({ message: "비밀번호가 일치하지 않습니다." });
         }
 
-        // 이미지 처리: req.file이 존재하는 경우 S3에 업로드, 없으면 기존 이미지 사용
         let imageUrl = existingPost.imageUrl;  // 기존 이미지 URL 사용
         if (req.file) {
-            imageUrl = await uploadImageToS3(req.file);  // S3에 업로드 후 URL 반환
+            imageUrl = await uploadImageToS3(req.file);  // S3 업로드 후 URL 반환
         }
 
-        // 태그 처리
         const parsedTags = tags ? tags.split(',').map(tag => tag.trim()) : [];
 
-        // 게시글 업데이트
         await postModel.updatePost(postId, {
             nickname,
             title,
             content,
             postPassword,
-            imageUrl,  // 이미지 URL 처리
+            imageUrl,
             tags: JSON.stringify(parsedTags),
             location,
             moment,
@@ -108,17 +105,17 @@ const deletePost = async (req, res) => {
         const { postPassword } = req.body;
 
         if (!postPassword) {
-            return res.status(400).json({ message: "잘못된 요청입니다" });
+            return res.status(400).json({ message: "잘못된 요청입니다." });
         }
 
         const existingPost = await postModel.findPostById(postId);
 
         if (!existingPost) {
-            return res.status(404).json({ message: "존재하지 않습니다" });
+            return res.status(404).json({ message: "존재하지 않는 게시글입니다." });
         }
 
         if (existingPost.postPassword !== postPassword) {
-            return res.status(403).json({ message: "비밀번호가 틀렸습니다" });
+            return res.status(403).json({ message: "비밀번호가 틀렸습니다." });
         }
 
         await postModel.deletePost(postId);

@@ -25,6 +25,7 @@ const uploadImageToS3 = async (file) => {
         Bucket: process.env.AWS_S3_BUCKET_NAME,
         Key: fileName,
         Body: file.buffer,
+        ACL: 'public-read',  // 파일을 퍼블릭으로 설정
     };
 
     try {

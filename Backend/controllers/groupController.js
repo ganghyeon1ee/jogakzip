@@ -1,6 +1,5 @@
 const { uploadImageToS3 } = require('./imageController');
 const groupModel = require('../models/groupModel');
-const postModel = require('../models/postModel');
 
 // 그룹 생성
 const createGroup = async (req, res) => {
@@ -32,50 +31,42 @@ const createGroup = async (req, res) => {
     }
 };
 
+// 그룹 업데이트
 const updateGroup = async (req, res) => {
     try {
         const { groupId } = req.params;
         const { name, password, introduction } = req.body;
         let { isPublic } = req.body;
 
-        // 필수 필드 검증
         if (!name || !password) {
             return res.status(400).json({ message: "잘못된 요청입니다" });
         }
 
-        // 그룹 존재 여부 확인
         const group = await groupModel.findGroupById(groupId);
         if (!group) {
             return res.status(404).json({ message: "존재하지 않습니다" });
         }
 
-        // 비밀번호 일치 여부 확인
         if (group.password !== password) {
             return res.status(403).json({ message: "비밀번호가 틀렸습니다" });
         }
 
-        // 공개 여부 처리
         isPublic = isPublic === 'true' || isPublic === true ? 1 : 0;
 
-        // S3에 이미지 업로드 처리 (이미지가 있는 경우)
         let imageUrl = group.imageUrl;  // 기존 이미지 URL 사용
         if (req.file) {
             imageUrl = await uploadImageToS3(req.file);  // S3 업로드 후 URL 반환
         }
 
-        // 그룹 정보 업데이트
         await groupModel.updateGroup(groupId, { name, imageUrl, isPublic, introduction });
         const updatedGroup = await groupModel.findGroupById(groupId);
-        const badges = await groupModel.getGroupBadges(groupId);
 
-        // 업데이트된 그룹 정보 반환
         res.status(200).json({
             id: updatedGroup.id,
             name: updatedGroup.name,
             imageUrl: updatedGroup.imageUrl,
             isPublic: updatedGroup.isPublic,
             likeCount: updatedGroup.likeCount,
-            badges: badges.map(badge => badge.name),
             postCount: updatedGroup.postCount,
             createdAt: updatedGroup.createdAt,
             introduction: updatedGroup.introduction
