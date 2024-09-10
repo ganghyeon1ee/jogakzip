@@ -6,7 +6,7 @@ const createGroup = async (req, res) => {
         const { name, password, isPublic, introduction } = req.body;
         let imageUrl = '';
 
-        if (!name || !password || !isPublic || !introduction) {
+        if (!name || !password || !introduction) {
             return res.status(400).json({ message: "잘못된 요청입니다" });
         }
 
@@ -50,15 +50,26 @@ const createGroup = async (req, res) => {
 const updateGroup = async (req, res) => {
     try {
         const { groupId } = req.params;
-        const { name, password, isPublic, introduction, imageUrl } = req.body;
+        const { name, password, isPublic, introduction } = req.body;
+        let imageUrl = req.body.imageUrl;
 
-        if (!name || !password || !isPublic || !introduction) {
+        if (!name || !password || !introduction) {
             return res.status(400).json({ message: "잘못된 요청입니다" });
+        }
+
+        // 이미지 업데이트가 필요한 경우 처리
+        if (req.file) {
+            try {
+                imageUrl = await uploadImageToS3(req.file);
+            } catch (uploadError) {
+                console.error('Image upload failed:', uploadError);
+                return res.status(500).json({ message: "이미지 업로드 오류", error: uploadError.message });
+            }
         }
 
         await groupModel.updateGroup(groupId, { name, password, imageUrl, isPublic, introduction });
         const group = await groupModel.findGroupById(groupId);
-
+        
         res.status(200).json({
             id: group.id,
             name: group.name,
