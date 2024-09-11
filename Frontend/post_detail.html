@@ -552,6 +552,81 @@
         textInput.value = fileInput.files[0].name;
     }
 
+// 추억 수정 함수
+async function updateMemory() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const postId = urlParams.get('postId');
+    const nickname = document.getElementById('edit-nickname').value;
+    const title = document.getElementById('edit-title').value;
+    const imageUrl = document.getElementById('edit-image-url').value;
+    const content = document.getElementById('edit-content').value;
+    const tags = document.getElementById('edit-tags').value;
+    const location = document.getElementById('edit-location').value;
+    const moment = document.getElementById('edit-moment').value;
+    const isPublic = document.getElementById('edit-visibility-text').textContent === '공개';
+    const password = document.getElementById('edit-password').value;
+
+    // 필드 검증
+    if (!nickname || !title || !content || !password) {
+        alert('모든 필드를 입력해 주세요.');
+        return;
+    }
+
+    try {
+        const response = await fetch(`/api/posts/${postId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ nickname, title, imageUrl, content, tags, location, moment, isPublic, password })
+        });
+
+        if (response.ok) {
+            alert('추억이 수정되었습니다!');
+            location.reload(); // 페이지 새로고침
+        } else {
+            const errorData = await response.json();
+            alert(errorData.message || '추억 수정 중 오류가 발생했습니다.');
+        }
+    } catch (error) {
+        console.error('Error updating memory:', error);
+        alert('추억 수정 중 오류가 발생했습니다.');
+    }
+
+    hideEditPopup();
+}
+
+// 추억 삭제 함수
+async function verifyPasswordAndDeleteMemory() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const postId = urlParams.get('postId');
+    const password = document.getElementById('delete-password').value;
+
+    if (!password) {
+        alert('비밀번호를 입력해 주세요.');
+        return;
+    }
+
+    try {
+        const response = await fetch(`/api/posts/${postId}`, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ password })
+        });
+
+        if (response.ok) {
+            alert('추억이 삭제되었습니다!');
+            window.location.href = 'group_list.html'; // 삭제 후 목록으로 이동
+        } else {
+            const errorData = await response.json();
+            alert(errorData.message || '추억 삭제 중 오류가 발생했습니다.');
+        }
+    } catch (error) {
+        console.error('Error deleting memory:', error);
+        alert('추억 삭제 중 오류가 발생했습니다.');
+    }
+
+    hideDeletePopup();
+}
+
 </script>
 </body>
 </html>
