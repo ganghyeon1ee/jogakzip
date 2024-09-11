@@ -394,13 +394,14 @@ document.getElementById("nextBtn").addEventListener("click", function() {
     const images = document.querySelectorAll(".image-container img");
     const totalImages = images.length;
 
+    // 한 번에 여러 개씩 이동하도록 설정
     if (currentIndex < totalImages - visibleImages) {
-        currentIndex++;  // 인덱스를 증가시킴
+        currentIndex += visibleImages;  // 인덱스를 여러 개만큼 증가
     } else {
-        currentIndex = 0;  // 끝까지 오면 다시 처음으로
+        currentIndex = 0;  // 끝까지 오면 처음으로 돌아감
     }
 
-    const offset = currentIndex * imageWidth;  // 슬라이드 이동 거리
+    const offset = currentIndex * imageWidth;  // 슬라이드 이동 거리 계산
     document.querySelector('.image-container').style.transform = `translateX(${-offset}px)`;
 });
 
