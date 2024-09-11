@@ -517,8 +517,34 @@
     }
 
     function showEditPopup() {
-        document.getElementById('edit-popup-background').style.display = 'flex';
+    const nickname = document.getElementById('nickname').textContent;
+    const title = document.getElementById('post-title').textContent;
+    const content = document.getElementById('post-content').textContent;
+    const location = document.getElementById('post-location').textContent;
+    const moment = document.getElementById('post-moment').textContent;
+    const isPublic = document.getElementById('post-visibility').textContent === '공개' ? '공개' : '비공개';
+    const imageUrl = document.getElementById('post-image').src;
+    const tagsContainer = document.getElementById('post-tags').innerText;
+    
+    document.getElementById('edit-nickname').value = nickname;
+    document.getElementById('edit-title').value = title;
+    document.getElementById('edit-content').value = content;
+    document.getElementById('edit-location').value = location;
+    document.getElementById('edit-moment').value = moment;
+    document.getElementById('edit-visibility-text').textContent = isPublic;
+
+    // Parse tags and fill into input
+    const tags = tagsContainer.split(' ').map(tag => tag.replace('#', '')).join(',');
+    document.getElementById('edit-tags').value = tags;
+    
+    // Display the image URL if present
+    if (imageUrl) {
+        document.getElementById('edit-image-url').value = imageUrl;
     }
+
+    // Show the popup
+    document.getElementById('edit-popup-background').style.display = 'flex';
+}
 
     function hideEditPopup() {
         document.getElementById('edit-popup-background').style.display = 'none';
