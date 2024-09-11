@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>그룹 목록</title>
+    <link rel="stylesheet" href="group_list.css">
+    <link href="https://spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="group_list.html">
+                <img src="img/logo.png" alt="Centered Image" class="center-image">
+            </a>            
+            <button onclick="location.href='/group_create.html'">그룹 만들기</button>
+        </div>
+        <div class="buttons-container">
+            <div class="buttons">
+                <button class="active" id="publicButton">공개</button>
+                <button class="inactive" id="privateButton">비공개</button>
+            </div>
+            <div class="search-bar">
+                <div class="search-wrapper">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="그룹명을 검색해 주세요">
+                </div>
+                <select id="sortBy">
+                    <option value="mostLiked">공감순</option>
+                    <option value="latest">최신순</option>
+                    <option value="mostPosted">게시글 많은순</option>
+                    <option value="mostBadges">획득 배지순</option>
+                </select>
+            </div>
+        </div>
+        <div class="grid">
+        </div>
+        <button class="load-more" id="loadMoreButton">더보기</button>
+    </div>
+    <script>
+        let currentPage = 1;
+        let currentSortBy = 'mostLiked';
+        let currentKeyword = '';
+        let isPublic = true; // 초기값을 공개 그룹으로 설정
+
+        document.getElementById('publicButton').addEventListener('click', function() {
+            setActiveButton('public');
+            isPublic = true; // 공개 그룹 설정
+            fetchGroups(isPublic, true); 
+        });
+
+        document.getElementById('privateButton').addEventListener('click', function() {
+            setActiveButton('private');
+            isPublic = false; // 비공개 그룹 설정
+            fetchGroups(isPublic, true); 
+        });
+
+        document.getElementById('sortBy').addEventListener('change', function(event) {
+            currentSortBy = event.target.value;
+            fetchGroups(isPublic, true); // 현재 isPublic 값 사용
+        });
+
+        document.getElementById('searchInput').addEventListener('input', function(event) {
+            currentKeyword = event.target.value;
+            fetchGroups(isPublic, true); // 현재 isPublic 값 사용
+        });
+
+        document.getElementById('loadMoreButton').addEventListener('click', function() {
+            currentPage++;
+            fetchGroups(isPublic, false); // 현재 isPublic 값 사용
+        });
+
+        function setActiveButton(type) {
+            if (type === 'public') {
+                document.getElementById('publicButton').classList.add('active');
+                document.getElementById('publicButton').classList.remove('inactive');
+                document.getElementById('privateButton').classList.remove('active');
+                document.getElementById('privateButton').classList.add('inactive');
+            } else {
+                document.getElementById('publicButton').classList.remove('active');
+                document.getElementById('publicButton').classList.add('inactive');
+                document.getElementById('privateButton').classList.add('active');
+                document.getElementById('privateButton').classList.remove('inactive');
+            }
+        }
+
+        function fetchGroups(isPublic, reset = false) {
+            if (reset) {
+                currentPage = 1; 
+                document.querySelector('.grid').innerHTML = ''; 
+            }
+
+            fetch(`/api/groups?isPublic=${isPublic}&sortBy=${currentSortBy}&keyword=${currentKeyword}&page=${currentPage}`)
+                .then(response => response.json())
+                .then(data => {
+                    const grid = document.querySelector('.grid');
+                    data.data.forEach(group => {
+                        const card = document.createElement('div');
+                        card.className = 'card';
+                        card.innerHTML = `
+                            <img src="${group.imageUrl}" alt="그룹 이미지">
+                            <div class="card-content">
+                                <p><span class="date">${convertToKoreanTime(group.createdAt)}</span> | <span class="status">${group.isPublic ? '공개' : '비공개'}</span></p>
+                                <h2>${group.name}</h2>
+                                <a>${group.introduction}</a>
+                                <div class="info">
+                                    <div class="info-item">
+                                        <span>획득 배지</span>
+                                        <div class="num">${group.badgeCount}</div>
+                                    </div>
+                                    <div class="info-item">
+                                        <span>추억</span>
+                                        <div class="num">${group.postCount}</div>
+                                    </div>
+                                    <div class="info-item">
+                                        <span>그룹 공감</span>
+                                        <div class="num">${group.likeCount}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        // 그룹 카드 클릭 이벤트 리스너 추가
+                        card.addEventListener('click', function() {
+                            if (group.isPublic) {
+                                window.location.href = `group_detail.html?groupId=${group.id}`;
+                            } else {
+                                window.location.href = `private_group_auth.html?groupId=${group.id}`;
+                            }
+                        });
+
+                        grid.appendChild(card);
+                    });
+                })
+                .catch(error => console.error('Error fetching groups:', error));
+        }
+
+        function convertToKoreanTime(utcTime) {
+            const date = new Date(utcTime);
+            return date.toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
+        }
+
+        // 초기화면으로 공개 그룹 불러오기
+        fetchGroups(true);
+    </script>
+</body>
+</html>

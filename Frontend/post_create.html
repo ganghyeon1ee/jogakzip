@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>추억 만들기</title>
+    <link rel="stylesheet" href="post_create.css">
+    <link href="https://spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="header2">
+            <a href="group_list.html">
+    <a href="group_list.html">
+    <img src="img/logo.png" alt="Centered Image" class="center-image2">
+</a>
+</a>
+        </div>
+        
+        <h1 class="center-text">추억 올리기</h1>
+        <form id="create-post-form" method="POST" enctype="multipart/form-data">
+            <div class="input-wrapper-container">
+                <div class="input-wrapper">
+                    <label for="nickname" class="group-name-label">닉네임</label>
+                    <input type="text" id="nickname" name="nickname" class="group-name-input" placeholder="닉네임을 입력해 주세요.">
+
+                    <label for="title" class="group-name-label">제목</label>
+                    <input type="text" id="title" name="title" class="group-name-input" placeholder="제목을 입력해 주세요.">
+
+                    <label for="file-upload" class="group-name-label">이미지</label>
+                    <div class="file-upload-wrapper">
+                        <input type="text" id="image-name" class="file-name-input" placeholder="파일을 선택해 주세요." readonly>
+                        <label for="file-upload" class="file-upload-button">파일 선택</label>
+                        <input type="file" id="file-upload" name="image" class="file-input">
+                    </div>
+
+                    <label for="content" class="group-name-label">본문</label>
+                    <textarea id="content" name="content" class="group-description-input" placeholder="본문 내용을 입력해 주세요."></textarea>
+                </div>
+                <div class="divider"></div>
+                <div class="input-wrapper">
+                    <label for="tags" class="group-name-label">태그</label>
+                    <input type="text" id="tags" name="tags" class="group-name-input" placeholder="태그를 입력해 주세요. (콤마로 구분)">
+
+                    <label for="location" class="group-name-label">장소</label>
+                    <input type="text" id="location" name="location" class="group-name-input" placeholder="장소를 입력해 주세요.">
+
+                    <label for="moment" class="group-name-label">추억의 순간</label>
+                    <input type="date" id="moment" name="moment" class="date-picker-input" placeholder="yyyy-mm-dd">
+
+                    <label for="isPublic" class="group-name-label">추억 공개 선택</label>
+                    <div class="visibility-wrapper">
+                        <span id="visibility-text-2" class="visibility-text">공개</span>
+                        <img id="visibility-icon-2" src="img/state=active.png" alt="Visibility Icon" class="visibility-icon">
+                        <input type="hidden" id="isPublic" name="isPublic" value="1">
+                    </div>
+
+                    <label for="postPassword" class="group-name-label">비밀번호 생성</label>
+                    <input type="password" id="postPassword" name="postPassword" class="group-name-input" placeholder="추억 비밀번호를 생성해 주세요.">
+                </div>
+            </div>
+
+            <button type="submit" class="submit-button2">올리기</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+    // URL에서 groupId 추출
+    const urlParams = new URLSearchParams(window.location.search);
+    const groupId = urlParams.get('groupId');
+
+    // groupId가 제대로 추출되었는지 확인하는 로그 추가
+    console.log('Extracted groupId:', groupId);
+
+    // 폼 제출 시 groupId 포함하여 요청
+    document.getElementById('create-post-form').addEventListener('submit', async function(event) {
+        event.preventDefault();
+
+        const form = event.target;
+        const formData = new FormData(form);
+
+        // 필수 필드가 비어 있는지 확인
+        if (!formData.get('nickname') || !formData.get('title') || !formData.get('content') || !formData.get('postPassword')) {
+            alert("모든 필수 필드를 입력해 주세요.");
+            return;
+        }
+
+        // groupId를 formData에 추가
+        formData.append('groupId', groupId);
+
+        try {
+            const response = await fetch(`/api/groups/${groupId}/posts`, {
+                method: 'POST',
+                body: formData
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                alert('게시글이 성공적으로 등록되었습니다!');
+
+                // 게시글 작성 성공 시, groupId와 postId를 사용하여 이동
+                const postId = result.id;
+                window.location.href = `post_detail.html?groupId=${groupId}&postId=${postId}`;
+            } else {
+                const errorData = await response.json();
+                console.error('Error response:', errorData);
+                alert('게시글 등록 중 오류가 발생했습니다.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('서버 오류가 발생했습니다.');
+        }
+    });
+});
+
+        document.getElementById('file-upload').addEventListener('change', function() {
+            const fileName = this.files[0]?.name || '파일을 선택해 주세요.';
+            document.getElementById('image-name').value = fileName;
+        });
+
+        // 공개 여부 토글 기능
+        const visibilityIcon = document.getElementById('visibility-icon-2');
+        visibilityIcon.addEventListener('click', function() {
+            const isPublicInput = document.getElementById('isPublic');
+            const visibilityText = document.getElementById('visibility-text-2');
+            const isPublic = isPublicInput.value === '1';
+            visibilityText.textContent = isPublic ? '비공개' : '공개';
+            visibilityIcon.src = isPublic ? 'img/state=default.png' : 'img/state=active.png';
+            isPublicInput.value = isPublic ? '0' : '1';
+        });
+    </script>
+</body>
+</html>
