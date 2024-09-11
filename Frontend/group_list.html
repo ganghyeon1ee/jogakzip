@@ -93,82 +93,83 @@
         }
 
         function fetchGroups(isPublic, reset = false) {
-            if (reset) {
-                currentPage = 1; 
-                document.querySelector('.grid').innerHTML = ''; 
-                document.getElementById('loadMoreButton').style.display = 'none'; // 초기에는 숨김
+    if (reset) {
+        currentPage = 1; 
+        document.querySelector('.grid').innerHTML = ''; // 기존 그룹 목록 완전히 초기화
+        document.getElementById('loadMoreButton').style.display = 'none'; // 더보기 버튼 초기에는 숨김
+    }
+
+    isLoading = true; // 로딩 상태 시작
+
+    // API 호출
+    fetch(`/api/groups?isPublic=${isPublic}&sortBy=${currentSortBy}&keyword=${currentKeyword}&page=${currentPage}`)
+        .then(response => response.json())
+        .then(data => {
+            const grid = document.querySelector('.grid');
+
+            // 검색 결과가 없을 경우 처리
+            if (data.data.length === 0 && currentPage === 1) {
+                grid.innerHTML = '<p>검색된 그룹이 없습니다.</p>';
+                document.getElementById('loadMoreButton').style.display = 'none';
+                return;
             }
 
-            isLoading = true; // 로딩 상태 시작
-
-            fetch(`/api/groups?isPublic=${isPublic}&sortBy=${currentSortBy}&keyword=${currentKeyword}&page=${currentPage}`)
-                .then(response => response.json())
-                .then(data => {
-                    const grid = document.querySelector('.grid');
-
-                    // 그룹 목록이 없으면 더보기 버튼 숨김
-                    if (data.data.length === 0 && currentPage === 1) {
-                        grid.innerHTML = '<p>검색된 그룹이 없습니다.</p>';
-                        document.getElementById('loadMoreButton').style.display = 'none';
-                        return;
-                    }
-
-                    // 새로운 그룹들을 추가
-                    data.data.forEach(group => {
-                        const card = document.createElement('div');
-                        card.className = 'card';
-                        card.innerHTML = `
-                            <img src="${group.imageUrl}" alt="그룹 이미지">
-                            <div class="card-content">
-                                <p><span class="date">${convertToKoreanTime(group.createdAt)}</span> | <span class="status">${group.isPublic ? '공개' : '비공개'}</span></p>
-                                <h2>${group.name}</h2>
-                                <a>${group.introduction}</a>
-                                <div class="info">
-                                    <div class="info-item">
-                                        <span>획득 배지</span>
-                                        <div class="num">${group.badgeCount}</div>
-                                    </div>
-                                    <div class="info-item">
-                                        <span>추억</span>
-                                        <div class="num">${group.postCount}</div>
-                                    </div>
-                                    <div class="info-item">
-                                        <span>그룹 공감</span>
-                                        <div class="num">${group.likeCount}</div>
-                                    </div>
-                                </div>
+            // 새로운 그룹들을 추가 (이전 검색 결과는 reset에 의해 제거됨)
+            data.data.forEach(group => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <img src="${group.imageUrl}" alt="그룹 이미지">
+                    <div class="card-content">
+                        <p><span class="date">${convertToKoreanTime(group.createdAt)}</span> | <span class="status">${group.isPublic ? '공개' : '비공개'}</span></p>
+                        <h2>${group.name}</h2>
+                        <a>${group.introduction}</a>
+                        <div class="info">
+                            <div class="info-item">
+                                <span>획득 배지</span>
+                                <div class="num">${group.badgeCount}</div>
                             </div>
-                        `;
+                            <div class="info-item">
+                                <span>추억</span>
+                                <div class="num">${group.postCount}</div>
+                            </div>
+                            <div class="info-item">
+                                <span>그룹 공감</span>
+                                <div class="num">${group.likeCount}</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
 
-                        // 그룹 카드 클릭 이벤트 리스너 추가
-                        card.addEventListener('click', function() {
-                            if (group.isPublic) {
-                                window.location.href = `group_detail.html?groupId=${group.id}`;
-                            } else {
-                                window.location.href = `private_group_auth.html?groupId=${group.id}`;
-                            }
-                        });
-
-                        grid.appendChild(card);
-                    });
-
-                    // 데이터가 존재하면 더보기 버튼 표시
-                    if (data.data.length > 0) {
-                        document.getElementById('loadMoreButton').style.display = 'block';
+                // 그룹 카드 클릭 이벤트 리스너 추가
+                card.addEventListener('click', function() {
+                    if (group.isPublic) {
+                        window.location.href = `group_detail.html?groupId=${group.id}`;
+                    } else {
+                        window.location.href = `private_group_auth.html?groupId=${group.id}`;
                     }
-
-                    // 더 이상 데이터가 없으면 더보기 버튼 숨김
-                    if (data.data.length < 10) { // 페이지당 10개 기준
-                        document.getElementById('loadMoreButton').style.display = 'none';
-                    }
-
-                    isLoading = false; // 로딩 완료
-                })
-                .catch(error => {
-                    console.error('Error fetching groups:', error);
-                    isLoading = false; // 에러 발생 시에도 로딩 상태 해제
                 });
-        }
+
+                grid.appendChild(card); // 새로운 검색 결과 추가
+            });
+
+            // 더보기 버튼 처리
+            if (data.data.length > 0) {
+                document.getElementById('loadMoreButton').style.display = 'block';
+            }
+
+            // 페이지당 데이터가 10개 미만이면 더보기 버튼 숨김
+            if (data.data.length < 10) {
+                document.getElementById('loadMoreButton').style.display = 'none';
+            }
+
+            isLoading = false; // 로딩 완료
+        })
+        .catch(error => {
+            console.error('Error fetching groups:', error);
+            isLoading = false; // 에러 발생 시에도 로딩 상태 해제
+        });
+    }
 
         function convertToKoreanTime(utcTime) {
             const date = new Date(utcTime);
