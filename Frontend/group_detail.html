@@ -393,7 +393,7 @@ document.getElementById("nextBtn").addEventListener("click", function() {
     const images = document.querySelectorAll(".image-container img");
     const totalImages = images.length;
     const visibleImages = 3;  // 한 번에 보일 이미지 개수
-    const imageWidth = 200;   // 이미지 하나의 너비
+    const imageWidth = 200;   // 이미지 하나의 너비 (픽셀 단위)
 
     currentIndex++;
 
@@ -402,7 +402,7 @@ document.getElementById("nextBtn").addEventListener("click", function() {
         currentIndex = 0;
     }
 
-    const offset = currentIndex * imageWidth;  // 슬라이드 이동 거리
+    const offset = currentIndex * imageWidth;
     document.querySelector('.image-container').style.transform = `translateX(${-offset}px)`;
 });
 
