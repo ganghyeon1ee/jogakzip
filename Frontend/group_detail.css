@@ -1228,8 +1228,8 @@ body {
 }
 
 .separator {
-    height: 1px;  /* 구분선 두께 */
+    height: 0.7px;  /* 구분선 두께 */
     background-color: #adadad;  /* 회색 구분선 색상 */
     margin: 20px auto;  /* 상하 여백과 중앙 정렬 */
-    width: 80%;  /* 구분선 너비 */
+    width: 60%;  /* 구분선 너비 */
 }
