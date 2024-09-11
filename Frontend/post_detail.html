@@ -273,8 +273,8 @@
                     commentElement.innerHTML = `
                         <p><strong>${comment.nickname}</strong> (${formatDate(comment.createdAt)})</p>
                         <p>${comment.content}</p>
-                        <button class="edit-btn" onclick="showEditCommentPopup(${comment.id}, '${comment.nickname}', '${comment.content}')">수정</button>
-                        <button class="delete-btn" onclick="showDeleteCommentPopup(${comment.id})">삭제</button>
+                        <button class="edit-btn styled-button" onclick="showEditCommentPopup(${comment.id}, '${comment.nickname}', '${comment.content}')">수정</button>
+                        <button class="delete-btn styled-button" onclick="showDeleteCommentPopup(${comment.id})">삭제</button>
                     `;
                     const editButton = commentElement.querySelector('.edit-btn');
                     const deleteButton = commentElement.querySelector('.delete-btn');
