@@ -273,9 +273,23 @@
                     commentElement.innerHTML = `
                         <p><strong>${comment.nickname}</strong> (${formatDate(comment.createdAt)})</p>
                         <p>${comment.content}</p>
-                        <button class="styled-button edit-btn" onclick="showEditCommentPopup(${comment.id}, '${comment.nickname}', '${comment.content}')">수정</button>
-                        <button class="styled-button delete-btn" onclick="showDeleteCommentPopup(${comment.id})">삭제</button>
+                        <button onclick="showEditCommentPopup(${comment.id}, '${comment.nickname}', '${comment.content}')">수정</button>
+                        <button onclick="showDeleteCommentPopup(${comment.id})">삭제</button>
                     `;
+                    const editButton = commentElement.querySelector('button:first-of-type');
+                    const deleteButton = commentElement.querySelector('button:last-of-type');
+
+                    // 인라인 스타일로 CSS 적용
+                    editButton.style.backgroundColor = '#4CAF50'; // 수정 버튼의 배경색
+                    editButton.style.color = 'white'; // 수정 버튼의 글씨색
+                    editButton.style.padding = '10px 20px'; // 수정 버튼의 패딩
+                    editButton.style.borderRadius = '8px'; // 수정 버튼의 테두리 반경
+                    
+                    deleteButton.style.backgroundColor = '#f44336'; // 삭제 버튼의 배경색
+                    deleteButton.style.color = 'white'; // 삭제 버튼의 글씨색
+                    deleteButton.style.padding = '10px 20px'; // 삭제 버튼의 패딩
+                    deleteButton.style.borderRadius = '8px'; // 삭제 버튼의 테두리 반경
+                    
                     commentsContainer.appendChild(commentElement);
                 });
 
