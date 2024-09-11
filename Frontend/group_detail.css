@@ -1108,3 +1108,129 @@ body {
     height: 200px;
     margin-top: 10px;
 }
+
+/* 모바일 환경에 맞춘 미디어 쿼리 */
+@media (max-width: 768px) {
+    /* 이미지와 카드 레이아웃 */
+    .detail_card {
+        flex-direction: column; /* 이미지와 콘텐츠를 세로로 배치 */
+        align-items: center; /* 중앙 정렬 */
+        text-align: center;
+    }
+
+    .detail_card img {
+        width: 70%; /* 이미지 크기를 줄임 */
+        margin: 0 auto 20px; /* 이미지를 중앙 정렬 */
+    }
+
+    .card-content {
+        width: 100%;
+        padding: 10px;
+    }
+
+    /* 제목과 텍스트 크기 조정 */
+    .card-content h2 {
+        font-size: 22px; /* 제목 크기 줄이기 */
+    }
+
+    .card-content p {
+        font-size: 12px; /* 본문 폰트 크기 줄이기 */
+    }
+
+    /* 버튼 크기 및 정렬 */
+    .info-buttons {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        margin-left: 0;
+    }
+
+    .info-buttons a {
+        font-size: 12px; /* 버튼 텍스트 크기 줄이기 */
+    }
+
+    /* 꽃 이미지 애니메이션 위치 조정 */
+    .flower-container {
+        top: 80%; /* 꽃 이미지 위치를 아래로 조정 */
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    /* 팝업 창 크기 및 텍스트 크기 조정 */
+    .popup-content, .popup-content2 {
+        width: 90%;
+        max-width: 300px;
+        padding: 10px; /* 팝업 창의 여백 줄이기 */
+    }
+
+    /* 입력 필드 및 버튼 크기 조정 */
+    .group-name-input, .group-description-input, .file-name-input {
+        width: 100%; /* 입력 필드 너비를 100%로 확장 */
+        font-size: 12px;
+        padding: 6px; /* 패딩 줄이기 */
+    }
+
+    .file-upload-button, .popup-close {
+        font-size: 12px;
+        padding: 5px 10px; /* 버튼 크기 줄이기 */
+    }
+
+    /* 댓글 목록 스타일 조정 */
+    .comment {
+        font-size: 12px; /* 댓글 크기 조정 */
+    }
+
+    /* 로드 모어 버튼 크기 조정 */
+    .load-more {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    /* 배지 컨테이너 조정 */
+    .badge-container img {
+        width: 60px; /* 배지 이미지 크기 조정 */
+    }
+
+    .badge .like-button {
+        width: 100px; /* 공감 버튼 크기 줄이기 */
+        font-size: 12px;
+        margin-left: 0;
+    }
+}
+
+/* 매우 작은 화면 (480px 이하) */
+@media (max-width: 480px) {
+    .center-image2 {
+        max-width: 80px;
+    }
+
+    .header button {
+        font-size: 12px;
+        padding: 5px 10px;
+    }
+
+    /* 버튼 스타일 조정 */
+    .buttons .active, .buttons .inactive {
+        padding: 5px 10px;
+    }
+
+    /* 검색바 너비 조정 */
+    .search-bar input[type="text"], .search-bar select {
+        width: 100%;
+        font-size: 14px;
+    }
+
+    /* 카드 레이아웃 조정 */
+    .card {
+        width: 100%;
+    }
+
+    .card img {
+        width: 60%;
+    }
+
+    .info2 img {
+        width: 9px;
+        height: 9px;
+    }
+}
