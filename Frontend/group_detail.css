@@ -149,16 +149,17 @@ body {
 .detail_card .badge .image-container {
     display: flex;
     overflow: hidden;
-    width: 600px; /* 한 번에 보일 배지 3개의 너비 */
-    transition: transform 0.5s ease-in-out;
+    width: 600px; /* 배지 3개를 동시에 보여줄 수 있는 너비 */
     margin-bottom: 30px;
+    transform: translateX(0);
+    transition: transform 0.5s ease-in-out;
 }
 
 .detail_card .badge .image-container img {
     flex-shrink: 0;
-    width: 200px; /* 이미지 하나의 너비 */
+    width: 200px; /* 배지 하나의 너비 */
     height: auto;
-    margin-right: 10px; /* 이미지 간 간격 */
+    margin-right: 10px; /* 배지 간의 간격 */
 }
 
 .badge .slide-button {
