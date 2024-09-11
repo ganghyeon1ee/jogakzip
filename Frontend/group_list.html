@@ -63,9 +63,11 @@
         });
 
         document.getElementById('searchInput').addEventListener('keydown', function(event) {
-    if (event.key === 'Enter') {
-        currentKeyword = event.target.value;
-        fetchGroups(isPublic, true); // 엔터를 눌렀을 때만 그룹 목록을 초기화하여 검색 실행
+    if (event.key === 'Enter' && !isLoading) {
+        currentKeyword = event.target.value.trim();
+        if (currentKeyword !== '') {
+            fetchGroups(isPublic, true); // 검색 실행
+        }
     }
 });
 
