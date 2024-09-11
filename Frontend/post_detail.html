@@ -717,6 +717,37 @@ document.addEventListener("DOMContentLoaded", async function() {
     }
 });
 
+// 추억 공감하기
+document.getElementById("likeBtn").addEventListener("click", async function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const postId = urlParams.get("postId");
+    
+            if (!postId) {
+                alert("올바른 postId가 필요합니다.");
+                return;
+            }
+    
+            try {
+                const response = await fetch(`/api/posts/${postId}/like`, {
+                    method: "POST"
+                });
+    
+                if (response.ok) {
+                    const likeCountElement = document.getElementById("like-count");
+                    let currentLikeCount = parseInt(likeCountElement.textContent);
+    
+                    if (!isNaN(currentLikeCount)) {
+                        currentLikeCount += 1;
+                        likeCountElement.textContent = currentLikeCount;
+                    }
+                } else {
+                    console.error("Error liking post:", await response.text());
+                }
+            } catch (error) {
+                console.error("Error liking post:", error);
+            }
+        });
+
 </script>
 </body>
 </html>
