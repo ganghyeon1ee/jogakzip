@@ -173,7 +173,7 @@ body {
     margin-left: 10px; /* 슬라이드 버튼 옆에 배치 */
     width: 141.333334px;
     margin-bottom: 25px;
-    margin-left: 770px;
+    margin-left: 830px;
 }
 
 .badge .like-button:hover {
@@ -193,8 +193,8 @@ body {
 /* 꽃 이미지 효과를 위한 CSS */
 .flower-container {
     position: absolute; /* 부모 요소에 대해 상대적으로 배치 */
-    top: 32%; /* 공감 보내기 버튼 위로 위치 설정 */
-    left: 81%;
+    top: 30%; /* 공감 보내기 버튼 위로 위치 설정 */
+    left: 80%;
     transform: translateX(-50%); /* 중앙으로 위치 */
     width: 0; /* 폭을 0으로 설정하여 겹침 방지 */
     height: 0; /* 높이를 0으로 설정 */
@@ -245,16 +245,163 @@ body {
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     width: 70%;
-    width: 500px;
-    height: 600px;
+    height: 800px;
+    width: 1100px;
     text-align: center;
     position: relative;
     top: 0;
 }
 
-.popup-content .comment_edit_popup{
-    width: 70%;
+.popup-content6 {
+    background-color: white;
+    padding: 15px; /* 팝업 창 내부 패딩 */
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 400px; /* 너비를 400px로 설정 */
+    height: 550px; /* 높이를 300px로 설정 */
+    text-align: center;
+    position: relative;
+    top: 0;
 }
+
+
+.popup-content3 {
+    background-color: white;
+    padding: 15px; /* 팝업 창 내부 패딩 */
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 400px; /* 너비를 400px로 설정 */
+    height: 500px; /* 높이를 500px로 설정 */
+    text-align: center;
+    position: relative;
+    top: 0;
+}
+
+.popup-content3 h1{
+    font-size: 22px;
+    margin-bottom: 30px;
+    margin-top: 30px;
+}
+
+.popup-content3 .comment_edit_popup {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 아이템을 중앙으로 정렬 */
+    width: 100%; /* 부모 요소의 너비를 가득 채움 */
+    gap: 15px; /* 아이템 간의 간격 조정 */
+    margin-bottom: 40px;
+    margin-top: 40px;
+}
+
+.comment_edit_popup label {
+    width: 100%; /* 레이블을 부모 요소의 너비에 맞춤 */
+    max-width: 320px; /* 최대 너비 설정 */
+    text-align: left; /* 레이블 텍스트를 왼쪽 정렬 */
+    font-weight: 500;
+}
+
+.comment_edit_popup input,
+.comment_edit_popup textarea {
+    width: 100%; /* 입력 요소를 부모 요소의 너비에 맞춤 */
+    max-width: 300px; /* 최대 너비 설정 */
+    margin-bottom: 10px;
+}
+
+.comment_edit_popup .group-name-input,
+.comment_edit_popup .group-description-input {
+    padding: 8px; /* 입력 필드 내부 패딩 조정 */
+}
+
+.comment_edit_popup .group-name-input.focused,
+.comment_edit_popup .group-description-input.focused {
+    border-color: #282828; /* 선택된 입력 필드의 테두리 색상 */
+    background-color: #f9f9f9; /* 선택된 입력 필드의 배경 색상 */
+    color: #282828;
+}
+
+.popup-content5 {
+    background-color: white;
+    padding: 15px; /* 팝업 창 내부 패딩 */
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 400px; /* 너비를 400px로 설정 */
+    height: 300px; /* 높이를 300px로 설정 */
+    text-align: center;
+    position: relative;
+    top: 0;
+}
+
+.popup-content5 h1{
+    font-size: 22px;
+    margin-bottom: 30px;
+    margin-top: 30px;
+}
+
+.popup-content5 .comment_delete_popup {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 아이템을 중앙으로 정렬 */
+    width: 100%; /* 부모 요소의 너비를 가득 채움 */
+    gap: 15px; /* 아이템 간의 간격 조정 */
+    margin-bottom: 30px;
+    margin-top: 40px;
+}
+
+.comment_delete_popup label {
+    width: 100%; /* 레이블을 부모 요소의 너비에 맞춤 */
+    max-width: 300px; /* 최대 너비 설정 */
+    text-align: left; /* 레이블 텍스트를 왼쪽 정렬 */
+    font-weight: 500;
+}
+
+.comment_delete_popup .group-name-input {
+    width: 100%; /* 입력 요소를 부모 요소의 너비에 맞춤 */
+    max-width: 300px; /* 최대 너비 설정 */
+    padding: 8px; /* 내부 여백 조정 */
+    box-sizing: border-box; /* 패딩과 보더를 포함하여 전체 크기를 계산 */
+    margin-bottom: 20px;
+}
+
+.comment_delete_popup .group-name-input.focused {
+    border-color: #282828; /* 포커스 시 테두리 색상 변경 */
+    background-color: #f9f9f9; /* 포커스 시 배경 색상 변경 */
+    color: #282828;
+}
+
+.submit-btn,
+.cancel-btn {
+    border: none;
+    border-radius: 5px;
+    width: 100px;
+    height: 40px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s; /* 부드러운 전환 효과 추가 */
+    margin: 0 10px; /* 버튼 간의 간격 조정 */
+}
+
+.submit-btn {
+    background-color: #282828; /* 삭제 버튼 색상 */
+}
+
+.submit-btn:hover {
+    background-color: #B8B8B8; /* 삭제 버튼 호버 색상 */
+    transform: scale(1.02); /* 호버 시 버튼 크기 증가 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 호버 시 그림자 추가 */
+}
+
+.cancel-btn {
+    background-color: #b8b8b8; /* 취소 버튼 색상 */
+}
+
+.cancel-btn:hover {
+    background-color: #282828; /* 취소 버튼 호버 색상 */
+    transform: scale(1.02); /* 호버 시 버튼 크기 증가 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 호버 시 그림자 추가 */
+}
+
+
+
 
 .popup-content2 {
     background-color: white;
@@ -445,6 +592,8 @@ body {
     align-items: flex-start;
     width: 100%;
     max-width: 300px; /* 각 컬럼의 최대 너비 */
+    margin-top: 0px;
+    margin-bottom: 10px;
 }
 
 .divider {
@@ -851,35 +1000,50 @@ body {
     width: 75%;
 }
 
+.comment {
+    margin-bottom: 10px;
+}
+
+.comment-header {
+    margin-bottom: 5px;
+}
+
+.comment-body {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.comment-body p {
+    margin: 0;
+    flex: 1; /* 댓글 내용이 버튼들보다 넓게 보이도록 설정 */
+    margin-left: 230px;
+}
+
+.comment-actions {
+    display: flex;
+    gap: 10px; /* 버튼 간의 간격 설정 */
+    margin-right: 230px;
+}
+
 .styled-button {
-    padding: 10px 20px;
-    font-size: 16px;
-    font-weight: bold;
-    border-radius: 8px;
+    background: none;
     border: none;
+    padding: 0;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
 }
-  
-.edit-btn {
-    background-color: #4CAF50;
-    color: white;
+
+.styled-button img {
+    width: 20px; /* 버튼 이미지 크기 조정 */
+    height: auto;
 }
-  
-.edit-btn:hover {
-    background-color: #45a049;
-    transform: scale(1.05);
-}
-  
-.delete-btn {
-    background-color: #f44336;
-    color: white;
-}
-  
-.delete-btn:hover {
-    background-color: #e53935;
-    transform: scale(1.05);
-}
+
+
+
 
 
 @media (max-width: 1200px) {
