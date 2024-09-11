@@ -153,9 +153,8 @@ body {
 }
 
 .badge-container img {
-    width: 80px; /* 배지 크기 조정 */
-    height: auto;
-    object-fit: contain; /* 이미지 비율 유지 */
+    width: 200px; /* 배지 크기 조정 */
+    height: 43px;
 }
 
 .badge .like-button {
