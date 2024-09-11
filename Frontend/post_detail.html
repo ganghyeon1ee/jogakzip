@@ -44,7 +44,7 @@
                     <!-- Google Maps 이미지 추가 -->
                     <div class="map-image-container">
                         <a id="map-link" href="#" target="_blank">
-                            <img src="img/map.png" alt="Google Maps" id="map-image">
+                            <img src="img/map.png" alt="Google Maps" id="map-image" title="Google Maps에서 검색하기">
                         </a>
                     </div>
                 
@@ -692,7 +692,7 @@ document.addEventListener("DOMContentLoaded", async function() {
 
         // 마우스 오버 툴팁 설정
         const mapImageElement = document.getElementById('map-image');
-        mapImageElement.setAttribute('data-location', `Google Maps에서 ${location} 검색하기`);
+        mapImageElement.title = `Google Maps에서 ${location} 검색하기`;  // 여기서 title 속성을 설정
 
     } catch (error) {
         console.error('Error fetching post data:', error);
