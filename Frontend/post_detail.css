@@ -1277,7 +1277,7 @@ body {
 
 /* Google Maps 이미지 */
 #map-image {
-    width: 100px;
+    width: 50px;
     height: auto;
     cursor: pointer;
 }
