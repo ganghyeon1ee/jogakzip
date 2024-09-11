@@ -490,6 +490,14 @@ document.getElementById('loadMoreButton').addEventListener('click', function() {
     currentPage++;  // 다음 페이지로 증가
     fetchPosts(true, false);  // false를 전달하여 reset 없이 추가로 로드
 });
+
+const inputs = document.querySelectorAll('input, textarea');
+
+inputs.forEach(input => {
+    input.addEventListener('input', function() {
+        this.style.color = 'black';
+    });
+});
   </script>
 </body>
 </html>
