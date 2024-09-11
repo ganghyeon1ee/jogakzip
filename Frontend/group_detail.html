@@ -156,6 +156,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         '추억 공감 1만 개 이상 받기': '1klikesmemory.png'
     };
     
+    let currentImage = '';  // 기존 이미지 URL 저장 변수 추가
+    
     try {
         // 그룹 데이터를 받아오는 fetch 요청
         const response = await fetch(`/api/groups/${groupId}`);  
@@ -170,6 +172,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         // **그룹 정보 DOM에 반영**
+        currentImage = groupData.imageUrl;  // 기존 이미지 URL 저장
         document.getElementById('group-image').src = groupData.imageUrl;
         document.getElementById('group-name').textContent = groupData.name;
         document.getElementById('group-created-at').textContent = new Date(groupData.createdAt).toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
@@ -177,99 +180,75 @@ document.addEventListener("DOMContentLoaded", async () => {
         document.getElementById('post-count').textContent = groupData.postCount;
         document.getElementById('like-count').textContent = groupData.likeCount;
         document.getElementById('group-description').textContent = groupData.introduction;
-
-        // 배지 데이터를 순회하면서 이미지를 배치
-        const badgesContainer = document.querySelector('.image-container');
-        const nextBtn = document.getElementById('nextBtn');
-        badgesContainer.innerHTML = '';
-
-        if (groupData.badges.length === 0) {
-            // 배지가 없을 경우 메시지 표시 및 버튼 숨기기
-            badgesContainer.innerHTML = '<p>배지가 없습니다.</p>';
-            nextBtn.style.display = 'none';  // 슬라이드 버튼 숨기기
-        } else {
-            groupData.badges.forEach(badge => {
-                const imageName = badgeImageMapping[badge];  // 매핑된 이미지 파일 이름 가져오기
-                if (imageName) {
-                    const badgeImg = document.createElement('img');
-                    badgeImg.src = `/img/${imageName}`;  // 절대 경로 사용
-                    badgeImg.alt = badge;  // 배지 이름을 alt로 설정
-                    badgesContainer.appendChild(badgeImg);
-                } else {
-                    console.error('Badge image not found for:', badge);
-                }
-            });
-
-            // 배지가 있을 경우 슬라이드 버튼을 다시 보이도록 설정
-            nextBtn.style.display = 'block';
-        }
     } catch (error) {
         console.error('Error fetching group details:', error);
     }
-});
 
-document.getElementById('file-upload').addEventListener('change', function() {
-    const fileName = this.files[0]?.name || '파일을 선택해주세요.';
-    document.getElementById('representative-image').value = fileName;
-});
+    document.getElementById('file-upload').addEventListener('change', function() {
+        const fileName = this.files[0]?.name || '파일을 선택해주세요.';
+        document.getElementById('representative-image').value = fileName;
+    });
 
-async function updateGroupInfo() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const groupId = urlParams.get('groupId');
+    async function updateGroupInfo() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const groupId = urlParams.get('groupId');
 
-    // 기존 그룹 정보를 DOM에서 가져오기
-    const currentName = document.getElementById('group-name').textContent;
-    const currentIntroduction = document.getElementById('group-description').textContent;
-    const currentIsPublic = document.getElementById('group-status').textContent === '공개';
+        // 기존 그룹 정보를 DOM에서 가져오기
+        const currentName = document.getElementById('group-name').textContent;
+        const currentIntroduction = document.getElementById('group-description').textContent;
+        const currentIsPublic = document.getElementById('group-status').textContent === '공개';
 
-    // 사용자가 입력한 값을 가져오거나, 입력하지 않으면 기존 값을 사용
-    const name = document.getElementById('group-name-input').value || currentName;
-    const password = document.getElementById('group-password').value;
-    const introduction = document.getElementById('group-description-input').value || currentIntroduction;
-    const isPublic = document.getElementById('visibility-text').textContent === '공개' ? 1 : 0;
-    const fileInput = document.getElementById('file-upload');
-    const file = fileInput.files[0];
+        // 사용자가 입력한 값을 가져오거나, 입력하지 않으면 기존 값을 사용
+        const name = document.getElementById('group-name-input').value || currentName;
+        const password = document.getElementById('group-password').value;
+        const introduction = document.getElementById('group-description-input').value || currentIntroduction;
+        const isPublic = document.getElementById('visibility-text').textContent === '공개' ? 1 : 0;
+        const fileInput = document.getElementById('file-upload');
+        const file = fileInput.files[0];
 
-    // 비밀번호는 필수 입력 항목이므로 체크
-    if (!password) {
-        alert('비밀번호를 입력해 주세요.');
-        return;
-    }
-
-    // FormData 생성
-    const formData = new FormData();
-    formData.append('name', name);
-    formData.append('password', password);
-    formData.append('introduction', introduction);
-    formData.append('isPublic', isPublic);
-
-    // 파일이 있는 경우에만 FormData에 추가
-    if (file) {
-        formData.append('image', file);
-    }
-
-    try {
-        const response = await fetch(`/api/groups/${groupId}`, {
-            method: 'PUT',
-            body: formData,
-        });
-
-        if (response.ok) {
-            const updatedGroup = await response.json();
-
-            // 업데이트된 정보를 화면에 반영
-            document.getElementById('group-name').textContent = updatedGroup.name;
-            document.getElementById('group-description').textContent = updatedGroup.introduction;
-            document.getElementById('group-image').src = updatedGroup.imageUrl;
-            document.getElementById('group-status').textContent = updatedGroup.isPublic ? '공개' : '비공개';
-            hidePopup();  // 팝업 닫기
-        } else {
-            alert('그룹 수정에 실패했습니다. 다시 시도해 주세요.');
+        // 비밀번호는 필수 입력 항목이므로 체크
+        if (!password) {
+            alert('비밀번호를 입력해 주세요.');
+            return;
         }
-    } catch (error) {
-        console.error('Error updating group:', error);
+
+        // FormData 생성
+        const formData = new FormData();
+        formData.append('name', name);
+        formData.append('password', password);
+        formData.append('introduction', introduction);
+        formData.append('isPublic', isPublic);
+
+        // 파일이 있는 경우에만 FormData에 추가, 없으면 기존 이미지 사용
+        if (file) {
+            formData.append('image', file);
+        } else {
+            formData.append('imageUrl', currentImage);  // 기존 이미지를 계속 사용
+        }
+
+        try {
+            const response = await fetch(`/api/groups/${groupId}`, {
+                method: 'PUT',
+                body: formData,
+            });
+
+            if (response.ok) {
+                const updatedGroup = await response.json();
+
+                // 업데이트된 정보를 화면에 반영
+                document.getElementById('group-name').textContent = updatedGroup.name;
+                document.getElementById('group-description').textContent = updatedGroup.introduction;
+                document.getElementById('group-image').src = updatedGroup.imageUrl || currentImage;
+                document.getElementById('group-status').textContent = updatedGroup.isPublic ? '공개' : '비공개';
+                hidePopup();  // 팝업 닫기
+            } else {
+                alert('그룹 수정에 실패했습니다. 다시 시도해 주세요.');
+            }
+        } catch (error) {
+            console.error('Error updating group:', error);
+        }
     }
-}
+});
     async function verifyPasswordAndDeleteGroup() {
     const urlParams = new URLSearchParams(window.location.search);
     const groupId = urlParams.get('groupId');
