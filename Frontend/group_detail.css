@@ -167,7 +167,7 @@ body {
 .detail_card .badge .img4,
 .detail_card .badge .img5,
 .detail_card .badge .img6 {
-    width: 150px; /* 이미지의 너비를 동일하게 설정 */
+    width: 130px; /* 이미지의 너비를 동일하게 설정 */
 }
 
 .badge .slide-button {
