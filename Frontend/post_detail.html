@@ -589,7 +589,16 @@ async function updateMemory() {
     const postPassword = document.getElementById('edit-password').value;
     const tags = document.getElementById('edit-tags').value || Array.from(document.querySelectorAll('#post-tags .tag')).map(tag => tag.textContent.replace('#', '')).join(',');
     const location = document.getElementById('edit-location').value || document.getElementById('post-location').textContent;
-    const moment = document.getElementById('edit-moment').value || document.getElementById('post-moment').textContent;
+
+    // 기존 moment 값을 가져와 input type="date"에 맞는 형식으로 변환
+    let moment = document.getElementById('edit-moment').value;
+    if (!moment) {
+        // 기존 데이터가 있으면 YYYY-MM-DD 형식으로 변환
+        const currentMoment = document.getElementById('post-moment').textContent;
+        const date = new Date(currentMoment);
+        moment = date.toISOString().split('T')[0]; // 'YYYY-MM-DD' 형식으로 변환
+    }
+
     const isPublic = document.getElementById('edit-visibility-text').textContent === '공개' ? 1 : 0;
 
     const imageFile = document.getElementById('edit-file-upload').files[0];
@@ -631,7 +640,7 @@ async function updateMemory() {
             document.getElementById('post-title').textContent = updatedPost.title;
             document.getElementById('post-content').innerHTML = updatedPost.content;
             document.getElementById('post-location').textContent = updatedPost.location;
-            document.getElementById('post-moment').textContent = updatedPost.moment;
+            document.getElementById('post-moment').textContent = new Date(updatedPost.moment).toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
 
             if (updatedPost.imageUrl) {
                 document.getElementById('post-image').src = updatedPost.imageUrl;
