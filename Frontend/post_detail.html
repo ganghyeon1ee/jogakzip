@@ -671,7 +671,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     const location = postLocationElement.textContent.trim();
 
     const mapLinkElement = document.getElementById('map-link');
-    mapLinkElement.href = `https://www.google.co.kr/maps/place/${encodeURIComponent(location)}`;
+    mapLinkElement.href = `https://www.google.co.kr/maps/place/${location}`;
 
     const mapImageElement = document.getElementById('map-image');
     mapImageElement.setAttribute('data-location', `Google Maps에서 ${location} 검색하기`);
