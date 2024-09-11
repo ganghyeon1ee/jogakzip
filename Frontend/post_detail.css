@@ -252,6 +252,10 @@ body {
     top: 0;
 }
 
+.popup-content .comment_edit_popup{
+    width: 70%;
+}
+
 .popup-content2 {
     background-color: white;
     padding: 15px; /* 팝업 창 내부 패딩 줄이기 */
