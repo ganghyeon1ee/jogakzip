@@ -1278,3 +1278,38 @@ body {
         text-align: center;
     }
 }
+
+/* 지도 이미지를 포함하는 컨테이너 */
+.map-image-container {
+    display: inline-block; /* 이미지 컨테이너를 인라인 블록으로 설정 */
+    position: relative; /* 툴팁을 위해 상대적인 위치 설정 */
+    cursor: pointer; /* 마우스가 올라가면 커서가 포인터로 바뀜 */
+}
+
+/* 지도 이미지 스타일 */
+#map-image {
+    width: 80px; /* 이미지의 너비 설정 */
+    height: auto; /* 이미지 비율에 맞게 높이 자동 설정 */
+    transition: transform 0.3s ease; /* 마우스 오버 시 이미지 확대 효과 */
+}
+
+/* 이미지에 마우스 오버 시 확대 효과 */
+#map-image:hover {
+    transform: scale(1.05); /* 마우스 오버 시 5% 확대 */
+}
+
+/* 지도 이미지 툴팁 */
+#map-image:hover::after {
+    content: attr(data-location); /* 툴팁에 'data-location' 속성 값 표시 */
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: black;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 1000;
+}
