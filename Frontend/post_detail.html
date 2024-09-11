@@ -552,81 +552,109 @@
         textInput.value = fileInput.files[0].name;
     }
 
-// 추억 수정 함수
+// 추억 수정하기
 async function updateMemory() {
     const urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get('postId');
+
     const nickname = document.getElementById('edit-nickname').value;
     const title = document.getElementById('edit-title').value;
-    const imageUrl = document.getElementById('edit-image-url').value;
     const content = document.getElementById('edit-content').value;
+    const postPassword = document.getElementById('edit-password').value;
     const tags = document.getElementById('edit-tags').value;
     const location = document.getElementById('edit-location').value;
     const moment = document.getElementById('edit-moment').value;
-    const isPublic = document.getElementById('edit-visibility-text').textContent === '공개';
-    const password = document.getElementById('edit-password').value;
+    const isPublic = document.getElementById('edit-visibility-text').textContent === '공개' ? 1 : 0;
 
-    // 필드 검증
-    if (!nickname || !title || !content || !password) {
+    // 이미지 파일
+    const imageFile = document.getElementById('edit-file-upload').files[0];
+
+    if (!nickname || !title || !content || !postPassword) {
         alert('모든 필드를 입력해 주세요.');
         return;
+    }
+
+    // FormData 사용하여 multipart/form-data 요청 생성
+    const formData = new FormData();
+    formData.append('nickname', nickname);
+    formData.append('title', title);
+    formData.append('content', content);
+    formData.append('postPassword', postPassword);
+    formData.append('tags', tags);
+    formData.append('location', location);
+    formData.append('moment', moment);
+    formData.append('isPublic', isPublic);
+
+    if (imageFile) {
+        formData.append('image', imageFile); // 이미지 파일 추가
     }
 
     try {
         const response = await fetch(`/api/posts/${postId}`, {
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ nickname, title, imageUrl, content, tags, location, moment, isPublic, password })
+            body: formData // FormData 객체를 전달하여 이미지 포함 요청
         });
 
         if (response.ok) {
-            alert('추억이 수정되었습니다!');
-            location.reload(); // 페이지 새로고침
+            const updatedPost = await response.json();
+            alert('추억이 성공적으로 수정되었습니다.');
+
+            // 수정된 데이터를 즉시 반영하기 위해 DOM을 업데이트
+            document.getElementById('nickname').textContent = updatedPost.nickname;
+            document.getElementById('post-title').textContent = updatedPost.title;
+            document.getElementById('post-content').innerHTML = updatedPost.content;
+            document.getElementById('post-location').textContent = updatedPost.location;
+            document.getElementById('post-moment').textContent = updatedPost.moment;
+
+            // 이미지가 있으면 업데이트
+            if (updatedPost.imageUrl) {
+                document.getElementById('post-image').src = updatedPost.imageUrl;
+            }
+
+            hideEditPopup();
         } else {
             const errorData = await response.json();
-            alert(errorData.message || '추억 수정 중 오류가 발생했습니다.');
+            alert(errorData.message);
         }
     } catch (error) {
-        console.error('Error updating memory:', error);
+        console.error('Error updating post:', error);
         alert('추억 수정 중 오류가 발생했습니다.');
     }
-
-    hideEditPopup();
 }
 
-// 추억 삭제 함수
-async function verifyPasswordAndDeleteMemory() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const postId = urlParams.get('postId');
-    const password = document.getElementById('delete-password').value;
+        // 추억 삭제하기
+        async function verifyPasswordAndDeleteMemory() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const postId = urlParams.get('postId');
+        const postPassword = document.getElementById('delete-password').value;
 
-    if (!password) {
-        alert('비밀번호를 입력해 주세요.');
-        return;
-    }
-
-    try {
-        const response = await fetch(`/api/posts/${postId}`, {
-            method: 'DELETE',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ password })
-        });
-
-        if (response.ok) {
-            alert('추억이 삭제되었습니다!');
-            window.location.href = 'group_list.html'; // 삭제 후 목록으로 이동
-        } else {
-            const errorData = await response.json();
-            alert(errorData.message || '추억 삭제 중 오류가 발생했습니다.');
+        if (!postPassword) {
+            alert('비밀번호를 입력해 주세요.');
+            return;
         }
-    } catch (error) {
-        console.error('Error deleting memory:', error);
-        alert('추억 삭제 중 오류가 발생했습니다.');
+
+        try {
+            const response = await fetch(`/api/posts/${postId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ postPassword })
+            });
+
+            if (response.ok) {
+                alert('추억이 삭제되었습니다.');
+                hideDeletePopup();
+                window.location.href = 'group_list.html'; 
+            } else {
+                const errorData = await response.json();
+                alert(errorData.message);
+            }
+        } catch (error) {
+            console.error('Error deleting post:', error);
+            alert('추억 삭제 중 오류가 발생했습니다.');
+        }
     }
-
-    hideDeletePopup();
-}
-
 </script>
 </body>
 </html>
