@@ -140,50 +140,24 @@ body {
     font-size: 16px;
 }
 
-.badge{
+.badge {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    position: relative;
+    margin-top: 20px;
 }
 
-.detail_card .badge .image-container {
+.image-container-row {
     display: flex;
-    overflow: hidden;
-    width: 100%; /* 부모 요소의 너비를 기준으로 설정합니다 */
-    width: 700px; /* 3개 이상의 이미지가 보이도록 너비를 확장 */
-    margin-bottom: 30px;
-    transform: translateX(0); /* 슬라이더의 초기 위치 설정 */
-    transition: transform 0.5s ease-in-out; /* 부드러운 이동 애니메이션 */
-}
-
-.detail_card .badge .image-container img {
-    flex-shrink: 0; /* 이미지 크기가 줄어들지 않도록 설정합니다 */
-    margin-right: 5px;
-    height: 43px;
-    width: 200px;
-    transition: transform 0.3s ease-in-out;
-    margin-left: 20px;
-}
-
-.badge .slide-button {
-    background-color: white;
-    color: #282828;
-    border: 1px solid #282828;
-    border-radius: 50%;
-    cursor: pointer;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
     justify-content: center;
-    margin-left: 10px; /* 이미지 옆에 배치 */
-    transition: background-color 0.3s ease;
+    gap: 10px;
+    margin-bottom: 20px;
 }
 
-.badge .slide-button:hover {
-    background-color: #282828;
-    color: white;
-    border: none;
+.image-container-row img {
+    width: 200px;
+    height: auto;
+    transition: transform 0.3s ease-in-out;
 }
 
 .badge .like-button {
@@ -195,24 +169,7 @@ body {
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    margin-left: 10px; /* 슬라이드 버튼 옆에 배치 */
-    width: 141.333334px;
-    margin-left: 90px;
-}
-
-.badge .like-button:hover {
-    background-color: #282828;
-    color: white;
-    border: none;
-}
-
-.detail_card .badge .flower {
-    width: 16px;
-    height: 16px;
-    vertical-align: middle;
-    margin-right: 5px;
-    margin-left: 0px;
-    margin-top: 0px;
+    margin-top: 20px;
 }
 /* 꽃 이미지 효과를 위한 CSS */
 .flower-container {
