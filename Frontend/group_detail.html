@@ -386,19 +386,18 @@ document.getElementById("likeBtn").addEventListener("click", async function() {
     }
 });
 
-let currentIndex = 0;
+let currentIndex = 0;  // 현재 인덱스를 추적
+const imageWidth = 200;  // 이미지 하나의 너비
+const visibleImages = 3;  // 한 번에 보일 이미지 개수
 
 document.getElementById("nextBtn").addEventListener("click", function() {
     const images = document.querySelectorAll(".image-container img");
     const totalImages = images.length;
-    const visibleImages = 3;  // 한 번에 보일 이미지 개수
-    const imageWidth = 200;   // 이미지 하나의 너비
 
-    currentIndex++;
-
-    // 모든 이미지를 다 보면 처음으로 돌아가도록 설정
-    if (currentIndex > totalImages - visibleImages) {
-        currentIndex = 0;
+    if (currentIndex < totalImages - visibleImages) {
+        currentIndex++;  // 인덱스를 증가시킴
+    } else {
+        currentIndex = 0;  // 끝까지 오면 다시 처음으로
     }
 
     const offset = currentIndex * imageWidth;  // 슬라이드 이동 거리

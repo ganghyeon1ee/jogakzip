@@ -149,20 +149,17 @@ body {
 .detail_card .badge .image-container {
     display: flex;
     overflow: hidden;
-    width: 100%; /* 부모 요소의 너비를 기준으로 설정합니다 */
-    width: 700px; /* 3개 이상의 이미지가 보이도록 너비를 확장 */
+    width: 600px; /* 한 번에 보일 이미지 개수에 맞춰 너비 설정 */
     margin-bottom: 30px;
     transform: translateX(0); /* 슬라이더의 초기 위치 설정 */
-    transition: transform 0.5s ease-in-out; /* 부드러운 이동 애니메이션 */
+    transition: transform 0.5s ease-in-out;
 }
 
 .detail_card .badge .image-container img {
-    flex-shrink: 0; /* 이미지 크기가 줄어들지 않도록 설정합니다 */
+    flex-shrink: 0; 
     margin-right: 5px;
     height: 43px;
     width: 200px;
-    transition: transform 0.3s ease-in-out;
-    margin-left: 20px;
 }
 
 .badge .slide-button {
