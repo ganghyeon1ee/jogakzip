@@ -168,13 +168,15 @@
     <div class="popup-background" id="edit-comment-popup-background">
         <div class="popup-content">
             <h1>댓글 수정하기</h1>
-            <input type="hidden" id="edit-comment-id">
-            <label for="edit-comment-nickname">닉네임</label>
-            <input type="text" id="edit-comment-nickname" class="group-name-input">
-            <label for="edit-comment-content">댓글 내용</label>
-            <textarea id="edit-comment-content" class="group-description-input"></textarea>
-            <label for="edit-comment-password">비밀번호</label>
-            <input type="password" id="edit-comment-password" class="group-name-input">
+            <div class="comment_edit_popup">
+                <input type="hidden" id="edit-comment-id">
+                <label for="edit-comment-nickname">닉네임</label>
+                <input type="text" id="edit-comment-nickname" class="group-name-input">
+                <label for="edit-comment-content">댓글 내용</label>
+                <textarea id="edit-comment-content" class="group-description-input"></textarea>
+                <label for="edit-comment-password">비밀번호</label>
+                <input type="password" id="edit-comment-password" class="group-name-input">
+            </div>
             <button onclick="submitEditComment()">수정</button>
             <button onclick="hideEditCommentPopup()">취소</button>
         </div>
