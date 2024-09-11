@@ -36,13 +36,14 @@
         </div>
         <div class="grid">
         </div>
-        <button class="load-more" id="loadMoreButton">더보기</button>
+        <button class="load-more" id="loadMoreButton" style="display: none;">더보기</button>
     </div>
     <script>
         let currentPage = 1;
         let currentSortBy = 'mostLiked';
         let currentKeyword = '';
         let isPublic = true; // 초기값을 공개 그룹으로 설정
+        let isLoading = false; // 로딩 중복 방지 플래그
 
         document.getElementById('publicButton').addEventListener('click', function() {
             setActiveButton('public');
@@ -67,8 +68,10 @@
         });
 
         document.getElementById('loadMoreButton').addEventListener('click', function() {
-            currentPage++;
-            fetchGroups(isPublic, false); // 현재 isPublic 값 사용
+            if (!isLoading) {
+                currentPage++;
+                fetchGroups(isPublic, false); // 현재 isPublic 값 사용
+            }
         });
 
         function setActiveButton(type) {
@@ -89,12 +92,24 @@
             if (reset) {
                 currentPage = 1; 
                 document.querySelector('.grid').innerHTML = ''; 
+                document.getElementById('loadMoreButton').style.display = 'none'; // 초기에는 숨김
             }
+
+            isLoading = true; // 로딩 상태 시작
 
             fetch(`/api/groups?isPublic=${isPublic}&sortBy=${currentSortBy}&keyword=${currentKeyword}&page=${currentPage}`)
                 .then(response => response.json())
                 .then(data => {
                     const grid = document.querySelector('.grid');
+
+                    // 그룹 목록이 없으면 더보기 버튼 숨김
+                    if (data.data.length === 0 && currentPage === 1) {
+                        grid.innerHTML = '<p>검색된 그룹이 없습니다.</p>';
+                        document.getElementById('loadMoreButton').style.display = 'none';
+                        return;
+                    }
+
+                    // 새로운 그룹들을 추가
                     data.data.forEach(group => {
                         const card = document.createElement('div');
                         card.className = 'card';
@@ -120,6 +135,7 @@
                                 </div>
                             </div>
                         `;
+
                         // 그룹 카드 클릭 이벤트 리스너 추가
                         card.addEventListener('click', function() {
                             if (group.isPublic) {
@@ -131,8 +147,23 @@
 
                         grid.appendChild(card);
                     });
+
+                    // 데이터가 존재하면 더보기 버튼 표시
+                    if (data.data.length > 0) {
+                        document.getElementById('loadMoreButton').style.display = 'block';
+                    }
+
+                    // 더 이상 데이터가 없으면 더보기 버튼 숨김
+                    if (data.data.length < 10) { // 페이지당 10개 기준
+                        document.getElementById('loadMoreButton').style.display = 'none';
+                    }
+
+                    isLoading = false; // 로딩 완료
                 })
-                .catch(error => console.error('Error fetching groups:', error));
+                .catch(error => {
+                    console.error('Error fetching groups:', error);
+                    isLoading = false; // 에러 발생 시에도 로딩 상태 해제
+                });
         }
 
         function convertToKoreanTime(utcTime) {
