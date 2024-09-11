@@ -870,7 +870,7 @@ body {
     transform: scale(1.05);
 }
   
- /* 삭제 버튼 */
+/* 삭제 버튼 */
 .delete-btn {
     background-color: #f44336;
     color: white;
