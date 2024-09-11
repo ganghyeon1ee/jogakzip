@@ -386,23 +386,68 @@ document.getElementById("likeBtn").addEventListener("click", async function() {
     }
 });
 
-let currentIndex = 0;  // 현재 인덱스 추적
-const imageWidth = 200;  // 배지 하나의 너비
-const visibleImages = 3;  // 한 번에 보여줄 배지 개수
+document.addEventListener("DOMContentLoaded", async () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const groupId = urlParams.get('groupId');
 
-document.getElementById("nextBtn").addEventListener("click", function() {
-    const images = document.querySelectorAll(".image-container img");
-    const totalImages = images.length;
-
-    // 한 번에 한 칸씩 이동하도록 설정
-    if (currentIndex < totalImages - visibleImages) {
-        currentIndex++;  // 인덱스를 1 증가시킴
-    } else {
-        currentIndex = 0;  // 끝까지 오면 다시 처음으로 돌아감
+    if (!groupId) {
+        console.error('Group ID is missing from URL.');
+        return;
     }
 
-    const offset = currentIndex * imageWidth;  // 슬라이드 이동 거리 계산
-    document.querySelector('.image-container').style.transform = `translateX(${-offset}px)`;
+    const badgeImageMapping = {
+        '7일 연속 추억 등록': '7daysMemory.png',
+        '추억 수 20개 이상 등록': '20Memory.png',
+        '그룹 생성 후 1년 달성': '1yearGroup.png',
+        '그룹 공감 1만 개 이상 받기': '1klikesgroup.png',
+        '추억 공감 1만 개 이상 받기': '1kllikesmemory.png'
+    };
+    
+    try {
+        // 그룹 데이터를 받아오는 fetch 요청
+        const response = await fetch(`/api/groups/${groupId}`);  
+        if (!response.ok) {
+            throw new Error('Failed to fetch group details');
+        }
+        const groupData = await response.json();
+
+        if (!groupData || !groupData.id) {
+            console.error('Invalid group data received:', groupData);
+            return;
+        }
+
+        // **그룹 정보 DOM에 반영**
+        document.getElementById('group-image').src = groupData.imageUrl;
+        document.getElementById('group-name').textContent = groupData.name;
+        document.getElementById('group-created-at').textContent = new Date(groupData.createdAt).toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
+        document.getElementById('group-status').textContent = groupData.isPublic ? '공개' : '비공개';
+        document.getElementById('post-count').textContent = groupData.postCount;
+        document.getElementById('like-count').textContent = groupData.likeCount;
+        document.getElementById('group-description').textContent = groupData.introduction;
+
+        // **배지 데이터를 순회하며 배지를 DOM에 추가**
+        const badgesContainer = document.querySelector('.badge-container');
+        badgesContainer.innerHTML = '';
+
+        if (groupData.badges && groupData.badges.length > 0) {
+            groupData.badges.forEach(badge => {
+                const imageName = badgeImageMapping[badge];  // 매핑된 이미지 파일 이름 가져오기
+                if (imageName) {
+                    const badgeImg = document.createElement('img');
+                    badgeImg.src = `/img/${imageName}`;  // 이미지 경로 설정
+                    badgeImg.alt = badge;  // 배지 이름을 alt로 설정
+                    badgesContainer.appendChild(badgeImg);  // 배지를 컨테이너에 추가
+                } else {
+                    console.error('Badge image not found for:', badge);
+                }
+            });
+        } else {
+            // 배지가 없을 경우 메시지 표시
+            badgesContainer.innerHTML = '<p>배지가 없습니다.</p>';
+        }
+    } catch (error) {
+        console.error('Error fetching group details:', error);
+    }
 });
 
 let currentPage = 1;  // 현재 페이지를 추적

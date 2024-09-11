@@ -145,42 +145,17 @@ body {
     align-items: center;
     position: relative;
 }
-
-.detail_card .badge .image-container {
+.badge-container {
     display: flex;
-    overflow: hidden;
-    width: 600px; /* 배지 3개를 동시에 보여줄 수 있는 너비 */
-    margin-bottom: 30px;
-    transform: translateX(0);
-    transition: transform 0.5s ease-in-out;
+    justify-content: center; /* 배지를 가운데 정렬 */
+    gap: 20px; /* 배지 간의 간격 */
+    margin-top: 20px;
 }
 
-.detail_card .badge .image-container img {
-    flex-shrink: 0;
-    width: 200px; /* 배지 하나의 너비 */
+.badge-container img {
+    width: 80px; /* 배지 크기 조정 */
     height: auto;
-    margin-right: 10px; /* 배지 간의 간격 */
-}
-
-.badge .slide-button {
-    background-color: white;
-    color: #282828;
-    border: 1px solid #282828;
-    border-radius: 50%;
-    cursor: pointer;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-left: 10px; /* 이미지 옆에 배치 */
-    transition: background-color 0.3s ease;
-}
-
-.badge .slide-button:hover {
-    background-color: #282828;
-    color: white;
-    border: none;
+    object-fit: contain; /* 이미지 비율 유지 */
 }
 
 .badge .like-button {
