@@ -139,7 +139,7 @@
 </div>
 
   <script>
-    document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener("DOMContentLoaded", async () => {
     const urlParams = new URLSearchParams(window.location.search);
     const groupId = urlParams.get('groupId');
 
@@ -158,7 +158,7 @@
     
     try {
         // 그룹 데이터를 받아오는 fetch 요청
-        const response = await fetch(`/api/groups/${groupId}`);  // 백틱 사용 또는 문자열로 수정
+        const response = await fetch(`/api/groups/${groupId}`);  
         if (!response.ok) {
             throw new Error('Failed to fetch group details');
         }
@@ -182,17 +182,22 @@
         const badgesContainer = document.querySelector('.image-container');
         badgesContainer.innerHTML = '';
 
-        groupData.badges.forEach(badge => {
-            const imageName = badgeImageMapping[badge];  // 매핑된 이미지 파일 이름 가져오기
-            if (imageName) {
-                const badgeImg = document.createElement('img');
-                badgeImg.src = `/img/${imageName}`;  // 절대 경로 사용
-                badgeImg.alt = badge;  // 배지 이름을 alt로 설정
-                badgesContainer.appendChild(badgeImg);
-            } else {
-                console.error('Badge image not found for:', badge);
-            }
-        });
+        if (groupData.badges.length === 0) {
+            // 배지가 없을 경우 메시지 표시
+            badgesContainer.innerHTML = '<p>배지가 없습니다.</p>';
+        } else {
+            groupData.badges.forEach(badge => {
+                const imageName = badgeImageMapping[badge];  // 매핑된 이미지 파일 이름 가져오기
+                if (imageName) {
+                    const badgeImg = document.createElement('img');
+                    badgeImg.src = `/img/${imageName}`;  // 절대 경로 사용
+                    badgeImg.alt = badge;  // 배지 이름을 alt로 설정
+                    badgesContainer.appendChild(badgeImg);
+                } else {
+                    console.error('Badge image not found for:', badge);
+                }
+            });
+        }
     } catch (error) {
         console.error('Error fetching group details:', error);
     }
