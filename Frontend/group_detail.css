@@ -157,7 +157,7 @@ body {
 .detail_card .badge .image-container img {
     margin-right: 5px;
     height: 43px;
-    width: flex;
+    width: 100px;
     transition: transform 0.3s ease-in-out;
     margin-left: 10px;
 }
