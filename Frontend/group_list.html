@@ -62,10 +62,12 @@
             fetchGroups(isPublic, true); // 현재 isPublic 값 사용
         });
 
-        document.getElementById('searchInput').addEventListener('input', function(event) {
-            currentKeyword = event.target.value;
-            fetchGroups(isPublic, true); // 현재 isPublic 값 사용
-        });
+        document.getElementById('searchInput').addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+        currentKeyword = event.target.value;
+        fetchGroups(isPublic, true); // 엔터를 눌렀을 때만 그룹 목록을 초기화하여 검색 실행
+    }
+});
 
         document.getElementById('loadMoreButton').addEventListener('click', function() {
             if (!isLoading) {
