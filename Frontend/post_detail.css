@@ -847,6 +847,26 @@ body {
     width: 75%;
 }
 
+.styled-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+  
+.edit-btn {
+    background-color: #4CAF50;
+    color: white;
+}
+  
+.delete-btn {
+    background-color: #f44336;
+    color: white;
+}
+
 
 @media (max-width: 1200px) {
     .container2 {
