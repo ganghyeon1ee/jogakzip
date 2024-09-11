@@ -150,9 +150,8 @@ body {
     display: flex;
     overflow: hidden;
     width: 600px; /* 한 번에 보일 배지 3개의 너비 */
-    margin-bottom: 30px;
-    transform: translateX(0); /* 슬라이더의 초기 위치 */
     transition: transform 0.5s ease-in-out;
+    margin-bottom: 30px;
 }
 
 .detail_card .badge .image-container img {
