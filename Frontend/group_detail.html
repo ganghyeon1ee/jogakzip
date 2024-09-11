@@ -355,6 +355,9 @@ document.getElementById("nextBtn").addEventListener("click", function() {
     document.querySelector('.image-container').style.transform = `translateX(${-offset}px)`;
 });
 
+let currentPage = 1;  // 현재 페이지를 추적
+let totalPages = 1;   // 총 페이지 수
+
 document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('.image-container').style.transform = `translateX(0)`;
     fetchPosts(true, true);
@@ -368,9 +371,10 @@ function fetchPosts(isPublic = true, reset = false) {
 
     if (reset) {
         postGrid.innerHTML = '';
+        currentPage = 1;  // 리셋 시 페이지를 다시 1로 설정
     }
 
-    fetch(`/api/groups/${groupId}/posts?isPublic=${isPublic ? 1 : 0}&sortBy=${sortBy}&keyword=${encodeURIComponent(keyword)}`)
+    fetch(`/api/groups/${groupId}/posts?isPublic=${isPublic ? 1 : 0}&sortBy=${sortBy}&keyword=${encodeURIComponent(keyword)}&page=${currentPage}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Failed to fetch posts');
@@ -421,6 +425,16 @@ function fetchPosts(isPublic = true, reset = false) {
 
                 postGrid.appendChild(card);
             });
+
+            totalPages = data.totalPages; // API 응답에서 총 페이지 수 받아오기
+
+            // 페이지를 모두 불러왔을 경우 더보기 버튼 숨기기
+            if (currentPage >= totalPages) {
+                document.getElementById('loadMoreButton').style.display = 'none';
+            } else {
+                document.getElementById('loadMoreButton').style.display = 'block';
+            }
+
         })
         .catch(error => console.error('Error fetching posts:', error));
 }
@@ -463,7 +477,8 @@ document.getElementById('sortBy').addEventListener('change', function() {
 });
 
 document.getElementById('loadMoreButton').addEventListener('click', function() {
-    fetchPosts(true, false);
+    currentPage++;  // 다음 페이지로 증가
+    fetchPosts(true, false);  // false를 전달하여 reset 없이 추가로 로드
 });
   </script>
 </body>
