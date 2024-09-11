@@ -61,155 +61,162 @@
 
     <hr style="border: 1px solid #DDDDDD; width: 75%;">
 
-    <!-- 추억 수정하기 팝업 -->
-    <div class="popup-background" id="edit-popup-background">
-        <div class="popup-content">
-            <div class="container3">
-                <div class="top-content">
-                    <h1 class="center-text">추억 수정하기</h1>
-                    <img src="img/X.png" class="close-icon" onclick="hideEditPopup()">
+<!-- 추억 수정하기 팝업 -->
+<div class="popup-background" id="edit-popup-background">
+    <div class="popup-content">
+        <div class="container3">
+            <div class="top-content">
+                <h1 class="center-text">추억 수정하기</h1>
+                <img src="img/X.png" class="close-icon" onclick="hideEditPopup()">
+            </div>
+            <div class="input-wrapper-container">
+                <div class="input-wrapper">
+                    <label for="edit-nickname" class="group-name-label">닉네임</label>
+                    <input type="text" id="edit-nickname" class="group-name-input" placeholder="닉네임을 입력해 주세요.">
+                    
+                    <label for="edit-title" class="group-name-label">제목</label>
+                    <input type="text" id="edit-title" class="group-name-input" placeholder="제목을 입력해 주세요.">
+
+                    <label for="edit-image-url" class="group-name-label">이미지</label>
+                    <div class="file-upload-wrapper">
+                        <input type="text" id="edit-image-url" class="file-name-input" placeholder="파일을 선택해 주세요." readonly>
+                        <label for="edit-file-upload" class="file-upload-button">파일 선택</label>
+                        <input type="file" id="edit-file-upload" class="file-input" onchange="updateFileName('edit-file-upload', 'edit-image-url')">
+                    </div>
+
+                    <label for="edit-content" class="group-name-label">본문</label>
+                    <textarea id="edit-content" class="group-description-input" placeholder="본문 내용을 입력해 주세요."></textarea>
                 </div>
-                <div class="input-wrapper-container">
-                    <div class="input-wrapper">
-                        <label for="edit-nickname" class="group-name-label">닉네임</label>
-                        <input type="text" id="edit-nickname" class="group-name-input" placeholder="닉네임을 입력해 주세요.">
-                        
-                        <label for="edit-title" class="group-name-label">제목</label>
-                        <input type="text" id="edit-title" class="group-name-input" placeholder="제목을 입력해 주세요.">
+                
+                <div class="divider"></div>
 
-                        <label for="edit-image-url" class="group-name-label">이미지</label>
-                        <div class="file-upload-wrapper">
-                            <input type="text" id="edit-image-url" class="file-name-input" placeholder="파일을 선택해 주세요." readonly>
-                            <label for="edit-file-upload" class="file-upload-button">파일 선택</label>
-                            <input type="file" id="edit-file-upload" class="file-input" onchange="updateFileName('edit-file-upload', 'edit-image-url')">
-                        </div>
-
-                        <label for="edit-content" class="group-name-label">본문</label>
-                        <textarea id="edit-content" class="group-description-input" placeholder="본문 내용을 입력해 주세요."></textarea>
+                <div class="input-wrapper">
+                    <label for="edit-tags" class="group-name-label">태그</label>
+                    <input type="text" id="edit-tags" class="group-name-input" placeholder="태그를 입력해 주세요. (쉼표로 구분)">
+                    <div class="hash-tag" id="edit-hash-tags">
                     </div>
                     
-                    <div class="divider"></div>
+                    <label for="edit-location" class="group-name-label">장소</label>
+                    <input type="text" id="edit-location" class="group-name-input" placeholder="장소를 입력해 주세요.">
 
-                    <div class="input-wrapper">
-                        <label for="edit-tags" class="group-name-label">태그</label>
-                        <input type="text" id="edit-tags" class="group-name-input" placeholder="태그를 입력해 주세요. (쉼표로 구분)">
-                        <div class="hash-tag" id="edit-hash-tags">
-                        </div>
-                        
-                        <label for="edit-location" class="group-name-label">장소</label>
-                        <input type="text" id="edit-location" class="group-name-input" placeholder="장소를 입력해 주세요.">
+                    <label for="edit-moment" class="group-name-label">추억의 순간</label>
+                    <input type="date" id="edit-moment" class="date-picker-input">
 
-                        <label for="edit-moment" class="group-name-label">추억의 순간</label>
-                        <input type="date" id="edit-moment" class="date-picker-input">
-
-                        <label for="edit-visibility" class="group-name-label" onclick="toggleEditVisibility()">추억 공개 선택</label>
-                        <div class="visibility-wrapper">
-                            <span id="edit-visibility-text" class="visibility-text">공개</span>
-                            <img id="edit-visibility-icon" src="img/state=active.png" alt="Visibility Icon" class="visibility-icon">
-                        </div>
-                    
-                        <label for="edit-password" class="group-name-label">비밀번호 생성</label>
-                        <input type="password" id="edit-password" class="group-name-input" placeholder="추억 비밀번호를 생성해 주세요.">
+                    <label for="edit-visibility" class="group-name-label" onclick="toggleEditVisibility()">추억 공개 선택</label>
+                    <div class="visibility-wrapper">
+                        <span id="edit-visibility-text" class="visibility-text">공개</span>
+                        <img id="edit-visibility-icon" src="img/state=active.png" alt="Visibility Icon" class="visibility-icon">
                     </div>
-                </div>
-
-                <button class="submit-button2" onclick="updateMemory()">수정하기</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 추억 삭제하기 팝업 -->
-    <div class="popup-background" id="delete-popup-background">
-        <div class="popup-content2">
-            <div class="container4">
-                <div class="top-content">
-                    <h1 class="center-text">추억 삭제</h1>
-                    <img src="img/X.png" class="close-icon" onclick="hideDeletePopup()">
-                </div>
-                <div class="input-wrapper">
-                    <label for="delete-password" class="group-name-label">삭제 권한 인증</label>
-                    <input type="password" id="delete-password" class="group-name-input" placeholder="추억 비밀번호를 입력해 주세요.">
+                
+                    <label for="edit-password" class="group-name-label">비밀번호 생성</label>
+                    <input type="password" id="edit-password" class="group-name-input" placeholder="추억 비밀번호를 생성해 주세요.">
                 </div>
             </div>
-            <button class="popup-close" onclick="verifyPasswordAndDeleteMemory()">삭제하기</button>
+
+            <button class="submit-button2" onclick="updateMemory()">수정하기</button>
         </div>
     </div>
+</div>
 
-    <div class="main-content">
-        <img src="404.png" id="post-image">
-        <p id="post-content"></p>
-        <button class="load-more" onclick="showCommentPopup()">댓글 등록하기</button>
-    </div>
-
-    <!-- 댓글 등록하기 팝업 -->
-    <div class="popup-background" id="comment-popup-background">
-        <div class="popup-content6"> 
-            <div class="container">
-                <div class="top-content">
-                    <h1 class="center-text">댓글 등록하기</h1>
-                    <img src="img/X.png" class="close-icon" onclick="hideCommentPopup()">
-                </div>
-                <div class="input-wrapper">
-                    <label for="comment-nickname" class="group-name-label">닉네임</label>
-                    <input type="text" id="comment-nickname" class="group-name-input" placeholder="닉네임을 입력해 주세요.">
-                    
-                    <label for="comment-content" class="group-name-label">댓글 내용</label>
-                    <textarea id="comment-content" class="group-description-input" placeholder="댓글 내용을 입력해 주세요."></textarea>
-                    
-                    <label for="comment-password" class="group-name-label">비밀번호</label>
-                    <input type="password" id="comment-password" class="group-name-input" placeholder="비밀번호를 입력해 주세요.">
-                </div>
-                <button class="submit-button2" onclick="submitComment()">등록하기</button>
+<!-- 추억 삭제하기 팝업 -->
+<div class="popup-background" id="delete-popup-background">
+    <div class="popup-content2">
+        <div class="container4">
+            <div class="top-content">
+                <h1 class="center-text">추억 삭제</h1>
+                <img src="img/X.png" class="close-icon" onclick="hideDeletePopup()">
+            </div>
+            <div class="input-wrapper">
+                <label for="delete-password" class="group-name-label">삭제 권한 인증</label>
+                <input type="password" id="delete-password" class="group-name-input" placeholder="추억 비밀번호를 입력해 주세요.">
             </div>
         </div>
+        <button class="popup-close" onclick="verifyPasswordAndDeleteMemory()">삭제하기</button>
     </div>
+</div>
 
-        <!-- 댓글 수정 팝업 -->
-    <div class="popup-background" id="edit-comment-popup-background">
-        <div class="popup-content3">
-            <h1>댓글 수정</h1>
-            <div class="comment_edit_popup">
-                <input type="hidden" id="edit-comment-id">
-                <label for="edit-comment-nickname">닉네임</label>
-                <input type="text" id="edit-comment-nickname" class="group-name-input">
-                <label for="edit-comment-content">댓글 내용</label>
-                <textarea id="edit-comment-content" class="group-description-input"></textarea>
-                <label for="edit-comment-password">비밀번호</label>
-                <input type="password" id="edit-comment-password" class="group-name-input">
-            </div>
-            <button class="submit-btn" onclick="submitEditComment()">수정</button>
-            <button class="cancel-btn" onclick="hideEditCommentPopup()">취소</button>
-        </div>
-    </div>
-    
-        <!-- 댓글 삭제 팝업 -->
-    <div class="popup-background" id="delete-comment-popup-background">
-        <div class="popup-content5">
-            <h1>댓글 삭제</h1>
-            <input type="hidden" id="delete-comment-id">
-            <div class="comment_delete_popup">
-                <label for="delete-comment-password">비밀번호</label>
-                <input type="password" id="delete-comment-password" class="group-name-input">
-            </div>
-            <button class="submit-btn" onclick="submitDeleteComment()">삭제</button>
-            <button class="cancel-btn" onclick="hideDeleteCommentPopup()">취소</button>
-        </div>
-    </div>
+<div class="main-content">
+    <img src="404.png" id="post-image">
+    <p id="post-content"></p>
+    <button class="load-more" onclick="showCommentPopup()">댓글 등록하기</button>
+</div>
 
-    <!-- 댓글 목록 -->
-    <div class="message-box">
-        <p>댓글&nbsp;<span id="comment-count-display"></span></p>
-        <hr style="border: 1px solid #b8b8b8; width: 75%;">
-        <div id="comments-container"></div>
-        <div class="message" id="no-comments-message">
-            <h2>등록된 댓글이 없습니다.</h2>
-            <p>가장 먼저 댓글을 등록해보세요!</p>
+<!-- 댓글 등록하기 팝업 -->
+<div class="popup-background" id="comment-popup-background">
+    <div class="popup-content6"> 
+        <div class="container">
+            <div class="top-content">
+                <h1 class="center-text">댓글 등록하기</h1>
+                <img src="img/X.png" class="close-icon" onclick="hideCommentPopup()">
+            </div>
+            <div class="input-wrapper">
+                <label for="comment-nickname" class="group-name-label">닉네임</label>
+                <input type="text" id="comment-nickname" class="group-name-input" placeholder="닉네임을 입력해 주세요.">
+                
+                <label for="comment-content" class="group-name-label">댓글 내용</label>
+                <textarea id="comment-content" class="group-description-input" placeholder="댓글 내용을 입력해 주세요."></textarea>
+                
+                <label for="comment-password" class="group-name-label">비밀번호</label>
+                <input type="password" id="comment-password" class="group-name-input" placeholder="비밀번호를 입력해 주세요.">
+            </div>
+            <button class="submit-button2" onclick="submitComment()">등록하기</button>
         </div>
-    </div> 
+    </div>
+</div>
+
+<!-- 댓글 수정 팝업 -->
+<div class="popup-background" id="edit-comment-popup-background">
+    <div class="popup-content3">
+        <h1>댓글 수정</h1>
+        <div class="comment_edit_popup">
+            <input type="hidden" id="edit-comment-id">
+            <label for="edit-comment-nickname">닉네임</label>
+            <input type="text" id="edit-comment-nickname" class="group-name-input">
+            <label for="edit-comment-content">댓글 내용</label>
+            <textarea id="edit-comment-content" class="group-description-input"></textarea>
+            <label for="edit-comment-password">비밀번호</label>
+            <input type="password" id="edit-comment-password" class="group-name-input">
+        </div>
+        <button class="submit-btn" onclick="submitEditComment()">수정</button>
+        <button class="cancel-btn" onclick="hideEditCommentPopup()">취소</button>
+    </div>
+</div>
+
+<!-- 댓글 삭제 팝업 -->
+<div class="popup-background" id="delete-comment-popup-background">
+    <div class="popup-content5">
+        <h1>댓글 삭제</h1>
+        <input type="hidden" id="delete-comment-id">
+        <div class="comment_delete_popup">
+            <label for="delete-comment-password">비밀번호</label>
+            <input type="password" id="delete-comment-password" class="group-name-input">
+        </div>
+        <button class="submit-btn" onclick="submitDeleteComment()">삭제</button>
+        <button class="cancel-btn" onclick="hideDeleteCommentPopup()">취소</button>
+    </div>
+</div>
+
+<!-- 댓글 목록 -->
+<div class="message-box">
+    <p>댓글&nbsp;<span id="comment-count-display"></span></p>
+    <hr style="border: 1px solid #b8b8b8; width: 75%;">
+    <div id="comments-container"></div>
+    <div class="message" id="no-comments-message">
+        <h2>등록된 댓글이 없습니다.</h2>
+        <p>가장 먼저 댓글을 등록해보세요!</p>
+    </div>
+</div>    
 
     <script>
+        const inputs = document.querySelectorAll('.group-name-input, .group-description-input, .file-name-input');
+        
+        inputs.forEach(input => {
+            input.addEventListener('click', () => {
+                input.classList.add('clicked');
+            });
+        });
 
-document.getElementById("likeBtn").addEventListener("click", function() {
+        document.getElementById("likeBtn").addEventListener("click", function() {
         const flowerContainer = document.getElementById("flowerContainer");
         const containerWidth = 100; // 꽃이 분포할 최대 너비
         const containerHeight = 50; // 꽃이 분포할 최대 높이
@@ -294,11 +301,11 @@ document.getElementById("likeBtn").addEventListener("click", function() {
                 const commentsData = await commentsResponse.json();
 
                 // 댓글 수 반영
-                document.getElementById('comment-count').textContent = commentsData.totalItemCount;
-                document.getElementById('comment-count-display').textContent = commentsData.totalItemCount;
+        document.getElementById('comment-count').textContent = commentsData.totalItemCount;
+        document.getElementById('comment-count-display').textContent = commentsData.totalItemCount;
 
-                // 댓글 데이터 출력
-                const commentsContainer = document.getElementById('comments-container');
+        // 댓글 데이터 출력
+        const commentsContainer = document.getElementById('comments-container');
         commentsData.data.forEach(comment => {
             const commentElement = document.createElement('div');
             commentElement.classList.add('comment');
@@ -329,9 +336,9 @@ document.getElementById("likeBtn").addEventListener("click", function() {
             commentsContainer.appendChild(commentElement);
         });
 
-                if (commentsData.totalItemCount > 0) {
-                    document.getElementById('no-comments-message').style.display = 'none';
-                }
+        if (commentsData.totalItemCount > 0) {
+            document.getElementById('no-comments-message').style.display = 'none';
+        }
 
             } catch (error) {
                 console.error('Error fetching post or comments data:', error);
@@ -339,8 +346,8 @@ document.getElementById("likeBtn").addEventListener("click", function() {
             }
         });
 
-        // 날짜 포맷 함수
-        function formatDate(dateString) {
+         // 날짜 포맷 함수
+         function formatDate(dateString) {
             const date = new Date(dateString);
             const year = date.getFullYear().toString().slice(2); 
             const month = (date.getMonth() + 1).toString().padStart(2, '0'); 
@@ -398,6 +405,7 @@ document.getElementById("likeBtn").addEventListener("click", function() {
             document.getElementById('edit-comment-content').value = content;
             document.getElementById('edit-comment-popup-background').style.display = 'flex';
         }
+
 
         function hideEditCommentPopup() {
             document.getElementById('edit-comment-popup-background').style.display = 'none';
