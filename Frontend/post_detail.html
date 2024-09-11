@@ -273,8 +273,8 @@
                     commentElement.innerHTML = `
                         <p><strong>${comment.nickname}</strong> (${formatDate(comment.createdAt)})</p>
                         <p>${comment.content}</p>
-                        <button onclick="showEditCommentPopup(${comment.id}, '${comment.nickname}', '${comment.content}')">수정</button>
-                        <button onclick="showDeleteCommentPopup(${comment.id})">삭제</button>
+                        <button class="styled-button edit-btn" onclick="showEditCommentPopup(${comment.id}, '${comment.nickname}', '${comment.content}')">수정</button>
+                        <button class="styled-button delete-btn" onclick="showDeleteCommentPopup(${comment.id})">삭제</button>
                     `;
                     commentsContainer.appendChild(commentElement);
                 });
