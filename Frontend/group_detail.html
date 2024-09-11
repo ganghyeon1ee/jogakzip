@@ -46,8 +46,9 @@
       <a id="group-description"></a>
       <h5>획득 배지</h5>
       <div class="badge" id="badges-container">
-        <div class="image-container-row" id="badge-row-1"></div> <!-- 첫 번째 줄 -->
-        <div class="image-container-row" id="badge-row-2"></div> <!-- 두 번째 줄 -->
+        <div class="image-container">
+        </div>
+        <button class="slide-button" id="nextBtn">&gt;</button>
         <button class="like-button" id="likeBtn">
             <img class="flower" src="img/flower.png" alt="꽃">공감 보내기
         </button>
@@ -156,6 +157,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     };
     
     try {
+        // 그룹 데이터를 받아오는 fetch 요청
         const response = await fetch(`/api/groups/${groupId}`);  
         if (!response.ok) {
             throw new Error('Failed to fetch group details');
@@ -167,7 +169,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             return;
         }
 
-        // 그룹 정보 DOM에 반영
+        // **그룹 정보 DOM에 반영**
         document.getElementById('group-image').src = groupData.imageUrl;
         document.getElementById('group-name').textContent = groupData.name;
         document.getElementById('group-created-at').textContent = new Date(groupData.createdAt).toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
@@ -177,30 +179,29 @@ document.addEventListener("DOMContentLoaded", async () => {
         document.getElementById('group-description').textContent = groupData.introduction;
 
         // 배지 데이터를 순회하면서 이미지를 배치
-        const badgeRow1 = document.getElementById('badge-row-1');
-        const badgeRow2 = document.getElementById('badge-row-2');
-        badgeRow1.innerHTML = '';
-        badgeRow2.innerHTML = '';
+        const badgesContainer = document.querySelector('.image-container');
+        const nextBtn = document.getElementById('nextBtn');
+        badgesContainer.innerHTML = '';
 
         if (groupData.badges.length === 0) {
-            badgeRow1.innerHTML = '<p>배지가 없습니다.</p>';
+            // 배지가 없을 경우 메시지 표시 및 버튼 숨기기
+            badgesContainer.innerHTML = '<p>배지가 없습니다.</p>';
+            nextBtn.style.display = 'none';  // 슬라이드 버튼 숨기기
         } else {
-            groupData.badges.forEach((badge, index) => {
-                const imageName = badgeImageMapping[badge];
+            groupData.badges.forEach(badge => {
+                const imageName = badgeImageMapping[badge];  // 매핑된 이미지 파일 이름 가져오기
                 if (imageName) {
                     const badgeImg = document.createElement('img');
-                    badgeImg.src = `/img/${imageName}`;
-                    badgeImg.alt = badge;
-
-                    if (index < 3) {
-                        badgeRow1.appendChild(badgeImg); // 첫 번째 줄에 추가
-                    } else {
-                        badgeRow2.appendChild(badgeImg); // 두 번째 줄에 추가
-                    }
+                    badgeImg.src = `/img/${imageName}`;  // 절대 경로 사용
+                    badgeImg.alt = badge;  // 배지 이름을 alt로 설정
+                    badgesContainer.appendChild(badgeImg);
                 } else {
                     console.error('Badge image not found for:', badge);
                 }
             });
+
+            // 배지가 있을 경우 슬라이드 버튼을 다시 보이도록 설정
+            nextBtn.style.display = 'block';
         }
     } catch (error) {
         console.error('Error fetching group details:', error);
