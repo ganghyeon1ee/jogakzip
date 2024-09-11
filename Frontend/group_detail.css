@@ -167,7 +167,7 @@ body {
 .detail_card .badge .img4,
 .detail_card .badge .img5,
 .detail_card .badge .img6 {
-    width: 130px; /* 이미지의 너비를 동일하게 설정 */
+    width: 100px; /* 이미지의 너비를 동일하게 설정 */
 }
 
 .badge .slide-button {
@@ -537,6 +537,21 @@ body {
     box-shadow: none; /* 포커스 시 그림자 제거 */
 }
 
+/* 획득 배지 컨테이너 스타일 */
+.badge-container {
+    display: flex;
+    justify-content: flex-start; /* 배지 이미지를 왼쪽 정렬 */
+    align-items: center; /* 세로 정렬 가운데 */
+    gap: 10px; /* 배지 사이 간격 */
+    flex-wrap: wrap; /* 여러 줄로 나눠 배치 */
+}
+
+/* 배지 이미지 스타일 */
+.badge-container img {
+    width: 80px; /* 배지 이미지의 너비를 80px로 제한 */
+    height: auto; /* 비율에 맞게 높이 자동 설정 */
+    object-fit: contain; /* 이미지 비율 유지 */
+}
 
 
 /* 미디어 쿼리 */
