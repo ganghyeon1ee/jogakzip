@@ -149,7 +149,7 @@ body {
 .detail_card .badge .image-container {
     display: flex;
     overflow: hidden;
-    width: 600px; /* 3개 이상의 이미지가 보이도록 너비를 확장 */
+    width: 700px; /* 3개 이상의 이미지가 보이도록 너비를 확장 */
     margin-bottom: 30px;
     transform: translateX(0); /* 슬라이더의 초기 위치 설정 */
 }
