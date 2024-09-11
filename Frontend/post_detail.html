@@ -40,6 +40,14 @@
                         &nbsp;•&nbsp;&nbsp;
                         <span id="post-moment">날짜</span>
                     </div>
+                
+                    <!-- Google Maps 이미지 추가 -->
+                    <div class="map-image-container">
+                        <a id="map-link" href="#" target="_blank">
+                            <img src="img/map.png" alt="Google Maps" id="map-image">
+                        </a>
+                    </div>
+                
                     <div class="num1">
                         <img src="img/flower.png" alt="꽃" id="like-icon">
                         <span id="like-count">0</span>
@@ -47,7 +55,7 @@
                     <div class="num2">
                         <img src="img/talk.png" alt="말풍선">
                         <span id="comment-count">0</span>
-                    </div>                    
+                    </div>
                     <div class="badge">
                         <button class="like-button" id="likeBtn">
                             <img class="flower" src="img/flower.png" alt="꽃">공감 보내기
@@ -656,6 +664,19 @@
             alert('추억 삭제 중 오류가 발생했습니다.');
         }
     }
+
+    // Google Maps 링크와 툴팁 설정
+document.addEventListener("DOMContentLoaded", async function() {
+    const postLocationElement = document.getElementById('post-location');
+    const location = postLocationElement.textContent.trim();
+
+    const mapLinkElement = document.getElementById('map-link');
+    mapLinkElement.href = `https://www.google.co.kr/maps/place/${encodeURIComponent(location)}`;
+
+    const mapImageElement = document.getElementById('map-image');
+    mapImageElement.setAttribute('data-location', `Google Maps에서 ${location} 검색하기`);
+});
+
     </script>
 </body>
 </html>

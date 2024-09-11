@@ -1274,3 +1274,27 @@ body {
         text-align: center;
     }
 }
+
+/* Google Maps 이미지 */
+#map-image {
+    width: 100px;
+    height: auto;
+    cursor: pointer;
+}
+
+.map-image-container {
+    position: relative;
+}
+
+#map-image:hover::after {
+    content: attr(data-location);
+    position: absolute;
+    top: -25px;
+    left: 0;
+    background-color: black;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    white-space: nowrap;
+} 
+
