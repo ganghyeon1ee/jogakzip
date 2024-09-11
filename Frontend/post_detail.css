@@ -33,8 +33,8 @@ body {
 
 .detail_card {
     display: flex;
-    align-items: flex-start; /* �대�吏��� 肄섑뀗痢좊� �꾩そ�� 留욎땄 */
-    gap: 20px; /* �대�吏��� 肄섑뀗痢� �ъ씠�� 媛꾧꺽 */
+    align-items: flex-start; /* 이미지와 콘텐츠를 위쪽에 맞춤 */
+    gap: 20px; /* 이미지와 콘텐츠 사이의 간격 */
     padding: 20px;
     padding-top: 0px;
     background-color: #fff;
@@ -43,7 +43,7 @@ body {
 }
 
 .card-content {
-    flex: 1; /* 肄섑뀗痢좉� �대�吏��� �섎㉧吏� 怨듦컙�� 李⑥��섎룄濡� �ㅼ젙 */
+    flex: 1; /* 콘텐츠가 이미지의 나머지 공간을 차지하도록 설정 */
     padding: 10px;
     text-align: left;
 }
@@ -62,11 +62,11 @@ body {
 }
 
 .date {
-    color: #282828; /* D+265�� �됱긽 �ㅼ젙 */   
+    color: #282828; /* D+265의 색상 설정 */   
 }
 
 .status {
-    color: #8d8d8d; /* 怨듦컻�� �됱긽 �ㅼ젙 */
+    color: #8d8d8d; /* 공개의 색상 설정 */
 }
 
 .card-content a {
@@ -109,7 +109,7 @@ body {
 }
 
 .info-item3 {
-    text-align: left; /* �쇱そ �뺣젹 */
+    text-align: left; /* 왼쪽 정렬 */
     color: #282828;
     font-size: 14px;
     font-weight: 600;
@@ -133,7 +133,7 @@ body {
 
 .info-buttons a {
     text-decoration: none;
-    color: #282828; /* 踰꾪듉 �됱긽 */
+    color: #282828; /* 버튼 색상 */
     font-weight: 500;
     font-size: 14px;
 }
@@ -170,7 +170,7 @@ body {
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    margin-left: 10px; /* �щ씪�대뱶 踰꾪듉 �놁뿉 諛곗튂 */
+    margin-left: 10px; /* 슬라이드 버튼 옆에 배치 */
     width: 141.333334px;
     margin-bottom: 25px;
     margin-left: 830px;
@@ -190,28 +190,28 @@ body {
     margin-left: 0px;
     margin-top: 0px;
 }
-/* 苑� �대�吏� �④낵瑜� �꾪븳 CSS */
+/* 꽃 이미지 효과를 위한 CSS */
 .flower-container {
-    position: absolute; /* 遺�紐� �붿냼�� ���� �곷��곸쑝濡� 諛곗튂 */
-    top: 30%; /* 怨듦컧 蹂대궡湲� 踰꾪듉 �꾨줈 �꾩튂 �ㅼ젙 */
+    position: absolute; /* 부모 요소에 대해 상대적으로 배치 */
+    top: 30%; /* 공감 보내기 버튼 위로 위치 설정 */
     left: 80%;
-    transform: translateX(-50%); /* 以묒븰�쇰줈 �꾩튂 */
-    width: 0; /* ��쓣 0�쇰줈 �ㅼ젙�섏뿬 寃뱀묠 諛⑹� */
-    height: 0; /* �믪씠瑜� 0�쇰줈 �ㅼ젙 */
-    pointer-events: none; /* �대┃ �대깽�� 臾댁떆 */
+    transform: translateX(-50%); /* 중앙으로 위치 */
+    width: 0; /* 폭을 0으로 설정하여 겹침 방지 */
+    height: 0; /* 높이를 0으로 설정 */
+    pointer-events: none; /* 클릭 이벤트 무시 */
     overflow: visible;
 }
 
 .flower-image {
     position: absolute;
-    width: 20px; /* 苑� �ш린 �곸젅�� �ㅼ젙 */
+    width: 20px; /* 꽃 크기 적절히 설정 */
     height: 20px;
-    transform: scale(0.8); /* 苑� �ш린 議곗젙 */
+    transform: scale(0.8); /* 꽃 크기 조정 */
     animation: popUp 0.6s ease-in-out forwards;
     opacity: 0.5;
 }
 
-/* 苑� �대�吏�媛� �섑��섎뒗 �좊땲硫붿씠�� */
+/* 꽃 이미지가 나타나는 애니메이션 */
 @keyframes popUp {
     0% {
         transform: scale(0);
@@ -223,7 +223,7 @@ body {
     }
 }
 
-/* �앹뾽 諛곌꼍 */
+/* 팝업 배경 */
 .popup-background {
     position: fixed;
     top: 0;
@@ -235,13 +235,13 @@ body {
     justify-content: center;
     align-items: center;
     z-index: 1000;
-    display: none; /* 珥덇린�먮뒗 �④� */
+    display: none; /* 초기에는 숨김 */
 }
 
-/* �앹뾽 李� */
+/* 팝업 창 */
 .popup-content {
     background-color: white;
-    padding: 15px; /* �앹뾽 李� �대� �⑤뵫 以꾩씠湲� */
+    padding: 15px; /* 팝업 창 내부 패딩 줄이기 */
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     width: 70%;
@@ -254,11 +254,11 @@ body {
 
 .popup-content6 {
     background-color: white;
-    padding: 15px; /* �앹뾽 李� �대� �⑤뵫 */
+    padding: 15px; /* 팝업 창 내부 패딩 */
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    width: 400px; /* �덈퉬瑜� 400px濡� �ㅼ젙 */
-    height: 550px; /* �믪씠瑜� 300px濡� �ㅼ젙 */
+    width: 400px; /* 너비를 400px로 설정 */
+    height: 550px; /* 높이를 300px로 설정 */
     text-align: center;
     position: relative;
     top: 0;
@@ -267,11 +267,11 @@ body {
 
 .popup-content3 {
     background-color: white;
-    padding: 15px; /* �앹뾽 李� �대� �⑤뵫 */
+    padding: 15px; /* 팝업 창 내부 패딩 */
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    width: 400px; /* �덈퉬瑜� 400px濡� �ㅼ젙 */
-    height: 500px; /* �믪씠瑜� 500px濡� �ㅼ젙 */
+    width: 400px; /* 너비를 400px로 설정 */
+    height: 500px; /* 높이를 500px로 설정 */
     text-align: center;
     position: relative;
     top: 0;
@@ -286,46 +286,46 @@ body {
 .popup-content3 .comment_edit_popup {
     display: flex;
     flex-direction: column;
-    align-items: center; /* �꾩씠�쒖쓣 以묒븰�쇰줈 �뺣젹 */
-    width: 100%; /* 遺�紐� �붿냼�� �덈퉬瑜� 媛��� 梨꾩� */
-    gap: 15px; /* �꾩씠�� 媛꾩쓽 媛꾧꺽 議곗젙 */
+    align-items: center; /* 아이템을 중앙으로 정렬 */
+    width: 100%; /* 부모 요소의 너비를 가득 채움 */
+    gap: 15px; /* 아이템 간의 간격 조정 */
     margin-bottom: 40px;
     margin-top: 40px;
 }
 
 .comment_edit_popup label {
-    width: 100%; /* �덉씠釉붿쓣 遺�紐� �붿냼�� �덈퉬�� 留욎땄 */
-    max-width: 320px; /* 理쒕� �덈퉬 �ㅼ젙 */
-    text-align: left; /* �덉씠釉� �띿뒪�몃� �쇱そ �뺣젹 */
+    width: 100%; /* 레이블을 부모 요소의 너비에 맞춤 */
+    max-width: 320px; /* 최대 너비 설정 */
+    text-align: left; /* 레이블 텍스트를 왼쪽 정렬 */
     font-weight: 500;
 }
 
 .comment_edit_popup input,
 .comment_edit_popup textarea {
-    width: 100%; /* �낅젰 �붿냼瑜� 遺�紐� �붿냼�� �덈퉬�� 留욎땄 */
-    max-width: 300px; /* 理쒕� �덈퉬 �ㅼ젙 */
+    width: 100%; /* 입력 요소를 부모 요소의 너비에 맞춤 */
+    max-width: 300px; /* 최대 너비 설정 */
     margin-bottom: 10px;
 }
 
 .comment_edit_popup .group-name-input,
 .comment_edit_popup .group-description-input {
-    padding: 8px; /* �낅젰 �꾨뱶 �대� �⑤뵫 議곗젙 */
+    padding: 8px; /* 입력 필드 내부 패딩 조정 */
 }
 
 .comment_edit_popup .group-name-input.focused,
 .comment_edit_popup .group-description-input.focused {
-    border-color: #282828; /* �좏깮�� �낅젰 �꾨뱶�� �뚮몢由� �됱긽 */
-    background-color: #f9f9f9; /* �좏깮�� �낅젰 �꾨뱶�� 諛곌꼍 �됱긽 */
+    border-color: #282828; /* 선택된 입력 필드의 테두리 색상 */
+    background-color: #f9f9f9; /* 선택된 입력 필드의 배경 색상 */
     color: #282828;
 }
 
 .popup-content5 {
     background-color: white;
-    padding: 15px; /* �앹뾽 李� �대� �⑤뵫 */
+    padding: 15px; /* 팝업 창 내부 패딩 */
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    width: 400px; /* �덈퉬瑜� 400px濡� �ㅼ젙 */
-    height: 300px; /* �믪씠瑜� 300px濡� �ㅼ젙 */
+    width: 400px; /* 너비를 400px로 설정 */
+    height: 300px; /* 높이를 300px로 설정 */
     text-align: center;
     position: relative;
     top: 0;
@@ -340,31 +340,31 @@ body {
 .popup-content5 .comment_delete_popup {
     display: flex;
     flex-direction: column;
-    align-items: center; /* �꾩씠�쒖쓣 以묒븰�쇰줈 �뺣젹 */
-    width: 100%; /* 遺�紐� �붿냼�� �덈퉬瑜� 媛��� 梨꾩� */
-    gap: 15px; /* �꾩씠�� 媛꾩쓽 媛꾧꺽 議곗젙 */
+    align-items: center; /* 아이템을 중앙으로 정렬 */
+    width: 100%; /* 부모 요소의 너비를 가득 채움 */
+    gap: 15px; /* 아이템 간의 간격 조정 */
     margin-bottom: 30px;
     margin-top: 40px;
 }
 
 .comment_delete_popup label {
-    width: 100%; /* �덉씠釉붿쓣 遺�紐� �붿냼�� �덈퉬�� 留욎땄 */
-    max-width: 300px; /* 理쒕� �덈퉬 �ㅼ젙 */
-    text-align: left; /* �덉씠釉� �띿뒪�몃� �쇱そ �뺣젹 */
+    width: 100%; /* 레이블을 부모 요소의 너비에 맞춤 */
+    max-width: 300px; /* 최대 너비 설정 */
+    text-align: left; /* 레이블 텍스트를 왼쪽 정렬 */
     font-weight: 500;
 }
 
 .comment_delete_popup .group-name-input {
-    width: 100%; /* �낅젰 �붿냼瑜� 遺�紐� �붿냼�� �덈퉬�� 留욎땄 */
-    max-width: 300px; /* 理쒕� �덈퉬 �ㅼ젙 */
-    padding: 8px; /* �대� �щ갚 議곗젙 */
-    box-sizing: border-box; /* �⑤뵫怨� 蹂대뜑瑜� �ы븿�섏뿬 �꾩껜 �ш린瑜� 怨꾩궛 */
+    width: 100%; /* 입력 요소를 부모 요소의 너비에 맞춤 */
+    max-width: 300px; /* 최대 너비 설정 */
+    padding: 8px; /* 내부 여백 조정 */
+    box-sizing: border-box; /* 패딩과 보더를 포함하여 전체 크기를 계산 */
     margin-bottom: 20px;
 }
 
 .comment_delete_popup .group-name-input.focused {
-    border-color: #282828; /* �ъ빱�� �� �뚮몢由� �됱긽 蹂�寃� */
-    background-color: #f9f9f9; /* �ъ빱�� �� 諛곌꼍 �됱긽 蹂�寃� */
+    border-color: #282828; /* 포커스 시 테두리 색상 변경 */
+    background-color: #f9f9f9; /* 포커스 시 배경 색상 변경 */
     color: #282828;
 }
 
@@ -376,28 +376,28 @@ body {
     height: 40px;
     color: white;
     cursor: pointer;
-    transition: background-color 0.3s, transform 0.3s; /* 遺��쒕윭�� �꾪솚 �④낵 異붽� */
-    margin: 0 10px; /* 踰꾪듉 媛꾩쓽 媛꾧꺽 議곗젙 */
+    transition: background-color 0.3s, transform 0.3s; /* 부드러운 전환 효과 추가 */
+    margin: 0 10px; /* 버튼 간의 간격 조정 */
 }
 
 .submit-btn {
-    background-color: #282828; /* ��젣 踰꾪듉 �됱긽 */
+    background-color: #282828; /* 삭제 버튼 색상 */
 }
 
 .submit-btn:hover {
-    background-color: #B8B8B8; /* ��젣 踰꾪듉 �몃쾭 �됱긽 */
-    transform: scale(1.02); /* �몃쾭 �� 踰꾪듉 �ш린 利앷� */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* �몃쾭 �� 洹몃┝�� 異붽� */
+    background-color: #B8B8B8; /* 삭제 버튼 호버 색상 */
+    transform: scale(1.02); /* 호버 시 버튼 크기 증가 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 호버 시 그림자 추가 */
 }
 
 .cancel-btn {
-    background-color: #b8b8b8; /* 痍⑥냼 踰꾪듉 �됱긽 */
+    background-color: #b8b8b8; /* 취소 버튼 색상 */
 }
 
 .cancel-btn:hover {
-    background-color: #282828; /* 痍⑥냼 踰꾪듉 �몃쾭 �됱긽 */
-    transform: scale(1.02); /* �몃쾭 �� 踰꾪듉 �ш린 利앷� */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* �몃쾭 �� 洹몃┝�� 異붽� */
+    background-color: #282828; /* 취소 버튼 호버 색상 */
+    transform: scale(1.02); /* 호버 시 버튼 크기 증가 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 호버 시 그림자 추가 */
 }
 
 
@@ -405,7 +405,7 @@ body {
 
 .popup-content2 {
     background-color: white;
-    padding: 15px; /* �앹뾽 李� �대� �⑤뵫 以꾩씠湲� */
+    padding: 15px; /* 팝업 창 내부 패딩 줄이기 */
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     width: 80%;
@@ -415,14 +415,14 @@ body {
     top: 0;
 }
 
-/* �リ린 踰꾪듉 */
+/* 닫기 버튼 */
 .popup-close {
     background-color: #282828;
     color: white;
-    padding: 8px 20px; /* �⑤뵫 以꾩씠湲� */
+    padding: 8px 20px; /* 패딩 줄이기 */
     border-radius: 5px;
     cursor: pointer;
-    font-size: 14px; /* �고듃 �ш린 以꾩씠湲� */
+    font-size: 14px; /* 폰트 크기 줄이기 */
     margin-top: 20px;
     text-align: center;
     margin-top: 0px;
@@ -455,10 +455,10 @@ body {
     padding-left: 90px;
 }
 
-/* �띿뒪�몄� �낅젰李� �ㅽ��� */
+/* 텍스트와 입력창 스타일 */
 .center-text {
-    margin-top: 10px; /* 留덉쭊 以꾩씠湲� */
-    font-size: 20px; /* �고듃 �ш린 以꾩씠湲� */
+    margin-top: 10px; /* 마진 줄이기 */
+    font-size: 20px; /* 폰트 크기 줄이기 */
 }
 
 .input-wrapper {
@@ -470,15 +470,15 @@ body {
 }
 
 .group-name-label {
-    font-size: 14px; /* �고듃 �ш린 以꾩씠湲� */
+    font-size: 14px; /* 폰트 크기 줄이기 */
     font-weight: 500;
     margin-bottom: 5px;
-    margin-top: 15px; /* 留덉쭊 以꾩씠湲� */
+    margin-top: 15px; /* 마진 줄이기 */
 }
 
 .group-name-input, .group-description-input, .file-name-input {
-    padding: 8px; /* �낅젰李� �대� �⑤뵫 以꾩씠湲� */
-    font-size: 12px; /* �고듃 �ш린 以꾩씠湲� */
+    padding: 8px; /* 입력창 내부 패딩 줄이기 */
+    font-size: 12px; /* 폰트 크기 줄이기 */
     border: 1px solid #DDDDDD;
     border-radius: 5px;
     width: 90%;
@@ -495,8 +495,8 @@ body {
     outline: none;
 }
 .group-name-input.clicked, .group-description-input.clicked, .file-name-input.clicked {
-    color: #282828; /* �대┃ �� �띿뒪�� �됱긽 蹂�寃� */
-    border: 1px solid #282828; /* �대┃ �� �뚮몢由� �됱긽 蹂�寃� */
+    color: #282828; /* 클릭 시 텍스트 색상 변경 */
+    border: 1px solid #282828; /* 클릭 시 테두리 색상 변경 */
 }
 .group-name-input:focus::placeholder, .group-description-input:focus::placeholder, .file-name-input:focus::placeholder {
     color: transparent;
@@ -517,9 +517,9 @@ body {
 .file-upload-button {
     background-color: white;
     border: 1px solid #282828;
-    font-size: 12px; /* �고듃 �ш린 以꾩씠湲� */
+    font-size: 12px; /* 폰트 크기 줄이기 */
     color: #282828;
-    padding: 8px 15px; /* �⑤뵫 以꾩씠湲� */
+    padding: 8px 15px; /* 패딩 줄이기 */
     border-radius: 5px;
     cursor: pointer;
     white-space: nowrap;
@@ -542,7 +542,7 @@ body {
 }
 
 .visibility-text {
-    font-size: 12px; /* �고듃 �ш린 以꾩씠湲� */
+    font-size: 12px; /* 폰트 크기 줄이기 */
     margin-right: 10px;
 }
 
@@ -551,7 +551,7 @@ body {
     height: auto;
 }
 
-/* �앹뾽 而⑦뀒�대꼫 */
+/* 팝업 컨테이너 */
 .container3 {
     display: flex;
     flex-direction: column;
@@ -576,12 +576,12 @@ body {
 }
 
 .input-wrapper-container {
-    display: flex; /* Flexbox瑜� �ъ슜�섏뿬 �먯떇 �붿냼瑜� 媛�濡쒕줈 諛곗튂 */
-    flex-direction: row; /* 媛�濡� 諛⑺뼢�쇰줈 諛곗튂 */
-    justify-content: space-between; /* �먯떇 �붿냼 �ъ씠�� 怨듦컙 諛곕텇 */
-    align-items: flex-start; /* �먯떇 �붿냼瑜� �곷떒�� �뺣젹 */
+    display: flex; /* Flexbox를 사용하여 자식 요소를 가로로 배치 */
+    flex-direction: row; /* 가로 방향으로 배치 */
+    justify-content: space-between; /* 자식 요소 사이에 공간 배분 */
+    align-items: flex-start; /* 자식 요소를 상단에 정렬 */
     width: 100%;
-    max-width: 900px; /* �꾩껜 而⑦뀒�대꼫�� 理쒕� �덈퉬 */
+    max-width: 900px; /* 전체 컨테이너의 최대 너비 */
     margin-top: 30px;
     margin-bottom: 10px;
 }
@@ -591,16 +591,16 @@ body {
     flex-direction: column;
     align-items: flex-start;
     width: 100%;
-    max-width: 300px; /* 媛� 而щ읆�� 理쒕� �덈퉬 */
+    max-width: 300px; /* 각 컬럼의 최대 너비 */
     margin-top: 0px;
     margin-bottom: 10px;
 }
 
 .divider {
-    width: 1px; /* �ㅼ꽑�� �덈퉬 */
-    background-color: #DDDDDD; /* �ㅼ꽑 �됱긽 */
-    margin: 0 20px; /* �ㅼ꽑怨� �묒そ 而щ읆 �ъ씠 媛꾧꺽 */
-    height: 500px; /* �ㅼ꽑�� �믪씠瑜� 怨좎젙媛믪쑝濡� �ㅼ젙 */
+    width: 1px; /* 실선의 너비 */
+    background-color: #DDDDDD; /* 실선 색상 */
+    margin: 0 20px; /* 실선과 양쪽 컬럼 사이 간격 */
+    height: 500px; /* 실선의 높이를 고정값으로 설정 */
 }
 
 
@@ -636,8 +636,8 @@ body {
 }
 
 .group-name-input.clicked, .group-description-input.clicked, .file-name-input.clicked {
-    color: #282828; /* �띿뒪�� �됱긽 蹂�寃� */
-    border: 1px solid #282828; /* �낅젰李쎌쓽 �뚮몢由щ� �ㅼ젙�⑸땲��. */
+    color: #282828; /* 텍스트 색상 변경 */
+    border: 1px solid #282828; /* 입력창의 테두리를 설정합니다. */
 }
 
 .file-upload-wrapper {
@@ -679,15 +679,15 @@ body {
     padding: 8px;
     border-radius: 4px;
     width: 100%;
-    box-sizing: border-box; /* �⑤뵫怨� �뚮몢由щ� �ы븿�섏뿬 �붿냼�� �꾩껜 �덈퉬�� �믪씠瑜� �ㅼ젙 */
+    box-sizing: border-box; /* 패딩과 테두리를 포함하여 요소의 전체 너비와 높이를 설정 */
 }
 .date-picker-input.clicked{
-    color: #282828; /* �띿뒪�� �됱긽 蹂�寃� */
-    border: 1px solid #282828; /* �낅젰李쎌쓽 �뚮몢由щ� �ㅼ젙�⑸땲��. */
+    color: #282828; /* 텍스트 색상 변경 */
+    border: 1px solid #282828; /* 입력창의 테두리를 설정합니다. */
 }
 
 .date-picker-input::-webkit-calendar-picker-indicator {
-    color: #B8B8B8; /* �щ젰 �꾩씠肄� �됱긽 (釉뚮씪�곗��� �곕씪 �ㅻ� �� �덉쓬) */
+    color: #B8B8B8; /* 달력 아이콘 색상 (브라우저에 따라 다를 수 있음) */
 }
 
 .visibility-wrapper {
@@ -743,13 +743,13 @@ body {
 
 .hash-tag {
     display: flex;
-    flex-wrap: wrap; /* �먯떇 �붿냼媛� �섏튌 �� �먮룞�쇰줈 以� 諛붽퓞 */
-    text-align: left; /* �띿뒪�� �쇱そ �뺣젹 */
-    gap: 5px; /* �붿냼 媛꾩쓽 媛꾧꺽 議곗젙 (�꾩슂�� �곕씪 議곗젙) */
+    flex-wrap: wrap; /* 자식 요소가 넘칠 때 자동으로 줄 바꿈 */
+    text-align: left; /* 텍스트 왼쪽 정렬 */
+    gap: 5px; /* 요소 간의 간격 조정 (필요에 따라 조정) */
 }
 
 .hash-tag span {
-    margin: 0; /* 湲곕낯 margin �쒓굅 */
+    margin: 0; /* 기본 margin 제거 */
     font-size: 12px;
     color: #B8B8B8;
 }
@@ -759,21 +759,21 @@ body {
     margin-bottom: 5px;
 }
 
-/* �앹뾽 諛곌꼍 ��컻 �ㅽ��� */
+/* 팝업 배경 덮개 스타일 */
 .popup-background {
-    display: none; /* 湲곕낯�곸쑝濡� �④� */
+    display: none; /* 기본적으로 숨김 */
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* 遺덊닾紐낇븳 寃����� 諛곌꼍 */
-    z-index: 1000; /* 紐⑤떖蹂대떎 �욎뿉 �쒖떆�섎룄濡� �ㅼ젙 */
+    background-color: rgba(0, 0, 0, 0.5); /* 불투명한 검은색 배경 */
+    z-index: 1000; /* 모달보다 앞에 표시되도록 설정 */
     justify-content: center;
     align-items: center;
 }
 
-/* �앹뾽 �댁슜 �ㅽ��� */
+/* 팝업 내용 스타일 */
 .popup-content2 {
     background: #fff;
     padding: 20px;
@@ -799,7 +799,7 @@ body {
     flex-direction: column;
     align-items: flex-start;
     width: 100%;
-    max-width: 300px; /* 媛� 而щ읆�� 理쒕� �덈퉬 */
+    max-width: 300px; /* 각 컬럼의 최대 너비 */
     margin-left: 40px;
 }
 
@@ -896,28 +896,28 @@ body {
 .message-box p {
     margin-left: 230px;
     font-weight: 500;
-    text-align: left; /* �볤� �섎� �쇱そ �뺣젹 */
+    text-align: left; /* 댓글 수를 왼쪽 정렬 */
 }
 
 .message {
-    text-align: center; /* �볤��� �놁쓣 �뚯쓽 硫붿떆吏�瑜� 以묒븰 �뺣젹 */
+    text-align: center; /* 댓글이 없을 때의 메시지를 중앙 정렬 */
 }
 
 #no-comments-message {
-    margin-top: 20px; /* �ъ쑀 怨듦컙 異붽� */
-    display: flex; /* Flexbox瑜� �ъ슜�섏뿬 以묒븰 �뺣젹 */
-    flex-direction: column; /* �몃줈 諛⑺뼢�쇰줈 �뺣젹 */
-    align-items: center; /* �먯떇 �붿냼瑜� �섑룊�쇰줈 以묒븰 �뺣젹 */
-    justify-content: center; /* �먯떇 �붿냼瑜� �섏쭅�쇰줈 以묒븰 �뺣젹 */
-    text-align: center; /* �띿뒪�몃� 以묒븰 �뺣젹 */
+    margin-top: 20px; /* 여유 공간 추가 */
+    display: flex; /* Flexbox를 사용하여 중앙 정렬 */
+    flex-direction: column; /* 세로 방향으로 정렬 */
+    align-items: center; /* 자식 요소를 수평으로 중앙 정렬 */
+    justify-content: center; /* 자식 요소를 수직으로 중앙 정렬 */
+    text-align: center; /* 텍스트를 중앙 정렬 */
 }
 
 #no-comments-message h2 {
-    margin-bottom: 10px; /* '�깅줉�� �볤��� �놁뒿�덈떎.'�� '媛��� 癒쇱� �볤��� �깅줉�대낫�몄슂!' �ъ씠�� 10px 媛꾧꺽 異붽� */
+    margin-bottom: 10px; /* '등록된 댓글이 없습니다.'와 '가장 먼저 댓글을 등록해보세요!' 사이에 10px 간격 추가 */
 }
 
 #no-comments-message p {
-    margin: 0; /* 異붽��곸씤 �щ갚 �쒓굅 */
+    margin: 0; /* 추가적인 여백 제거 */
 }
 
 
@@ -953,21 +953,21 @@ body {
     color: #777;
 }
 
-/* �앹뾽 �ㅻ쾭�덉씠 */
+/* 팝업 오버레이 */
 .popup-overlay {
-    display: none; /* 湲곕낯�곸쑝濡� �④� */
-    position: fixed; /* �붾㈃�� 怨좎젙 */
+    display: none; /* 기본적으로 숨김 */
+    position: fixed; /* 화면에 고정 */
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5); /* 諛섑닾紐� 寃��� 諛곌꼍 */
+    background: rgba(0, 0, 0, 0.5); /* 반투명 검정 배경 */
     justify-content: center;
     align-items: center;
-    z-index: 1000; /* �ㅻⅨ 肄섑뀗痢� �꾩뿉 �쒖떆 */
+    z-index: 1000; /* 다른 콘텐츠 위에 표시 */
 }
 
-/* �앹뾽 �댁슜 */
+/* 팝업 내용 */
 .popup-inner-content {
     background: #fff;
     border-radius: 8px;
@@ -977,14 +977,14 @@ body {
     position: relative;
 }
 
-/* �リ린 踰꾪듉 �대�吏� */
+/* 닫기 버튼 이미지 */
 .close-icon {
     position: absolute;
     top: 10px;
     right: 10px;
     cursor: pointer;
-    width: 24px; /* �대�吏� �ш린 議곗젙 */
-    height: 24px; /* �대�吏� �ш린 議곗젙 */
+    width: 24px; /* 이미지 크기 조정 */
+    height: 24px; /* 이미지 크기 조정 */
 }
 
 .popup-inner-content .center-content{
@@ -1016,13 +1016,13 @@ body {
 
 .comment-body p {
     margin: 0;
-    flex: 1; /* �볤� �댁슜�� 踰꾪듉�ㅻ낫�� �볤쾶 蹂댁씠�꾨줉 �ㅼ젙 */
+    flex: 1; /* 댓글 내용이 버튼들보다 넓게 보이도록 설정 */
     margin-left: 230px;
 }
 
 .comment-actions {
     display: flex;
-    gap: 10px; /* 踰꾪듉 媛꾩쓽 媛꾧꺽 �ㅼ젙 */
+    gap: 10px; /* 버튼 간의 간격 설정 */
     margin-right: 230px;
 }
 
@@ -1038,7 +1038,7 @@ body {
 }
 
 .styled-button img {
-    width: 20px; /* 踰꾪듉 �대�吏� �ш린 議곗젙 */
+    width: 20px; /* 버튼 이미지 크기 조정 */
     height: auto;
 }
 
@@ -1053,15 +1053,15 @@ body {
     }
 
     .detail_card {
-        flex-direction: column; /* �대�吏��� �댁슜�� �몃줈濡� 諛곗튂 */
-        align-items: center; /* �대�吏��� �댁슜 以묒븰 �뺣젹 */
+        flex-direction: column; /* 이미지와 내용을 세로로 배치 */
+        align-items: center; /* 이미지와 내용 중앙 정렬 */
         text-align: center;
         margin-left: 0px;
     }
 
     .detail_card img {
-        margin: 0 auto 20px; /* �대�吏�瑜� 以묒븰�쇰줈 諛곗튂�섍퀬 �꾨옒 �щ갚 異붽� */
-        width: 180px; /* �대�吏� �ш린 議곗젙 */
+        margin: 0 auto 20px; /* 이미지를 중앙으로 배치하고 아래 여백 추가 */
+        width: 180px; /* 이미지 크기 조정 */
     }
 
     .card-content {
@@ -1069,8 +1069,8 @@ body {
     }
 
     .info-buttons {
-        justify-content: center; /* 踰꾪듉�� 以묒븰 �뺣젹 */
-        margin-left: 0; /* 踰꾪듉�� �쇱そ 留덉쭊 �쒓굅 */
+        justify-content: center; /* 버튼을 중앙 정렬 */
+        margin-left: 0; /* 버튼의 왼쪽 마진 제거 */
         gap: 10px;
     }
     .card-content p{
@@ -1109,9 +1109,9 @@ body {
     }
 
     .badge {
-        justify-content: center; /* 諛곗��� 踰꾪듉�� 以묒븰 �뺣젹 */
+        justify-content: center; /* 배지와 버튼을 중앙 정렬 */
         flex-direction: column;
-        gap: 5px; /* 諛곗��� 踰꾪듉 �ъ씠�� 媛꾧꺽 異붽� */
+        gap: 5px; /* 배지와 버튼 사이의 간격 추가 */
         display: flex;
         align-items: center;
     }
@@ -1135,14 +1135,14 @@ body {
         margin-bottom: 18px;
     }
     .detail_card .badge .img1{
-        transform: scale(0.8); /* �ш린瑜� 80%濡� 以꾩씠湲� */
+        transform: scale(0.8); /* 크기를 80%로 줄이기 */
     }
     .detail_card .badge .img2{
-        transform: scale(0.8); /* �ш린瑜� 80%濡� 以꾩씠湲� */
+        transform: scale(0.8); /* 크기를 80%로 줄이기 */
         
     }
     .detail_card .badge .img3{
-        transform: scale(0.8); /* �ш린瑜� 80%濡� 以꾩씠湲� */
+        transform: scale(0.8); /* 크기를 80%로 줄이기 */
         
     }
     .badge .like-button {
@@ -1152,7 +1152,7 @@ body {
         margin-bottom: 0px;
     }
     .flower-container {
-        top: 70%; /* 怨듦컧 蹂대궡湲� 踰꾪듉 �꾨줈 �꾩튂 �ㅼ젙 */
+        top: 70%; /* 공감 보내기 버튼 위로 위치 설정 */
         left: 42%;
     }
     .info-item3{
@@ -1190,7 +1190,7 @@ body {
     }
 }
 
-/* �붾㈃ �덈퉬媛� 1200px �댄븯�� �� */
+/* 화면 너비가 1200px 이하일 때 */
 @media (max-width: 1200px) {
     .message-box p,
     .message .message-content h4 {
@@ -1202,7 +1202,7 @@ body {
     }
 }
 
-/* �붾㈃ �덈퉬媛� 1024px �댄븯�� �� */
+/* 화면 너비가 1024px 이하일 때 */
 @media (max-width: 1024px) {
     .message-box p,
     .message .message-content h4 {
@@ -1218,7 +1218,7 @@ body {
     }
 }
 
-/* �붾㈃ �덈퉬媛� 768px �댄븯�� �� */
+/* 화면 너비가 768px 이하일 때 */
 @media (max-width: 768px) {
     .message-box p,
     .message .message-content h4 {
@@ -1234,7 +1234,7 @@ body {
     }
 }
 
-/* �붾㈃ �덈퉬媛� 600px �댄븯�� �� */
+/* 화면 너비가 600px 이하일 때 */
 @media (max-width: 600px) {
     .message-box p,
     .message .message-content h4 {
@@ -1253,7 +1253,7 @@ body {
     }
 }
 
-/* �붾㈃ �덈퉬媛� 480px �댄븯�� �� (紐⑤컮��) */
+/* 화면 너비가 480px 이하일 때 (모바일) */
 @media (max-width: 480px) {
     .message-box p,
     .message .message-content h4,
