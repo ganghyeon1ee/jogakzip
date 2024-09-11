@@ -848,7 +848,7 @@ body {
 }
 
 /* 공통 버튼 스타일 */
-.styled-button {
+.comment .styled-button {
     padding: 10px 20px;
     font-size: 16px;
     font-weight: bold;
