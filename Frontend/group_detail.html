@@ -138,8 +138,7 @@
     </div>
 </div>
 
-<script>
-let index = 0;
+  <script>
 document.addEventListener("DOMContentLoaded", async () => {
     const urlParams = new URLSearchParams(window.location.search);
     const groupId = urlParams.get('groupId');
@@ -156,51 +155,54 @@ document.addEventListener("DOMContentLoaded", async () => {
         '그룹 공감 1만 개 이상 받기': '1klikesgroup.png',
         '추억 공감 1만 개 이상 받기': '1klikesmemory.png'
     };
-
+    
     try {
-        const response = await fetch(`/api/groups/${groupId}`);
+        // 그룹 데이터를 받아오는 fetch 요청
+        const response = await fetch(`/api/groups/${groupId}`);  
         if (!response.ok) {
             throw new Error('Failed to fetch group details');
         }
         const groupData = await response.json();
 
-        const badgesContainer = document.querySelector('.image-container');
-        const nextBtn = document.getElementById('nextBtn');
-        const prevBtn = document.getElementById('prevBtn');
-        badgesContainer.innerHTML = '';
-
-        // nextBtn과 prevBtn이 존재할 때만 스타일을 변경하도록 수정
-        if (nextBtn && prevBtn) {
-            if (groupData.badges.length <= 3) {
-                nextBtn.style.display = 'none';
-                prevBtn.style.display = 'none';
-            } else {
-                nextBtn.style.display = 'block';
-                prevBtn.style.display = 'block';
-            }
-
-            // 슬라이더 버튼 이벤트 등록
-            nextBtn.addEventListener('click', () => {
-                index = (index + 1) % (groupData.badges.length - 2);
-                badgesContainer.style.transform = `translateX(-${index * 70}px)`;
-            });
-
-            prevBtn.addEventListener('click', () => {
-                index = (index - 1 + (groupData.badges.length - 2)) % (groupData.badges.length - 2);
-                badgesContainer.style.transform = `translateX(-${index * 70}px)`;
-            });
+        if (!groupData || !groupData.id) {
+            console.error('Invalid group data received:', groupData);
+            return;
         }
 
-        groupData.badges.forEach(badge => {
-            const imageName = badgeImageMapping[badge];
-            if (imageName) {
-                const badgeImg = document.createElement('img');
-                badgeImg.src = `/img/${imageName}`;
-                badgeImg.alt = badge;
-                badgesContainer.appendChild(badgeImg);
-            }
-        });
+        // **그룹 정보 DOM에 반영**
+        document.getElementById('group-image').src = groupData.imageUrl;
+        document.getElementById('group-name').textContent = groupData.name;
+        document.getElementById('group-created-at').textContent = new Date(groupData.createdAt).toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
+        document.getElementById('group-status').textContent = groupData.isPublic ? '공개' : '비공개';
+        document.getElementById('post-count').textContent = groupData.postCount;
+        document.getElementById('like-count').textContent = groupData.likeCount;
+        document.getElementById('group-description').textContent = groupData.introduction;
 
+        // 배지 데이터를 순회하면서 이미지를 배치
+        const badgesContainer = document.querySelector('.image-container');
+        const nextBtn = document.getElementById('nextBtn');
+        badgesContainer.innerHTML = '';
+
+        if (groupData.badges.length === 0) {
+            // 배지가 없을 경우 메시지 표시 및 버튼 숨기기
+            badgesContainer.innerHTML = '<p>배지가 없습니다.</p>';
+            nextBtn.style.display = 'none';  // 슬라이드 버튼 숨기기
+        } else {
+            groupData.badges.forEach(badge => {
+                const imageName = badgeImageMapping[badge];  // 매핑된 이미지 파일 이름 가져오기
+                if (imageName) {
+                    const badgeImg = document.createElement('img');
+                    badgeImg.src = `/img/${imageName}`;  // 절대 경로 사용
+                    badgeImg.alt = badge;  // 배지 이름을 alt로 설정
+                    badgesContainer.appendChild(badgeImg);
+                } else {
+                    console.error('Badge image not found for:', badge);
+                }
+            });
+
+            // 배지가 있을 경우 슬라이드 버튼을 다시 보이도록 설정
+            nextBtn.style.display = 'block';
+        }
     } catch (error) {
         console.error('Error fetching group details:', error);
     }
