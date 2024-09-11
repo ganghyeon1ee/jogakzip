@@ -139,6 +139,8 @@
 </div>
 
   <script>
+let currentImage = '';  // 전역 변수로 이동
+
 document.addEventListener("DOMContentLoaded", async () => {
     const urlParams = new URLSearchParams(window.location.search);
     const groupId = urlParams.get('groupId');
@@ -155,9 +157,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         '그룹 공감 1만 개 이상 받기': '1klikesgroup.png',
         '추억 공감 1만 개 이상 받기': '1klikesmemory.png'
     };
-    
-    let currentImage = '';  // 기존 이미지 URL 저장 변수 추가
-    
+
     try {
         // 그룹 데이터를 받아오는 fetch 요청
         const response = await fetch(`/api/groups/${groupId}`);  
@@ -172,7 +172,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         // **그룹 정보 DOM에 반영**
-        currentImage = groupData.imageUrl;  // 기존 이미지 URL 저장
+        currentImage = groupData.imageUrl;  // 기존 이미지 URL을 전역 변수에 저장
         document.getElementById('group-image').src = groupData.imageUrl;
         document.getElementById('group-name').textContent = groupData.name;
         document.getElementById('group-created-at').textContent = new Date(groupData.createdAt).toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
