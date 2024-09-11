@@ -583,24 +583,23 @@ async function updateMemory() {
     const urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get('postId');
 
-    const nickname = document.getElementById('edit-nickname').value;
-    const title = document.getElementById('edit-title').value;
-    const content = document.getElementById('edit-content').value;
+    const nickname = document.getElementById('edit-nickname').value || document.getElementById('nickname').textContent;
+    const title = document.getElementById('edit-title').value || document.getElementById('post-title').textContent;
+    const content = document.getElementById('edit-content').value || document.getElementById('post-content').textContent;
     const postPassword = document.getElementById('edit-password').value;
-    const tags = document.getElementById('edit-tags').value;
-    const location = document.getElementById('edit-location').value;
-    const moment = document.getElementById('edit-moment').value;
+    const tags = document.getElementById('edit-tags').value || Array.from(document.querySelectorAll('#post-tags .tag')).map(tag => tag.textContent.replace('#', '')).join(',');
+    const location = document.getElementById('edit-location').value || document.getElementById('post-location').textContent;
+    const moment = document.getElementById('edit-moment').value || document.getElementById('post-moment').textContent;
     const isPublic = document.getElementById('edit-visibility-text').textContent === '공개' ? 1 : 0;
 
-    // 이미지 파일
     const imageFile = document.getElementById('edit-file-upload').files[0];
+    const imageUrl = document.getElementById('post-image').src;
 
-    if (!nickname || !title || !content || !postPassword) {
-        alert('모든 필드를 입력해 주세요.');
+    if (!postPassword) {
+        alert('비밀번호를 입력해 주세요.');
         return;
     }
 
-    // FormData 사용하여 multipart/form-data 요청 생성
     const formData = new FormData();
     formData.append('nickname', nickname);
     formData.append('title', title);
@@ -612,27 +611,28 @@ async function updateMemory() {
     formData.append('isPublic', isPublic);
 
     if (imageFile) {
-        formData.append('image', imageFile); // 이미지 파일 추가
+        formData.append('image', imageFile); // 이미지 파일이 새로 업로드되었을 때만 추가
+    } else {
+        formData.append('imageUrl', imageUrl); // 기존 이미지 URL을 유지
     }
 
     try {
         const response = await fetch(`/api/posts/${postId}`, {
             method: 'PUT',
-            body: formData // FormData 객체를 전달하여 이미지 포함 요청
+            body: formData
         });
 
         if (response.ok) {
             const updatedPost = await response.json();
             alert('추억이 성공적으로 수정되었습니다.');
 
-            // 수정된 데이터를 즉시 반영하기 위해 DOM을 업데이트
+            // 수정된 데이터를 즉시 반영하기 위해 DOM 업데이트
             document.getElementById('nickname').textContent = updatedPost.nickname;
             document.getElementById('post-title').textContent = updatedPost.title;
             document.getElementById('post-content').innerHTML = updatedPost.content;
             document.getElementById('post-location').textContent = updatedPost.location;
             document.getElementById('post-moment').textContent = updatedPost.moment;
 
-            // 이미지가 있으면 업데이트
             if (updatedPost.imageUrl) {
                 document.getElementById('post-image').src = updatedPost.imageUrl;
             }

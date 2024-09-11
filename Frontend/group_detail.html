@@ -213,21 +213,37 @@ document.getElementById('file-upload').addEventListener('change', function() {
     document.getElementById('representative-image').value = fileName;
 });
 
-    async function updateGroupInfo() {
+async function updateGroupInfo() {
     const urlParams = new URLSearchParams(window.location.search);
     const groupId = urlParams.get('groupId');
-    const name = document.getElementById('group-name-input').value;
+
+    // 기존 그룹 정보를 DOM에서 가져오기
+    const currentName = document.getElementById('group-name').textContent;
+    const currentIntroduction = document.getElementById('group-description').textContent;
+    const currentIsPublic = document.getElementById('group-status').textContent === '공개';
+
+    // 사용자가 입력한 값을 가져오거나, 입력하지 않으면 기존 값을 사용
+    const name = document.getElementById('group-name-input').value || currentName;
     const password = document.getElementById('group-password').value;
-    const introduction = document.getElementById('group-description-input').value;
-    const isPublic = document.getElementById('visibility-text').textContent === '공개';
+    const introduction = document.getElementById('group-description-input').value || currentIntroduction;
+    const isPublic = document.getElementById('visibility-text').textContent === '공개' ? 1 : 0;
     const fileInput = document.getElementById('file-upload');
     const file = fileInput.files[0];
 
+    // 비밀번호는 필수 입력 항목이므로 체크
+    if (!password) {
+        alert('비밀번호를 입력해 주세요.');
+        return;
+    }
+
+    // FormData 생성
     const formData = new FormData();
     formData.append('name', name);
     formData.append('password', password);
     formData.append('introduction', introduction);
-    formData.append('isPublic', isPublic ? 1 : 0);
+    formData.append('isPublic', isPublic);
+
+    // 파일이 있는 경우에만 FormData에 추가
     if (file) {
         formData.append('image', file);
     }
@@ -240,11 +256,13 @@ document.getElementById('file-upload').addEventListener('change', function() {
 
         if (response.ok) {
             const updatedGroup = await response.json();
+
+            // 업데이트된 정보를 화면에 반영
             document.getElementById('group-name').textContent = updatedGroup.name;
             document.getElementById('group-description').textContent = updatedGroup.introduction;
             document.getElementById('group-image').src = updatedGroup.imageUrl;
             document.getElementById('group-status').textContent = updatedGroup.isPublic ? '공개' : '비공개';
-            hidePopup();
+            hidePopup();  // 팝업 닫기
         } else {
             alert('그룹 수정에 실패했습니다. 다시 시도해 주세요.');
         }
