@@ -1368,3 +1368,155 @@ body {
     cursor: not-allowed;
     opacity: 0.5;
 }
+
+@media (max-width: 768px) {
+    .container2 {
+        width: 100%;
+        padding: 10px;
+    }
+
+    .detail_card {
+        flex-direction: column; /* 이미지와 내용을 세로로 배치 */
+        align-items: center;
+        margin-left: 0px; /* 좌측 여백 제거 */
+        padding: 10px;
+    }
+
+    .detail_card img {
+        width: 100%; /* 이미지 크기 조정 */
+        margin: 0 auto 10px; /* 중앙 정렬 및 아래 여백 추가 */
+    }
+
+    .card-content {
+        width: 100%; /* 콘텐츠 영역도 전체 너비로 설정 */
+        padding: 10px;
+        text-align: center; /* 텍스트 중앙 정렬 */
+    }
+
+    .info-buttons {
+        margin: 10px 0; /* 버튼 간격 설정 */
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .info-buttons a {
+        font-size: 12px; /* 버튼 텍스트 크기 조정 */
+    }
+
+    .badge .like-button {
+        width: 100%;
+        margin-left: 0;
+        padding: 10px;
+        font-size: 14px; /* 버튼 크기 조정 */
+    }
+
+    .main-content img {
+        width: 100%; /* 이미지 크기를 100%로 설정 */
+    }
+
+    .main-content p {
+        width: 100%; /* 본문도 전체 너비로 설정 */
+    }
+
+    .pagination-container {
+        gap: 3px;
+    }
+
+    .page-btn {
+        padding: 5px 8px;
+        font-size: 12px; /* 페이지 버튼 텍스트 크기 조정 */
+    }
+
+    /* 댓글 영역 */
+    .message-box p {
+        margin-left: 0;
+        text-align: center; /* 댓글 수 중앙 정렬 */
+    }
+
+    .message .comment-body p {
+        margin-left: 0;
+        text-align: center;
+    }
+
+    .comment-actions {
+        justify-content: center;
+    }
+
+    .info-item3, .info2 .num1 img, .info2 .num2 img {
+        font-size: 12px; /* 폰트 크기 조정 */
+        width: 12px; /* 아이콘 크기 조정 */
+    }
+
+    .popup-content {
+        width: 100%;
+        max-width: 350px; /* 팝업창 너비 축소 */
+    }
+
+    .popup-content2 {
+        width: 90%;
+        padding: 15px; /* 팝업 내부 패딩 조정 */
+    }
+
+    .submit-button2 {
+        width: 100%; /* 버튼이 전체 너비를 차지하도록 설정 */
+        margin: 0; /* 여백 조정 */
+    }
+
+    .comment-header,
+    .comment-body {
+        text-align: center; /* 댓글 본문 중앙 정렬 */
+    }
+
+    .map-image-container {
+        display: block;
+        margin: 10px auto;
+    }
+
+    .map-image {
+        width: 60px; /* 지도 이미지 크기 축소 */
+    }
+
+    .pagination-container {
+        display: block;
+    }
+}
+
+@media (max-width: 480px) {
+    .container2 {
+        width: 100%;
+        padding: 5px;
+    }
+
+    .detail_card {
+        padding: 10px;
+        align-items: center;
+    }
+
+    .info-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .badge .like-button {
+        width: 100%; /* 좋아요 버튼을 전체 너비로 */
+        margin: 0;
+    }
+
+    .message-box p,
+    .message .comment-body p {
+        text-align: center;
+    }
+
+    .pagination-container {
+        justify-content: center;
+    }
+    
+    .main-content img {
+        width: 100%;
+    }
+
+    .popup-content {
+        width: 90%; /* 팝업창 너비를 축소 */
+        padding: 20px;
+    }
+}
