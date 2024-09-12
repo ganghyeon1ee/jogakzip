@@ -522,7 +522,7 @@
     const content = document.getElementById('post-content').textContent;
     const location = document.getElementById('post-location').textContent;
     const moment = document.getElementById('post-moment').textContent;
-    const isPublic = document.getElementById('post-visibility').textContent === '공개' ? '공개' : '비공개';
+    const isPublic = document.getElementById('post-visibility').textContent === '공개' ? '공개' : '비공개'; // 상태 확인
     const imageUrl = document.getElementById('post-image').src;
     const tagsContainer = document.getElementById('post-tags').innerText;
 
@@ -534,12 +534,12 @@
     document.getElementById('edit-visibility-text').textContent = isPublic;
 
     // 공개 여부에 따른 아이콘 설정
-    document.getElementById('edit-visibility-icon').src = isPublic === '공개' ? 'img/state=active.png' : 'img/state=default.png';
+    document.getElementById('edit-visibility-icon').src = isPublic === '공개' ? 'img/state=active.png' : 'img/state=default.png'; // 상태에 따른 아이콘 변경
 
     // 태그 처리
     const tags = tagsContainer.split(' ').map(tag => tag.replace('#', '')).join(',');
     document.getElementById('edit-tags').value = tags;
-    
+
     // 이미지 URL 처리
     if (imageUrl) {
         document.getElementById('edit-image-url').value = imageUrl;
@@ -552,8 +552,7 @@
 function toggleEditVisibility() {
     const visibilityText = document.getElementById('edit-visibility-text');
     const visibilityIcon = document.getElementById('edit-visibility-icon');
-    
-    // 현재 공개 여부를 체크하고, 토글
+
     if (visibilityText.textContent === '공개') {
         visibilityText.textContent = '비공개';
         visibilityIcon.src = 'img/state=default.png';  // 비공개 상태 아이콘
@@ -599,6 +598,7 @@ function toggleEditVisibility() {
     const urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get('postId');
 
+    // 기존 값 가져오기
     const nickname = document.getElementById('edit-nickname').value || document.getElementById('nickname').textContent;
     const title = document.getElementById('edit-title').value || document.getElementById('post-title').textContent;
     const content = document.getElementById('edit-content').value || document.getElementById('post-content').textContent;
@@ -608,8 +608,8 @@ function toggleEditVisibility() {
     const moment = document.getElementById('edit-moment').value || document.getElementById('post-moment').textContent;
     const isPublic = document.getElementById('edit-visibility-text').textContent === '공개' ? 1 : 0;
 
-    const imageFile = document.getElementById('edit-file-upload').files[0];
-    const imageUrl = document.getElementById('post-image').src;
+    const imageFile = document.getElementById('edit-file-upload').files[0]; // 새 이미지 파일
+    const imageUrl = document.getElementById('post-image').src; // 기존 이미지 URL
 
     if (!postPassword) {
         alert('비밀번호를 입력해 주세요.');
@@ -626,8 +626,9 @@ function toggleEditVisibility() {
     formData.append('moment', moment);
     formData.append('isPublic', isPublic);
 
+    // 이미지 파일이 새로 업로드되었을 때만 추가, 그렇지 않으면 기존 URL 유지
     if (imageFile) {
-        formData.append('image', imageFile); // 이미지 파일이 새로 업로드되었을 때만 추가
+        formData.append('image', imageFile);
     } else {
         formData.append('imageUrl', imageUrl); // 기존 이미지 URL을 유지
     }
