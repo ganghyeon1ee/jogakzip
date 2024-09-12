@@ -63,53 +63,10 @@
         <button onclick="location.href='/post_create.html?groupId=' + new URLSearchParams(window.location.search).get('groupId')">추억 올리기</button>
     </div>
     <div class="buttons-container">
-        <div class="visibility-wrapper" onclick="toggleVisibility()">
-            <span id="visibility-text" class="visibility-text">공개</span>
-            <img id="visibility-icon" src="img/state=active.png" alt="Visibility Icon" class="visibility-icon">
+        <div class="buttons">
+            <button class="active" id="publicButton">공개</button>
+            <button class="inactive" id="inactiveButton">비공개</button>
         </div>
-        <script>
-            // 공개/비공개 설정을 토글하는 함수
-            function toggleVisibility() {
-                const visibilityText = document.getElementById('visibility-text');
-                const visibilityIcon = document.getElementById('visibility-icon');
-        
-                if (visibilityText.textContent === '공개') {
-                    visibilityText.textContent = '비공개';
-                    visibilityIcon.src = 'img/state=default.png'; // 비공개 상태로 아이콘 변경
-                } else {
-                    visibilityText.textContent = '공개';
-                    visibilityIcon.src = 'img/state=active.png'; // 공개 상태로 아이콘 변경
-                }
-            }
-        
-            // 그룹 수정 팝업을 열 때 기존 값을 채워 넣는 부분 수정
-            function showPopup() {
-                const groupId = new URLSearchParams(window.location.search).get('groupId');
-        
-                fetch(`/api/groups/${groupId}`)
-                    .then(response => response.json())
-                    .then(groupData => {
-                        document.getElementById('group-name-input').value = groupData.name;
-                        document.getElementById('group-description-input').value = groupData.introduction;
-        
-                        if (groupData.imageUrl) {
-                            document.getElementById('representative-image').value = groupData.imageUrl;
-                        }
-        
-                        // 공개 여부 설정
-                        const isPublic = groupData.isPublic ? '공개' : '비공개';
-                        document.getElementById('visibility-text').textContent = isPublic;
-                        document.getElementById('visibility-icon').src = groupData.isPublic ? 'img/state=active.png' : 'img/state=default.png';
-                    })
-                    .catch(error => console.error('Error fetching group data:', error));
-        
-                document.getElementById('popup-background').style.display = 'flex';
-            }
-        
-            function hidePopup() {
-                document.getElementById('popup-background').style.display = 'none';
-            }
-        </script>
         <div class="search-bar">
             <div class="search-wrapper">
                 <i class="fas fa-search"></i>
@@ -264,7 +221,6 @@ async function updateGroupInfo() {
     const currentName = document.getElementById('group-name').textContent;
     const currentIntroduction = document.getElementById('group-description').textContent;
     const currentIsPublic = document.getElementById('group-status').textContent === '공개';
-    const currentImageUrl = document.getElementById('group-image').src;  // 기존 이미지 URL
 
     // 사용자가 입력한 값을 가져오거나, 입력하지 않으면 기존 값을 사용
     const name = document.getElementById('group-name-input').value || currentName;
@@ -287,11 +243,9 @@ async function updateGroupInfo() {
     formData.append('introduction', introduction);
     formData.append('isPublic', isPublic);
 
-    // 파일이 없는 경우, 기존 이미지 URL을 추가
-    if (!file) {
-        formData.append('imageUrl', currentImageUrl);  // 기존 이미지를 유지
-    } else {
-        formData.append('image', file);  // 새로운 파일을 추가
+    // 파일이 있는 경우에만 FormData에 추가
+    if (file) {
+        formData.append('image', file);
     }
 
     try {
@@ -543,24 +497,18 @@ document.getElementById('inactiveButton').addEventListener('click', function() {
     fetchPosts(false, true);
 });
 
-function setActiveButton(type) {
-    const publicButton = document.getElementById('publicButton');
-    const inactiveButton = document.getElementById('inactiveButton');
-    
-    if (type === 'public') {
-        publicButton.classList.add('active');
-        publicButton.classList.remove('inactive');
-        
-        inactiveButton.classList.remove('active');
-        inactiveButton.classList.add('inactive');
+document.querySelector('.visibility-wrapper').addEventListener('click', function() {
+    const visibilityText = document.getElementById('visibility-text');
+    const visibilityIcon = document.getElementById('visibility-icon');
+
+    if (visibilityText.textContent === '공개') {
+        visibilityText.textContent = '비공개';
+        visibilityIcon.src = 'img/state=default.png';
     } else {
-        inactiveButton.classList.add('active');
-        inactiveButton.classList.remove('inactive');
-        
-        publicButton.classList.remove('active');
-        publicButton.classList.add('inactive');
+        visibilityText.textContent = '공개';
+        visibilityIcon.src = 'img/state=active.png';
     }
-}
+});
 
 document.getElementById('searchInput').addEventListener('input', function() {
     fetchPosts(true, true);
