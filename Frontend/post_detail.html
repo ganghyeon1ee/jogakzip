@@ -610,9 +610,9 @@ async function updateMemory() {
     formData.append('postPassword', postPassword);
 
     if (imageFile) {
-        formData.append('image', imageFile);
+        formData.append('image', imageFile);  // 새 파일이 있으면 업로드
     } else {
-        formData.append('imageUrl', imageUrl);
+        formData.append('imageUrl', imageUrl);  // 기존 이미지 URL 유지
     }
 
     try {
