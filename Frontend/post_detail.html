@@ -111,6 +111,18 @@
                         <span id="edit-visibility-text" class="visibility-text">공개</span>
                         <img id="edit-visibility-icon" src="img/state=active.png" alt="Visibility Icon" class="visibility-icon">
                     </div>
+                    
+                    <script>
+                    function toggleEditVisibility() {
+                        const visibilityText = document.getElementById('edit-visibility-text');
+                        const visibilityIcon = document.getElementById('edit-visibility-icon');
+                    
+                        // 텍스트와 아이콘 토글
+                        const isPublic = visibilityText.textContent.trim() === '공개';
+                        visibilityText.textContent = isPublic ? '비공개' : '공개';
+                        visibilityIcon.src = isPublic ? 'img/state=default.png' : 'img/state=active.png';
+                    }
+                    </script>
                 
                     <label for="edit-password" class="group-name-label">수정 권한 확인</label>
                     <input type="password" id="edit-password" class="group-name-input" placeholder="비밀번호를 입력해 주세요.">
@@ -544,19 +556,6 @@ function formatDateForInput(dateString) {
     return date.toISOString().split('T')[0];  // yyyy-mm-dd 형식으로 변환
 }
 
-function toggleEditVisibility() {
-    const visibilityText = document.getElementById('edit-visibility-text');
-    const visibilityIcon = document.getElementById('edit-visibility-icon');
-
-    if (visibilityText.textContent.trim() === '공개') {
-        visibilityText.textContent = '비공개';
-        visibilityIcon.src = 'img/state=default.png';
-    } else {
-        visibilityText.textContent = '공개';
-        visibilityIcon.src = 'img/state=active.png';
-    }
-}
-
 
 // formatDateForInput 함수 정의
 // 날짜를 YYYY-MM-DD 형식으로 변환하는 함수
@@ -567,19 +566,6 @@ function formatDateForInput(dateString) {
 
 function hideEditPopup() {
     document.getElementById('edit-popup-background').style.display = 'none';
-}
-
-function toggleEditVisibility() {
-    const visibilityText = document.getElementById('edit-visibility-text');
-    const visibilityIcon = document.getElementById('edit-visibility-icon');
-
-    if (visibilityText.textContent === '공개') {
-        visibilityText.textContent = '비공개';
-        visibilityIcon.src = 'img/state=default.png';  // 비공개 상태 아이콘
-    } else {
-        visibilityText.textContent = '공개';
-        visibilityIcon.src = 'img/state=active.png';  // 공개 상태 아이콘
-    }
 }
 
     function showDeletePopup() {
@@ -772,6 +758,7 @@ document.querySelector('.visibility-wrapper').addEventListener('click', function
         visibilityIcon.src = 'img/state=active.png';
     }
 });
+
 </script>
 </body>
 </html>
