@@ -583,20 +583,6 @@ function toggleEditVisibility() {
         document.getElementById('delete-popup-background').style.display = 'none';
     }
 
-    function toggleEditVisibility() {
-        const visibilityText = document.getElementById('edit-visibility-text');
-        const visibilityIcon = document.getElementById('edit-visibility-icon');
-        let isPublic = visibilityText.textContent === '공개';
-
-        if (isPublic) {
-            visibilityText.textContent = '비공개';
-            visibilityIcon.src = 'img/state=default.png'; 
-        } else {
-            visibilityText.textContent = '공개';
-            visibilityIcon.src = 'img/state=active.png';
-        }
-    }
-
     function updateFileName(fileInputId, textInputId) {
         const fileInput = document.getElementById(fileInputId);
         const textInput = document.getElementById(textInputId);
