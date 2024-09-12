@@ -55,6 +55,8 @@ body {
     align-items: flex-start;
     width: 100%;
     max-width: 300px; /* 각 컬럼의 최대 너비 */
+    margin-left: 50px;
+    margin-right : 50px;
 }
 
 .divider {
