@@ -531,15 +531,19 @@ function showEditPopup() {
     const content = document.getElementById('post-content').textContent;
     const location = document.getElementById('post-location').textContent;
     const moment = document.getElementById('post-moment').textContent;
-    const isPublic = document.getElementById('post-visibility').textContent === '공개' ? '공개' : '비공개'; // 상태 확인
+    const isPublic = document.getElementById('post-visibility').textContent === '공개' ? '공개' : '비공개'; 
+    const tags = Array.from(document.querySelectorAll('#post-tags .tag')).map(tag => tag.textContent.replace('#', '')).join(', ');
+    const imageUrl = document.getElementById('post-image').src;
 
     document.getElementById('edit-nickname').value = nickname;
     document.getElementById('edit-title').value = title;
     document.getElementById('edit-content').value = content;
     document.getElementById('edit-location').value = location;
-    document.getElementById('edit-moment').value = formatDateForInput(moment); // YYYY-MM-DD 형식으로 변환
+    document.getElementById('edit-moment').value = formatDateForInput(moment); 
     document.getElementById('edit-visibility-text').textContent = isPublic;
     document.getElementById('edit-visibility-icon').src = isPublic === '공개' ? 'img/state=active.png' : 'img/state=default.png';
+    document.getElementById('edit-tags').value = tags;
+    document.getElementById('edit-image-url').value = imageUrl;
 
     document.getElementById('edit-popup-background').style.display = 'flex';
 }
@@ -575,7 +579,7 @@ function toggleEditVisibility() {
     textInput.value = fileInput.files[0].name;
 }
 
-    async function updateMemory() {
+async function updateMemory() {
     const urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get('postId');
     
@@ -588,7 +592,7 @@ function toggleEditVisibility() {
     const isPublic = document.getElementById('edit-visibility-text').textContent === '공개' ? 1 : 0;
     const postPassword = document.getElementById('edit-password').value;
     const imageFile = document.getElementById('edit-file-upload').files[0];
-    const imageUrl = document.getElementById('post-image').src;
+    const imageUrl = document.getElementById('edit-image-url').value;
 
     if (!postPassword) {
         alert('비밀번호를 입력해 주세요.');
@@ -608,7 +612,7 @@ function toggleEditVisibility() {
     if (imageFile) {
         formData.append('image', imageFile);
     } else {
-        formData.append('imageUrl', imageUrl); 
+        formData.append('imageUrl', imageUrl);
     }
 
     try {
