@@ -63,10 +63,53 @@
         <button onclick="location.href='/post_create.html?groupId=' + new URLSearchParams(window.location.search).get('groupId')">추억 올리기</button>
     </div>
     <div class="buttons-container">
-        <div class="buttons">
-            <button class="active" id="publicButton">공개</button>
-            <button class="inactive" id="inactiveButton">비공개</button>
+        <div class="visibility-wrapper" onclick="toggleVisibility()">
+            <span id="visibility-text" class="visibility-text">공개</span>
+            <img id="visibility-icon" src="img/state=active.png" alt="Visibility Icon" class="visibility-icon">
         </div>
+        <script>
+            // 공개/비공개 설정을 토글하는 함수
+            function toggleVisibility() {
+                const visibilityText = document.getElementById('visibility-text');
+                const visibilityIcon = document.getElementById('visibility-icon');
+        
+                if (visibilityText.textContent === '공개') {
+                    visibilityText.textContent = '비공개';
+                    visibilityIcon.src = 'img/state=default.png'; // 비공개 상태로 아이콘 변경
+                } else {
+                    visibilityText.textContent = '공개';
+                    visibilityIcon.src = 'img/state=active.png'; // 공개 상태로 아이콘 변경
+                }
+            }
+        
+            // 그룹 수정 팝업을 열 때 기존 값을 채워 넣는 부분 수정
+            function showPopup() {
+                const groupId = new URLSearchParams(window.location.search).get('groupId');
+        
+                fetch(`/api/groups/${groupId}`)
+                    .then(response => response.json())
+                    .then(groupData => {
+                        document.getElementById('group-name-input').value = groupData.name;
+                        document.getElementById('group-description-input').value = groupData.introduction;
+        
+                        if (groupData.imageUrl) {
+                            document.getElementById('representative-image').value = groupData.imageUrl;
+                        }
+        
+                        // 공개 여부 설정
+                        const isPublic = groupData.isPublic ? '공개' : '비공개';
+                        document.getElementById('visibility-text').textContent = isPublic;
+                        document.getElementById('visibility-icon').src = groupData.isPublic ? 'img/state=active.png' : 'img/state=default.png';
+                    })
+                    .catch(error => console.error('Error fetching group data:', error));
+        
+                document.getElementById('popup-background').style.display = 'flex';
+            }
+        
+            function hidePopup() {
+                document.getElementById('popup-background').style.display = 'none';
+            }
+        </script>
         <div class="search-bar">
             <div class="search-wrapper">
                 <i class="fas fa-search"></i>

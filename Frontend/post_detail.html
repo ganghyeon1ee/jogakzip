@@ -533,6 +533,9 @@
     document.getElementById('edit-moment').value = formatDateForInput(moment); // YYYY-MM-DD 형식으로 변환
     document.getElementById('edit-visibility-text').textContent = isPublic;
 
+    // 공개 여부에 따른 아이콘 설정
+    document.getElementById('edit-visibility-icon').src = isPublic === '공개' ? 'img/state=active.png' : 'img/state=default.png';
+
     // 태그 처리
     const tags = tagsContainer.split(' ').map(tag => tag.replace('#', '')).join(',');
     document.getElementById('edit-tags').value = tags;
@@ -546,10 +549,18 @@
     document.getElementById('edit-popup-background').style.display = 'flex';
 }
 
-// 날짜를 YYYY-MM-DD 형식으로 변환하는 함수 추가
-function formatDateForInput(dateString) {
-    const [year, month, day] = dateString.split('.');
-    return `20${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`; // 20xx년 형식 가정
+function toggleEditVisibility() {
+    const visibilityText = document.getElementById('edit-visibility-text');
+    const visibilityIcon = document.getElementById('edit-visibility-icon');
+    
+    // 현재 공개 여부를 체크하고, 토글
+    if (visibilityText.textContent === '공개') {
+        visibilityText.textContent = '비공개';
+        visibilityIcon.src = 'img/state=default.png';  // 비공개 상태 아이콘
+    } else {
+        visibilityText.textContent = '공개';
+        visibilityIcon.src = 'img/state=active.png';  // 공개 상태 아이콘
+    }
 }
 
     function hideEditPopup() {
@@ -584,8 +595,7 @@ function formatDateForInput(dateString) {
         textInput.value = fileInput.files[0].name;
     }
 
-// 추억 수정하기
-async function updateMemory() {
+    async function updateMemory() {
     const urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get('postId');
 

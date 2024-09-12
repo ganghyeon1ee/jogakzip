@@ -118,8 +118,15 @@
             data.data.forEach(group => {
                 const card = document.createElement('div');
                 card.className = 'card';
+                
+                // 비공개 그룹일 경우 이미지 태그를 숨김
+                let imageTag = '';
+                if (group.isPublic) {
+                    imageTag = `<img src="${group.imageUrl}" alt="그룹 이미지">`;
+                }
+
                 card.innerHTML = `
-                    <img src="${group.imageUrl}" alt="그룹 이미지">
+                    ${imageTag}
                     <div class="card-content">
                         <p><span class="date">${convertToKoreanTime(group.createdAt)}</span> | <span class="status">${group.isPublic ? '공개' : '비공개'}</span></p>
                         <h2>${group.name}</h2>
@@ -169,7 +176,7 @@
             console.error('Error fetching groups:', error);
             isLoading = false; // 에러 발생 시에도 로딩 상태 해제
         });
-    }
+}
 
         function convertToKoreanTime(utcTime) {
             const date = new Date(utcTime);
