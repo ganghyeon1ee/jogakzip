@@ -220,6 +220,7 @@ async function updateGroupInfo() {
     // 기존 그룹 정보를 DOM에서 가져오기
     const currentName = document.getElementById('group-name').textContent;
     const currentIntroduction = document.getElementById('group-description').textContent;
+    const currentImageUrl = document.getElementById('group-image').src; // 현재 이미지 URL 가져오기
     const currentIsPublic = document.getElementById('group-status').textContent === '공개';
 
     // 사용자가 입력한 값을 가져오거나, 입력하지 않으면 기존 값을 사용
@@ -243,9 +244,11 @@ async function updateGroupInfo() {
     formData.append('introduction', introduction);
     formData.append('isPublic', isPublic);
 
-    // 파일이 있는 경우에만 FormData에 추가
+    // 파일이 선택되지 않은 경우, 기존 이미지 URL을 다시 보내기
     if (file) {
         formData.append('image', file);
+    } else {
+        formData.append('imageUrl', currentImageUrl);  // 기존 이미지 URL을 서버로 전송
     }
 
     try {
@@ -270,6 +273,7 @@ async function updateGroupInfo() {
         console.error('Error updating group:', error);
     }
 }
+
     async function verifyPasswordAndDeleteGroup() {
     const urlParams = new URLSearchParams(window.location.search);
     const groupId = urlParams.get('groupId');
