@@ -516,13 +516,6 @@
         hideDeleteCommentPopup();
     }
 
-// formatDateForInput 함수 정의
-// 날짜를 YYYY-MM-DD 형식으로 변환하는 함수
-function formatDateForInput(dateString) {
-    const [year, month, day] = dateString.split('.');
-    return `20${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`; // 20xx년 형식 가정
-}
-
 function showEditPopup() {
     const nickname = document.getElementById('nickname').textContent;
     const title = document.getElementById('post-title').textContent;
@@ -562,6 +555,14 @@ function toggleEditVisibility() {
         visibilityText.textContent = '공개';
         visibilityIcon.src = 'img/state=active.png';
     }
+}
+
+
+// formatDateForInput 함수 정의
+// 날짜를 YYYY-MM-DD 형식으로 변환하는 함수
+function formatDateForInput(dateString) {
+    const [year, month, day] = dateString.split('.');
+    return `20${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`; // 20xx년 형식 가정
 }
 
 function hideEditPopup() {
