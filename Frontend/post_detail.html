@@ -525,15 +525,13 @@ function formatDateForInput(dateString) {
     return `${year}-${month}-${day}`; // YYYY-MM-DD 형식으로 반환
 }
 
-    function showEditPopup() {
+function showEditPopup() {
     const nickname = document.getElementById('nickname').textContent;
     const title = document.getElementById('post-title').textContent;
     const content = document.getElementById('post-content').textContent;
     const location = document.getElementById('post-location').textContent;
     const moment = document.getElementById('post-moment').textContent;
     const isPublic = document.getElementById('post-visibility').textContent === '공개' ? '공개' : '비공개'; // 상태 확인
-    const imageUrl = document.getElementById('post-image').src;
-    const tagsContainer = document.getElementById('post-tags').innerText;
 
     document.getElementById('edit-nickname').value = nickname;
     document.getElementById('edit-title').value = title;
@@ -541,21 +539,13 @@ function formatDateForInput(dateString) {
     document.getElementById('edit-location').value = location;
     document.getElementById('edit-moment').value = formatDateForInput(moment); // YYYY-MM-DD 형식으로 변환
     document.getElementById('edit-visibility-text').textContent = isPublic;
+    document.getElementById('edit-visibility-icon').src = isPublic === '공개' ? 'img/state=active.png' : 'img/state=default.png';
 
-    // 공개 여부에 따른 아이콘 설정
-    document.getElementById('edit-visibility-icon').src = isPublic === '공개' ? 'img/state=active.png' : 'img/state=default.png'; // 상태에 따른 아이콘 변경
-
-    // 태그 처리
-    const tags = tagsContainer.split(' ').map(tag => tag.replace('#', '')).join(',');
-    document.getElementById('edit-tags').value = tags;
-
-    // 이미지 URL 처리
-    if (imageUrl) {
-        document.getElementById('edit-image-url').value = imageUrl;
-    }
-
-    // 팝업 표시
     document.getElementById('edit-popup-background').style.display = 'flex';
+}
+
+function hideEditPopup() {
+    document.getElementById('edit-popup-background').style.display = 'none';
 }
 
 function toggleEditVisibility() {
@@ -571,10 +561,6 @@ function toggleEditVisibility() {
     }
 }
 
-    function hideEditPopup() {
-        document.getElementById('edit-popup-background').style.display = 'none';
-    }
-
     function showDeletePopup() {
         document.getElementById('delete-popup-background').style.display = 'flex';
     }
@@ -584,27 +570,25 @@ function toggleEditVisibility() {
     }
 
     function updateFileName(fileInputId, textInputId) {
-        const fileInput = document.getElementById(fileInputId);
-        const textInput = document.getElementById(textInputId);
-        textInput.value = fileInput.files[0].name;
-    }
+    const fileInput = document.getElementById(fileInputId);
+    const textInput = document.getElementById(textInputId);
+    textInput.value = fileInput.files[0].name;
+}
 
     async function updateMemory() {
     const urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get('postId');
-
-    // 기존 값 가져오기
-    const nickname = document.getElementById('edit-nickname').value || document.getElementById('nickname').textContent;
-    const title = document.getElementById('edit-title').value || document.getElementById('post-title').textContent;
-    const content = document.getElementById('edit-content').value || document.getElementById('post-content').textContent;
-    const postPassword = document.getElementById('edit-password').value;
-    const tags = document.getElementById('edit-tags').value || Array.from(document.querySelectorAll('#post-tags .tag')).map(tag => tag.textContent.replace('#', '')).join(',');
-    const location = document.getElementById('edit-location').value || document.getElementById('post-location').textContent;
-    const moment = document.getElementById('edit-moment').value || document.getElementById('post-moment').textContent;
+    
+    const nickname = document.getElementById('edit-nickname').value;
+    const title = document.getElementById('edit-title').value;
+    const content = document.getElementById('edit-content').value;
+    const tags = document.getElementById('edit-tags').value;
+    const location = document.getElementById('edit-location').value;
+    const moment = document.getElementById('edit-moment').value;
     const isPublic = document.getElementById('edit-visibility-text').textContent === '공개' ? 1 : 0;
-
-    const imageFile = document.getElementById('edit-file-upload').files[0]; // 새 이미지 파일
-    const imageUrl = document.getElementById('post-image').src; // 기존 이미지 URL
+    const postPassword = document.getElementById('edit-password').value;
+    const imageFile = document.getElementById('edit-file-upload').files[0];
+    const imageUrl = document.getElementById('post-image').src;
 
     if (!postPassword) {
         alert('비밀번호를 입력해 주세요.');
@@ -615,17 +599,16 @@ function toggleEditVisibility() {
     formData.append('nickname', nickname);
     formData.append('title', title);
     formData.append('content', content);
-    formData.append('postPassword', postPassword);
     formData.append('tags', tags);
     formData.append('location', location);
     formData.append('moment', moment);
     formData.append('isPublic', isPublic);
+    formData.append('postPassword', postPassword);
 
-    // 이미지 파일이 새로 업로드되었을 때만 추가, 그렇지 않으면 기존 URL 유지
     if (imageFile) {
         formData.append('image', imageFile);
     } else {
-        formData.append('imageUrl', imageUrl); // 기존 이미지 URL을 유지
+        formData.append('imageUrl', imageUrl); 
     }
 
     try {
@@ -637,18 +620,14 @@ function toggleEditVisibility() {
         if (response.ok) {
             const updatedPost = await response.json();
             alert('추억이 성공적으로 수정되었습니다.');
-
-            // 수정된 데이터를 즉시 반영하기 위해 DOM 업데이트
             document.getElementById('nickname').textContent = updatedPost.nickname;
             document.getElementById('post-title').textContent = updatedPost.title;
             document.getElementById('post-content').innerHTML = updatedPost.content;
             document.getElementById('post-location').textContent = updatedPost.location;
             document.getElementById('post-moment').textContent = updatedPost.moment;
-
             if (updatedPost.imageUrl) {
                 document.getElementById('post-image').src = updatedPost.imageUrl;
             }
-
             hideEditPopup();
         } else {
             const errorData = await response.json();
@@ -760,6 +739,18 @@ document.getElementById("likeBtn").addEventListener("click", async function () {
             }
         });
 
+document.querySelector('.visibility-wrapper').addEventListener('click', function() {
+    const visibilityText = document.getElementById('visibility-text');
+    const visibilityIcon = document.getElementById('visibility-icon');
+
+    if (visibilityText.textContent === '공개') {
+        visibilityText.textContent = '비공개';
+        visibilityIcon.src = 'img/state=default.png';
+    } else {
+        visibilityText.textContent = '공개';
+        visibilityIcon.src = 'img/state=active.png';
+    }
+});
 </script>
 </body>
 </html>
