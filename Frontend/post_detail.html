@@ -107,21 +107,27 @@
                     <input type="date" id="edit-moment" class="date-picker-input">
 
                     <label for="edit-visibility" class="group-name-label" onclick="toggleEditVisibility()">추억 공개 선택</label>
-                    <div class="visibility-wrapper">
-                        <span id="edit-visibility-text" class="visibility-text">공개</span>
-                        <img id="edit-visibility-icon" src="img/state=active.png" alt="Visibility Icon" class="visibility-icon">
-                    </div>
+<div class="visibility-wrapper">
+    <span id="edit-visibility-text" class="visibility-text">공개</span>
+    <img id="edit-visibility-icon" src="img/state=active.png" alt="Visibility Icon" class="visibility-icon">
+</div>
                     
                     <script>
                     function toggleEditVisibility() {
-                        const visibilityText = document.getElementById('edit-visibility-text');
-                        const visibilityIcon = document.getElementById('edit-visibility-icon');
-                    
-                        // 텍스트와 아이콘 토글
-                        const isPublic = visibilityText.textContent.trim() === '공개';
-                        visibilityText.textContent = isPublic ? '비공개' : '공개';
-                        visibilityIcon.src = isPublic ? 'img/state=default.png' : 'img/state=active.png';
-                    }
+    const visibilityText = document.getElementById('edit-visibility-text');
+    const visibilityIcon = document.getElementById('edit-visibility-icon');
+
+    // 현재 텍스트가 '공개'이면 '비공개'로, '비공개'이면 '공개'로 전환
+    const isPublic = visibilityText.textContent.trim() === '공개';
+    
+    if (isPublic) {
+        visibilityText.textContent = '비공개';
+        visibilityIcon.src = 'img/state=default.png'; // 비공개 아이콘
+    } else {
+        visibilityText.textContent = '공개';
+        visibilityIcon.src = 'img/state=active.png'; // 공개 아이콘
+    }
+}
                     </script>
                 
                     <label for="edit-password" class="group-name-label">수정 권한 확인</label>
@@ -535,6 +541,17 @@ function showEditPopup() {
     const location = document.getElementById('post-location').textContent;
     const moment = document.getElementById('post-moment').textContent;
     const isPublic = document.getElementById('post-visibility').textContent === '공개' ? '공개' : '비공개'; 
+    const visibilityText = document.getElementById('edit-visibility-text');
+    const visibilityIcon = document.getElementById('edit-visibility-icon');
+    
+    if (isPublic) {
+        visibilityText.textContent = '공개';
+        visibilityIcon.src = 'img/state=active.png'; // 공개 아이콘
+    } else {
+        visibilityText.textContent = '비공개';
+        visibilityIcon.src = 'img/state=default.png'; // 비공개 아이콘
+    }
+
     const tags = Array.from(document.querySelectorAll('#post-tags .tag')).map(tag => tag.textContent.replace('#', '')).join(', ');
     const imageUrl = document.getElementById('post-image').src;
 
